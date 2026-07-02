@@ -123,6 +123,61 @@ Represents a positionable region on a slide.
 - `capacity_hint`
 - `style_hint`
 
+## ThemeProfile
+
+Represents reusable design tokens for a deck.
+
+**Fields**:
+
+- `theme_id`
+- `color_tokens`: primary, secondary, accent, background, text, muted.
+- `typography_tokens`: title font, body font, title scale, body scale, line height.
+- `spacing_tokens`: page margin, block gap, card padding, section spacing.
+- `shape_tokens`: border radius, stroke style, shadow style.
+- `image_treatment`: crop style, overlay style, preferred image tone.
+- `chart_style`: axis, label, palette, gridline, and emphasis rules.
+
+## LayoutGrammar
+
+Represents a reusable slide expression pattern.
+
+**Fields**:
+
+- `layout_id`: Examples include `cover.hero`, `content.three-cards`, `product.screenshot-callouts`, `data.big-number-plus-chart`.
+- `supported_slide_types`
+- `required_blocks`
+- `optional_blocks`
+- `max_text_items`
+- `recommended_visual_ratio`
+- `density_range`
+- `ppt_zone_mapping_rules`
+
+## SlideDesignPlan
+
+Represents design decisions made before content is mapped into PPT zones.
+
+**Fields**:
+
+- `theme_profile`
+- `slides`: Ordered list of `SlideDesignDecision`.
+- `global_style_notes`
+- `design_risks`
+
+## SlideDesignDecision
+
+Represents per-slide visual expression intent.
+
+**Fields**:
+
+- `slide_index`
+- `layout_id`
+- `visual_density`: `low`, `medium`, `high`.
+- `block_plan`: planned content blocks such as hero title, metric card, image-text, timeline, process flow, comparison, or screenshot callout.
+- `visual_strategy`: `template_only`, `user_image`, `generated_background`, `generated_region`, `chart`, `placeholder`.
+- `text_budget`: maximum title length, bullet count, and line count.
+- `design_constraints`: spacing, alignment, image ratio, color, or hierarchy constraints.
+- `design_warnings`: known risks before assembly.
+
 ## SlideContent
 
 Represents user-reviewable content mapped to one slide.
@@ -131,6 +186,8 @@ Represents user-reviewable content mapped to one slide.
 
 - `slide_index`
 - `layout_type`
+- `layout_id`
+- `visual_density`
 - `review_status`: `draft`, `approved`, `edited`, `needs_review`.
 - `zones`: Ordered list of `SlideZoneContent`.
 - `source_refs`
@@ -226,8 +283,11 @@ Represents quality findings for one slide.
 - `checks`: `content_present`, `text_preserved`, `text_editable`, `text_fit`, `image_fit`, `fallback_resolved`.
 - `issues`
 - `recommended_action`
+- `design_score`
+- `design_suggestions`
 
 **Validation rules**:
 
 - `text_editable` must be `true` for slides containing user-approved title, subtitle, or bullet text.
 - A slide may pass with `text_editable: false` only when it has no user-approved text zones, such as a purely visual divider slide.
+- `design_score` should flag slides with excessive text density, weak hierarchy, inconsistent spacing, poor image fit, or style inconsistency.

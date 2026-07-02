@@ -58,6 +58,7 @@ specs/001-ppt-generation-agent/
 │   ├── template-meta.schema.json
 │   ├── image-generation-config.schema.json
 │   ├── validation-report.schema.json
+│   ├── slide-design-plan.schema.json
 │   ├── workflow-events.schema.json
 │   ├── knowledge-base-config.schema.json
 │   ├── dispatch-request.schema.json
@@ -89,6 +90,7 @@ src/
 │   │   ├── document_analyst.py
 │   │   ├── outline_generator.py
 │   │   ├── template_matcher.py
+│   │   ├── design_director.py
 │   │   ├── content_mapper.py
 │   │   ├── image_generator.py
 │   │   ├── ppt_assembler.py
@@ -117,7 +119,14 @@ src/
 │   │   ├── outline.py
 │   │   ├── slide_contents.py
 │   │   ├── template_meta.py
+│   │   ├── design_plan.py
 │   │   └── validation.py
+│   ├── design/
+│   │   ├── theme.py
+│   │   ├── layout_grammar.py
+│   │   ├── visual_density.py
+│   │   ├── design_scorer.py
+│   │   └── rewrite_suggestions.py
 │   ├── assembly/
 │   │   ├── ppt_writer.py
 │   │   ├── layout_fit.py
@@ -134,6 +143,7 @@ workspace/
     └── <job-id>/
         ├── input/
         ├── outline.json
+        ├── slide_design_plan.json
         ├── template_meta.json
         ├── slide_contents.json
         ├── generated_slides/
@@ -150,6 +160,7 @@ tests/
     ├── gptimage2-generator/        # Existing skill, keep and adapt
     ├── ppt-outline-generator/      # New skill
     ├── ppt-template-matcher/       # New skill
+    ├── ppt-design-director/        # New skill
     ├── ppt-content-mapper/         # New skill
     ├── ppt-image-layer/            # New/adapted skill
     └── ppt-assembler/              # New skill
@@ -210,10 +221,11 @@ The Coordinator runs a deterministic state machine:
 1. `document_analysis`: extract text/OCR evidence and produce `source_summary.json`.
 2. `outline_generation`: produce `outline.json`.
 3. `template_matching`: search template metadata and produce `selected_template.json` plus `template_meta.json`.
-4. `content_mapping`: parse template zones and produce user-reviewable `slide_contents.json`.
-5. `visual_generation`: invoke `gptimage2-generator` only for approved visuals, producing `generated_slides/` and `image_generation_report.json`.
-6. `ppt_assembly`: create `final.pptx` while preserving editable text.
-7. `verification`: render/inspect output and produce `validation_report.json`.
+4. `design_planning`: select theme, layout grammar, visual density, and slide expression strategy, producing `slide_design_plan.json`.
+5. `content_mapping`: parse template zones and design plan, then produce user-reviewable `slide_contents.json`.
+6. `visual_generation`: invoke `gptimage2-generator` only for approved visuals, producing `generated_slides/` and `image_generation_report.json`.
+7. `ppt_assembly`: create `final.pptx` while preserving editable text.
+8. `verification`: render/inspect output and produce `validation_report.json`.
 
 Workers must communicate through explicit artifacts and event messages, not shared mutable state.
 
@@ -242,6 +254,7 @@ Skills follow progressive loading:
 
 - `ppt-outline-generator`: load during outline generation only.
 - `ppt-template-matcher`: load during template matching only.
+- `ppt-design-director`: load after template matching and before content mapping.
 - `ppt-content-mapper`: load during template parsing and slide content mapping only.
 - `ppt-image-layer`: load during assembly/verification only after generated or template images exist.
 - `ppt-assembler`: load during final PPT assembly only.
@@ -280,21 +293,28 @@ Required skill packages:
    - Scripts: BM25 scoring, optional vector scoring, RRF fusion, reranking by slide count/layout/style fit.
    - Notes: must return a general fallback template when no strong match exists.
 
-3. `ppt-content-mapper`
+3. `ppt-design-director`
+   - Purpose: turn `outline.json` and `template_meta.json` into `slide_design_plan.json`.
+   - Inputs: outline, template profile, domain/tone/audience, optional brand preferences.
+   - Outputs: theme profile, per-slide layout grammar choice, visual density, block composition, design constraints, and design risks.
+   - References/assets: layout grammar catalog, theme token examples, visual density rules, design scoring rubric.
+   - Notes: this skill is responsible for making decks look polished, not just populated.
+
+4. `ppt-content-mapper`
    - Purpose: map outline slides into template zones and produce user-reviewable slide content.
-   - Inputs: `outline.json`, `template_meta.json`, template parse/OCR results, user image inventory.
+   - Inputs: `outline.json`, `slide_design_plan.json`, `template_meta.json`, template parse/OCR results, user image inventory.
    - Outputs: contract-compliant `slide_contents.json`.
    - Scripts: zone capacity checks, slide-to-layout matching, user image assignment.
    - Notes: this is the main user review boundary; every user-facing text field must remain editable.
 
-4. `ppt-image-layer`
+5. `ppt-image-layer`
    - Purpose: analyze generated or template slide images into PPT-friendly visual layers.
    - Inputs: generated slide images, template previews, `slide_contents.json`.
    - Outputs: layer analysis JSON used by assembly and verification.
    - Scripts: background detection, image region detection, simple shape extraction, text-region masking hints.
    - Notes: if layer extraction is weak, it must return a fallback instruction rather than blocking assembly.
 
-5. `ppt-assembler`
+6. `ppt-assembler`
    - Purpose: assemble `final.pptx` from template, approved slide content, generated visuals, and layer analysis.
    - Inputs: template file, `slide_contents.json`, generated images, layer analysis.
    - Outputs: `final.pptx`, assembly report, preview renders when available.
@@ -303,7 +323,7 @@ Required skill packages:
 
 Existing skill package:
 
-6. `gptimage2-generator`
+7. `gptimage2-generator`
    - Purpose: external visual generation through GPTImage2.online.
    - Inputs: `image_generation_config.json` generated by the PPT-Agent adapter.
    - Outputs: generated images and batch report.
@@ -311,6 +331,25 @@ Existing skill package:
    - Notes: do not duplicate its API logic in new skills. Keep account management, upload-reference, polling, downloads, and account switching inside this skill. The PPT-Agent only adapts slide needs into its batch config.
 
 Skill creation should happen before broad workflow implementation, because each Worker's input/output boundary depends on these skill contracts. The later `/speckit-tasks` phase should include explicit tasks for creating each `SKILL.md`, example fixtures, script stubs, and contract validation tests.
+
+### Design System Strategy
+
+To pursue polished PPT quality, the workflow must include a design planning layer instead of relying only on template filling. The design system is centered on four concepts:
+
+1. `ThemeProfile`: color, typography, spacing, border radius, chart style, icon style, and image treatment tokens.
+2. `LayoutGrammar`: reusable slide expression patterns such as `cover.hero`, `section.divider`, `content.left-text-right-image`, `content.three-cards`, `content.metric-grid`, `content.timeline`, `content.comparison`, `content.process-flow`, `product.screenshot-callouts`, and `data.big-number-plus-chart`.
+3. `VisualDensity`: `low`, `medium`, or `high` density controls for text length, block count, image proportion, whitespace, and font size.
+4. `DesignScorer`: post-assembly scoring for visual hierarchy, alignment, spacing, density, image consistency, and style coherence.
+
+The `ppt-design-director` skill produces `slide_design_plan.json` after template matching and before content mapping. This means content mapping no longer only asks "which template zone receives this text"; it first asks "what is the best expression pattern for this slide." This is the main lesson borrowed from products like Gamma: content should be structured first, expressed through a design system second, and exported last.
+
+Design planning rules:
+
+- Cover and section pages should favor low density, strong visual hierarchy, and large visual surfaces.
+- Content pages should prefer 3-5 points or block/card layouts instead of dense bullet lists.
+- Product screenshot pages should use callouts, annotations, and screenshot-safe image regions.
+- Data pages should emphasize one conclusion plus one chart or metric group.
+- AI-generated visuals should enhance backgrounds, covers, section dividers, concepts, and empty visual regions; confirmed text remains controlled by PPT objects.
 
 ### Retrieval Strategy
 

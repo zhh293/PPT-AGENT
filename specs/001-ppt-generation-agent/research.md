@@ -104,6 +104,16 @@
 - Use whole-slide images for all pages: rejected because text would not be reliably editable or accurate.
 - Avoid whole-slide images entirely: rejected because cover/transition/data-visual pages benefit from full-page visual generation.
 
+## Decision: Add a Design Director Layer
+
+**Rationale**: If the project aims for polished decks rather than simple template filling, the system needs a design planning step between outline/template matching and content mapping. This layer selects theme tokens, layout grammar, visual density, and expression patterns before mapping content to PPT zones. It borrows the strongest lesson from products such as Gamma: content should be structured first, expressed through a design system second, and exported last.
+
+**Alternatives considered**:
+
+- Rely only on static PPT templates: rejected because visual quality is capped by template pages and cannot adapt well to content intent.
+- Let image generation create whole-slide designs: rejected because confirmed text would become inaccurate or non-editable.
+- Add design checks only after assembly: rejected because scoring after the fact cannot choose better layouts before content is placed.
+
 ## Decision: Verification Runs as an Independent Worker
 
 **Rationale**: `AGENT_ARCHITECTURE.md` emphasizes fresh-eyes verification. The verifier should inspect the final deck and reports independently from assembly to catch missing slides, text drift, overflow, image distortion, and unresolved fallback flags.

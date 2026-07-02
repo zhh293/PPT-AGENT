@@ -32,7 +32,9 @@
             "additionalProperties": false
           },
           "issues": {"type": "array", "items": {"type": "string"}},
-          "recommended_action": {"type": "string"}
+          "recommended_action": {"type": "string"},
+          "design_score": {"type": "number", "minimum": 0, "maximum": 100},
+          "design_suggestions": {"type": "array", "items": {"type": "string"}}
         },
         "additionalProperties": false
       }

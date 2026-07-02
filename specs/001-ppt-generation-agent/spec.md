@@ -102,6 +102,9 @@ A user receives a validation summary with the final presentation so they can und
 - **FR-013**: System MUST identify slides that need manual review when confidence is low or when an automated step uses a fallback.
 - **FR-014**: System MUST keep intermediate outline and slide-content artifacts available for inspection and correction during the workflow.
 - **FR-015**: System MUST avoid inventing factual claims not supported by the user's materials unless clearly marked as suggested wording for user review.
+- **FR-016**: System MUST create a design plan before content mapping that selects theme, layout pattern, visual density, and preferred expression style for each slide.
+- **FR-017**: System MUST support reusable layout patterns such as cover, section divider, image-text, metric cards, timeline, comparison, process flow, product screenshot callouts, and data insight pages.
+- **FR-018**: System MUST score or flag visual design issues such as excessive text density, inconsistent spacing, poor image fit, weak visual hierarchy, or style inconsistency.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -109,6 +112,8 @@ A user receives a validation summary with the final presentation so they can und
 - **Presentation Outline**: The planned slide sequence. Key attributes include target audience, domain, tone, total slide count, slide title, slide purpose, key points, and visual needs.
 - **Slide Content**: User-reviewable content for a specific slide. Key attributes include slide index, layout intent, editable text, image references, visual prompts or descriptions, and review status.
 - **Template Profile**: A reusable presentation style and layout description. Key attributes include domain fit, tone, slide types, color direction, and layout coverage.
+- **Theme Profile**: Reusable design tokens for colors, typography, spacing, visual style, and image treatment.
+- **Slide Design Plan**: Per-slide design intent that selects layout pattern, block composition, visual density, theme tokens, and design constraints before content is mapped to PPT zones.
 - **Generated Visual**: A supplemental visual produced or selected for a slide. Key attributes include related slide, source type, prompt or description, status, and approval state.
 - **Validation Report**: The final quality summary. Key attributes include checked slides, pass or warning status, issue descriptions, severity, and recommended user action.
 
@@ -122,6 +127,7 @@ A user receives a validation summary with the final presentation so they can und
 - **SC-004**: At least 80% of validation reports correctly flag intentionally introduced missing content, overflowing text, or visibly distorted images in test presentations.
 - **SC-005**: At least 80% of users evaluating sample outputs rate the generated storyline as coherent and relevant to the provided project materials.
 - **SC-006**: When visual generation or template matching is unavailable, the system still produces a usable fallback draft for 95% of valid input sets.
+- **SC-007**: At least 80% of reviewed sample decks receive an acceptable design score based on visual density, alignment, text hierarchy, and style consistency checks.
 
 ## Assumptions
 

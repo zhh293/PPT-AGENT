@@ -16,6 +16,8 @@
         "properties": {
           "slide_index": {"type": "integer", "minimum": 0},
           "layout": {"type": "string", "minLength": 1},
+          "layout_id": {"type": "string"},
+          "visual_density": {"type": "string", "enum": ["low", "medium", "high"]},
           "review_status": {"type": "string", "enum": ["draft", "edited", "approved", "needs_review"], "default": "draft"},
           "source_refs": {"type": "array", "items": {"type": "string"}},
           "fallback_flags": {"type": "array", "items": {"type": "string"}},

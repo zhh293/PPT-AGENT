@@ -48,51 +48,63 @@
 - [ ] T017 [P] Implement validation report models matching `validation-report.schema.json` in `src/ppt_agent/models/validation.py`
 - [ ] T018 [P] Add contract tests for artifact schemas in `tests/contract/test_artifact_schemas.py`
 - [ ] T019 [P] Add contract tests for dispatch and knowledge-base schemas in `tests/contract/test_dispatch_and_kb_schemas.py`
+- [ ] T020 [P] Implement slide design plan models matching `slide-design-plan.schema.json` in `src/ppt_agent/models/design_plan.py`
+- [ ] T021 [P] Add contract test for `slide_design_plan.json` in `tests/contract/test_slide_design_plan_contract.py`
 
 ### Workspace, Events, Context
 
-- [ ] T020 Implement job workspace creation and artifact read/write helpers in `src/ppt_agent/coordinator/phase_state.py`
-- [ ] T021 [P] Implement append-only workflow event logging in `src/ppt_agent/coordinator/event_bus.py`
-- [ ] T022 [P] Implement memory layer file handling for `agent.md`, `memory.md`, `session.md`, and `history.jsonl` in `src/ppt_agent/context/memory_layers.py`
-- [ ] T023 [P] Implement phase summary creation and session update helpers in `src/ppt_agent/context/session_summary.py`
-- [ ] T024 Implement L0-L4 context compression policy in `src/ppt_agent/context/compression.py`
-- [ ] T025 Add unit tests for workspace state and event logging in `tests/unit/test_phase_state_and_events.py`
-- [ ] T026 Add unit tests for compression invariants preserving approved slide content and error records in `tests/unit/test_context_compression.py`
+- [ ] T022 Implement job workspace creation and artifact read/write helpers in `src/ppt_agent/coordinator/phase_state.py`
+- [ ] T023 [P] Implement append-only workflow event logging in `src/ppt_agent/coordinator/event_bus.py`
+- [ ] T024 [P] Implement memory layer file handling for `agent.md`, `memory.md`, `session.md`, and `history.jsonl` in `src/ppt_agent/context/memory_layers.py`
+- [ ] T025 [P] Implement phase summary creation and session update helpers in `src/ppt_agent/context/session_summary.py`
+- [ ] T026 Implement L0-L4 context compression policy in `src/ppt_agent/context/compression.py`
+- [ ] T027 Add unit tests for workspace state and event logging in `tests/unit/test_phase_state_and_events.py`
+- [ ] T028 Add unit tests for compression invariants preserving approved slide content and error records in `tests/unit/test_context_compression.py`
 
 ### Dispatch And Skill Loading
 
-- [ ] T027 Implement routing rule parser for `config/dispatcher.yml` in `src/ppt_agent/coordinator/routing_rules.py`
-- [ ] T028 Implement unified dispatch entry in `src/ppt_agent/coordinator/dispatcher.py`
-- [ ] T029 Implement deterministic workflow state machine in `src/ppt_agent/coordinator/workflow.py`
-- [ ] T030 [P] Implement skill registry metadata model in `src/ppt_agent/skills/registry.py`
-- [ ] T031 [P] Implement progressive skill loader for `.catpaw/skills/<skill-name>/SKILL.md` in `src/ppt_agent/skills/loader.py`
-- [ ] T032 Add unit tests for dispatch routing and skill loading in `tests/unit/test_dispatcher_and_skill_loader.py`
+- [ ] T029 Implement routing rule parser for `config/dispatcher.yml` in `src/ppt_agent/coordinator/routing_rules.py`
+- [ ] T030 Implement unified dispatch entry in `src/ppt_agent/coordinator/dispatcher.py`
+- [ ] T031 Implement deterministic workflow state machine in `src/ppt_agent/coordinator/workflow.py`
+- [ ] T032 [P] Implement skill registry metadata model in `src/ppt_agent/skills/registry.py`
+- [ ] T033 [P] Implement progressive skill loader for `.catpaw/skills/<skill-name>/SKILL.md` in `src/ppt_agent/skills/loader.py`
+- [ ] T034 Add unit tests for dispatch routing and skill loading in `tests/unit/test_dispatcher_and_skill_loader.py`
 
 ### Knowledge Base And Retrieval Foundation
 
-- [ ] T033 [P] Implement knowledge-base config loader in `src/ppt_agent/retrieval/config.py`
-- [ ] T034 [P] Implement source ingestion interface in `src/ppt_agent/retrieval/ingestion.py`
-- [ ] T035 [P] Implement chunking strategies in `src/ppt_agent/retrieval/chunking.py`
-- [ ] T036 [P] Implement contextual enrichment hook interface in `src/ppt_agent/retrieval/enrichment.py`
-- [ ] T037 [P] Implement BM25 sparse retriever in `src/ppt_agent/retrieval/sparse/bm25.py`
-- [ ] T038 [P] Implement vector backend base interface in `src/ppt_agent/retrieval/vector/base.py`
-- [ ] T039 [P] Implement local file-backed vector backend stub in `src/ppt_agent/retrieval/vector/local.py`
-- [ ] T040 [P] Implement Qdrant adapter stub with config validation in `src/ppt_agent/retrieval/vector/qdrant.py`
-- [ ] T041 [P] Implement Milvus adapter stub with config validation in `src/ppt_agent/retrieval/vector/milvus.py`
-- [ ] T042 [P] Implement pgvector adapter stub with config validation in `src/ppt_agent/retrieval/vector/pgvector.py`
-- [ ] T043 [P] Implement RRF fusion in `src/ppt_agent/retrieval/fusion/rrf.py`
-- [ ] T044 [P] Implement reranker base interface in `src/ppt_agent/retrieval/rerankers/base.py`
-- [ ] T045 Implement retrieval query router that selects configured sparse/vector/fusion/rerank methods in `src/ppt_agent/retrieval/query_router.py`
-- [ ] T046 Add unit tests for retrieval config, vector adapter selection, and query routing in `tests/unit/test_retrieval_query_router.py`
+- [ ] T035 [P] Implement knowledge-base config loader in `src/ppt_agent/retrieval/config.py`
+- [ ] T036 [P] Implement source ingestion interface in `src/ppt_agent/retrieval/ingestion.py`
+- [ ] T037 [P] Implement chunking strategies in `src/ppt_agent/retrieval/chunking.py`
+- [ ] T038 [P] Implement contextual enrichment hook interface in `src/ppt_agent/retrieval/enrichment.py`
+- [ ] T039 [P] Implement BM25 sparse retriever in `src/ppt_agent/retrieval/sparse/bm25.py`
+- [ ] T040 [P] Implement vector backend base interface in `src/ppt_agent/retrieval/vector/base.py`
+- [ ] T041 [P] Implement local file-backed vector backend stub in `src/ppt_agent/retrieval/vector/local.py`
+- [ ] T042 [P] Implement Qdrant adapter stub with config validation in `src/ppt_agent/retrieval/vector/qdrant.py`
+- [ ] T043 [P] Implement Milvus adapter stub with config validation in `src/ppt_agent/retrieval/vector/milvus.py`
+- [ ] T044 [P] Implement pgvector adapter stub with config validation in `src/ppt_agent/retrieval/vector/pgvector.py`
+- [ ] T045 [P] Implement RRF fusion in `src/ppt_agent/retrieval/fusion/rrf.py`
+- [ ] T046 [P] Implement reranker base interface in `src/ppt_agent/retrieval/rerankers/base.py`
+- [ ] T047 Implement retrieval query router that selects configured sparse/vector/fusion/rerank methods in `src/ppt_agent/retrieval/query_router.py`
+- [ ] T048 Add unit tests for retrieval config, vector adapter selection, and query routing in `tests/unit/test_retrieval_query_router.py`
+
+### Design System Foundation
+
+- [ ] T049 [P] Implement theme token model and defaults in `src/ppt_agent/design/theme.py`
+- [ ] T050 [P] Implement layout grammar catalog in `src/ppt_agent/design/layout_grammar.py`
+- [ ] T051 [P] Implement visual density rules in `src/ppt_agent/design/visual_density.py`
+- [ ] T052 [P] Implement design scoring primitives in `src/ppt_agent/design/design_scorer.py`
+- [ ] T053 [P] Implement design rewrite suggestion helpers in `src/ppt_agent/design/rewrite_suggestions.py`
+- [ ] T054 Add unit tests for theme, layout grammar, and visual density rules in `tests/unit/test_design_system.py`
 
 ### Skill Package Scaffolds
 
-- [ ] T047 [P] Create `ppt-outline-generator` skill scaffold in `.catpaw/skills/ppt-outline-generator/SKILL.md`
-- [ ] T048 [P] Create `ppt-template-matcher` skill scaffold in `.catpaw/skills/ppt-template-matcher/SKILL.md`
-- [ ] T049 [P] Create `ppt-content-mapper` skill scaffold in `.catpaw/skills/ppt-content-mapper/SKILL.md`
-- [ ] T050 [P] Create `ppt-image-layer` skill scaffold in `.catpaw/skills/ppt-image-layer/SKILL.md`
-- [ ] T051 [P] Create `ppt-assembler` skill scaffold in `.catpaw/skills/ppt-assembler/SKILL.md`
-- [ ] T052 Add skill fixture directories and placeholder examples in `.catpaw/skills/ppt-outline-generator/examples/`, `.catpaw/skills/ppt-template-matcher/examples/`, `.catpaw/skills/ppt-content-mapper/examples/`, `.catpaw/skills/ppt-image-layer/examples/`, and `.catpaw/skills/ppt-assembler/examples/`
+- [ ] T055 [P] Create `ppt-outline-generator` skill scaffold in `.catpaw/skills/ppt-outline-generator/SKILL.md`
+- [ ] T056 [P] Create `ppt-template-matcher` skill scaffold in `.catpaw/skills/ppt-template-matcher/SKILL.md`
+- [ ] T057 [P] Create `ppt-design-director` skill scaffold in `.catpaw/skills/ppt-design-director/SKILL.md`
+- [ ] T058 [P] Create `ppt-content-mapper` skill scaffold in `.catpaw/skills/ppt-content-mapper/SKILL.md`
+- [ ] T059 [P] Create `ppt-image-layer` skill scaffold in `.catpaw/skills/ppt-image-layer/SKILL.md`
+- [ ] T060 [P] Create `ppt-assembler` skill scaffold in `.catpaw/skills/ppt-assembler/SKILL.md`
+- [ ] T061 Add skill fixture directories and placeholder examples in `.catpaw/skills/ppt-outline-generator/examples/`, `.catpaw/skills/ppt-template-matcher/examples/`, `.catpaw/skills/ppt-design-director/examples/`, `.catpaw/skills/ppt-content-mapper/examples/`, `.catpaw/skills/ppt-image-layer/examples/`, and `.catpaw/skills/ppt-assembler/examples/`
 
 **Checkpoint**: Foundation is ready. Dispatch, context, schema validation, skill loading, retrieval routing, and skill package skeletons exist.
 
@@ -106,28 +118,28 @@
 
 ### Tests for User Story 1
 
-- [ ] T053 [P] [US1] Add integration fixture project plan and screenshot in `tests/fixtures/sample_project/input/`
-- [ ] T054 [P] [US1] Add contract test for `outline.json` generation in `tests/contract/test_outline_contract.py`
-- [ ] T055 [P] [US1] Add contract test for `slide_contents.json` MVP output in `tests/contract/test_slide_contents_contract.py`
-- [ ] T056 [P] [US1] Add integration test for create-job through fallback PPT generation in `tests/integration/test_us1_generate_editable_presentation.py`
+- [ ] T062 [P] [US1] Add integration fixture project plan and screenshot in `tests/fixtures/sample_project/input/`
+- [ ] T063 [P] [US1] Add contract test for `outline.json` generation in `tests/contract/test_outline_contract.py`
+- [ ] T064 [P] [US1] Add contract test for `slide_contents.json` MVP output in `tests/contract/test_slide_contents_contract.py`
+- [ ] T065 [P] [US1] Add integration test for create-job through fallback PPT generation in `tests/integration/test_us1_generate_editable_presentation.py`
 
 ### Implementation for User Story 1
 
-- [ ] T057 [US1] Implement `create-job` CLI command copying inputs and initializing job files in `src/ppt_agent/cli.py`
-- [ ] T058 [P] [US1] Implement source material extraction worker in `src/ppt_agent/workers/document_analyst.py`
-- [ ] T059 [P] [US1] Implement `source_summary.json` artifact writer in `src/ppt_agent/models/source_summary.py`
-- [ ] T060 [US1] Complete `ppt-outline-generator` SKILL instructions for source-summary to outline conversion in `.catpaw/skills/ppt-outline-generator/SKILL.md`
-- [ ] T061 [US1] Add outline structure references in `.catpaw/skills/ppt-outline-generator/references/structures.md`
-- [ ] T062 [US1] Implement outline worker that loads `ppt-outline-generator` and writes `outline.json` in `src/ppt_agent/workers/outline_generator.py`
-- [ ] T063 [US1] Implement basic default template metadata fallback in `templates/index.json`
-- [ ] T064 [US1] Implement MVP content mapper producing editable `slide_contents.json` from outline and default layout in `src/ppt_agent/workers/content_mapper.py`
-- [ ] T065 [US1] Complete `ppt-assembler` SKILL instructions for editable text preservation in `.catpaw/skills/ppt-assembler/SKILL.md`
-- [ ] T066 [US1] Implement PPT writer abstraction with editable text boxes in `src/ppt_agent/assembly/ppt_writer.py`
-- [ ] T067 [US1] Implement layout fitting helpers for titles and bullets in `src/ppt_agent/assembly/layout_fit.py`
-- [ ] T068 [US1] Implement assembler worker for default-template fallback deck in `src/ppt_agent/workers/ppt_assembler.py`
-- [ ] T069 [US1] Wire `run --until content-review` and full `run` CLI flow through Coordinator in `src/ppt_agent/cli.py`
-- [ ] T070 [US1] Add MVP dispatch routes for document analysis, outline generation, content mapping, and PPT assembly in `config/dispatcher.yml`
-- [ ] T071 [US1] Add workflow event emission for US1 phases in `src/ppt_agent/coordinator/workflow.py`
+- [ ] T066 [US1] Implement `create-job` CLI command copying inputs and initializing job files in `src/ppt_agent/cli.py`
+- [ ] T067 [P] [US1] Implement source material extraction worker in `src/ppt_agent/workers/document_analyst.py`
+- [ ] T068 [P] [US1] Implement `source_summary.json` artifact writer in `src/ppt_agent/models/source_summary.py`
+- [ ] T069 [US1] Complete `ppt-outline-generator` SKILL instructions for source-summary to outline conversion in `.catpaw/skills/ppt-outline-generator/SKILL.md`
+- [ ] T070 [US1] Add outline structure references in `.catpaw/skills/ppt-outline-generator/references/structures.md`
+- [ ] T071 [US1] Implement outline worker that loads `ppt-outline-generator` and writes `outline.json` in `src/ppt_agent/workers/outline_generator.py`
+- [ ] T072 [US1] Implement basic default template metadata fallback in `templates/index.json`
+- [ ] T073 [US1] Implement MVP content mapper producing editable `slide_contents.json` from outline and default layout in `src/ppt_agent/workers/content_mapper.py`
+- [ ] T074 [US1] Complete `ppt-assembler` SKILL instructions for editable text preservation in `.catpaw/skills/ppt-assembler/SKILL.md`
+- [ ] T075 [US1] Implement PPT writer abstraction with editable text boxes in `src/ppt_agent/assembly/ppt_writer.py`
+- [ ] T076 [US1] Implement layout fitting helpers for titles and bullets in `src/ppt_agent/assembly/layout_fit.py`
+- [ ] T077 [US1] Implement assembler worker for default-template fallback deck in `src/ppt_agent/workers/ppt_assembler.py`
+- [ ] T078 [US1] Wire `run --until content-review` and full `run` CLI flow through Coordinator in `src/ppt_agent/cli.py`
+- [ ] T079 [US1] Add MVP dispatch routes for document analysis, outline generation, content mapping, and PPT assembly in `config/dispatcher.yml`
+- [ ] T080 [US1] Add workflow event emission for US1 phases in `src/ppt_agent/coordinator/workflow.py`
 
 **Checkpoint**: User Story 1 can generate a local editable fallback PPT without requiring image generation or vector database connectivity.
 
@@ -141,19 +153,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T072 [P] [US2] Add state-transition contract test for slide content review statuses in `tests/contract/test_slide_content_review_contract.py`
-- [ ] T073 [P] [US2] Add integration test for editing and approving `slide_contents.json` in `tests/integration/test_us2_review_and_adjust_content.py`
+- [ ] T081 [P] [US2] Add state-transition contract test for slide content review statuses in `tests/contract/test_slide_content_review_contract.py`
+- [ ] T082 [P] [US2] Add integration test for editing and approving `slide_contents.json` in `tests/integration/test_us2_review_and_adjust_content.py`
 
 ### Implementation for User Story 2
 
-- [ ] T074 [US2] Complete `ppt-content-mapper` SKILL instructions for user-reviewable slide content in `.catpaw/skills/ppt-content-mapper/SKILL.md`
-- [ ] T075 [US2] Add content mapping examples in `.catpaw/skills/ppt-content-mapper/examples/slide_contents.example.json`
-- [ ] T076 [US2] Implement slide content review state transitions in `src/ppt_agent/models/slide_contents.py`
-- [ ] T077 [US2] Implement `approve` CLI command validating and marking `slide_contents.json` approved in `src/ppt_agent/cli.py`
-- [ ] T078 [US2] Update content mapper worker to preserve user image inventory and fallback flags in `src/ppt_agent/workers/content_mapper.py`
-- [ ] T079 [US2] Update assembler worker to refuse non-approved user-reviewed content unless forced in `src/ppt_agent/workers/ppt_assembler.py`
-- [ ] T080 [US2] Add exact-text preservation check before assembly in `src/ppt_agent/assembly/layout_fit.py`
-- [ ] T081 [US2] Add dispatch route for content approval capability in `config/dispatcher.yml`
+- [ ] T083 [US2] Complete `ppt-content-mapper` SKILL instructions for user-reviewable slide content in `.catpaw/skills/ppt-content-mapper/SKILL.md`
+- [ ] T084 [US2] Add content mapping examples in `.catpaw/skills/ppt-content-mapper/examples/slide_contents.example.json`
+- [ ] T085 [US2] Implement slide content review state transitions in `src/ppt_agent/models/slide_contents.py`
+- [ ] T086 [US2] Implement `approve` CLI command validating and marking `slide_contents.json` approved in `src/ppt_agent/cli.py`
+- [ ] T087 [US2] Update content mapper worker to preserve user image inventory and fallback flags in `src/ppt_agent/workers/content_mapper.py`
+- [ ] T088 [US2] Update assembler worker to refuse non-approved user-reviewed content unless forced in `src/ppt_agent/workers/ppt_assembler.py`
+- [ ] T089 [US2] Add exact-text preservation check before assembly in `src/ppt_agent/assembly/layout_fit.py`
+- [ ] T090 [US2] Add dispatch route for content approval capability in `config/dispatcher.yml`
 
 **Checkpoint**: User Story 2 supports review, edit, approve, and assemble without losing user changes.
 
@@ -167,26 +179,29 @@
 
 ### Tests for User Story 3
 
-- [ ] T082 [P] [US3] Add contract test for `template_meta.json` and selected template ranking output in `tests/contract/test_template_meta_contract.py`
-- [ ] T083 [P] [US3] Add contract test for `image_generation_config.json` in `tests/contract/test_image_generation_config_contract.py`
-- [ ] T084 [P] [US3] Add integration test for template matching with configurable knowledge base in `tests/integration/test_us3_template_matching.py`
-- [ ] T085 [P] [US3] Add integration test for no-account visual fallback mode in `tests/integration/test_us3_visual_generation_fallback.py`
+- [ ] T091 [P] [US3] Add contract test for `template_meta.json` and selected template ranking output in `tests/contract/test_template_meta_contract.py`
+- [ ] T092 [P] [US3] Add contract test for `image_generation_config.json` in `tests/contract/test_image_generation_config_contract.py`
+- [ ] T093 [P] [US3] Add integration test for template matching with configurable knowledge base in `tests/integration/test_us3_template_matching.py`
+- [ ] T094 [P] [US3] Add integration test for no-account visual fallback mode in `tests/integration/test_us3_visual_generation_fallback.py`
 
 ### Implementation for User Story 3
 
-- [ ] T086 [US3] Complete `ppt-template-matcher` SKILL instructions for template retrieval and ranking in `.catpaw/skills/ppt-template-matcher/SKILL.md`
-- [ ] T087 [US3] Add template matcher examples in `.catpaw/skills/ppt-template-matcher/examples/template-ranking.example.json`
-- [ ] T088 [US3] Implement template index builder over `templates/index.json` and template `meta.json` files in `src/ppt_agent/retrieval/template_index.py`
-- [ ] T089 [US3] Populate `config/knowledge-bases/templates.yml` with template source, chunking, sparse, vector, fusion, and refresh settings
-- [ ] T090 [US3] Populate `config/knowledge-bases/slide-patterns.yml` with slide-pattern knowledge-base settings
-- [ ] T091 [US3] Populate `config/knowledge-bases/domain-knowledge.yml` with domain-knowledge settings
-- [ ] T092 [US3] Implement template matcher worker using `retrieval/query_router.py` in `src/ppt_agent/workers/template_matcher.py`
-- [ ] T093 [US3] Implement style-aware slide-to-layout selection in `src/ppt_agent/workers/content_mapper.py`
-- [ ] T094 [US3] Implement GPTImage2 adapter converting `slide_contents.json` to batch config in `src/ppt_agent/skills/adapters/gptimage2.py`
-- [ ] T095 [US3] Implement image generation worker invoking existing `.catpaw/skills/gptimage2-generator/scripts/gptimage2_client.py` in `src/ppt_agent/workers/image_generator.py`
-- [ ] T096 [US3] Complete `ppt-image-layer` SKILL instructions for generated/template image layer analysis in `.catpaw/skills/ppt-image-layer/SKILL.md`
-- [ ] T097 [US3] Implement image layer fallback analyzer in `src/ppt_agent/assembly/render_verify.py`
-- [ ] T098 [US3] Add dispatch routes for template retrieval and visual generation in `config/dispatcher.yml`
+- [ ] T095 [US3] Complete `ppt-template-matcher` SKILL instructions for template retrieval and ranking in `.catpaw/skills/ppt-template-matcher/SKILL.md`
+- [ ] T096 [US3] Add template matcher examples in `.catpaw/skills/ppt-template-matcher/examples/template-ranking.example.json`
+- [ ] T097 [US3] Implement template index builder over `templates/index.json` and template `meta.json` files in `src/ppt_agent/retrieval/template_index.py`
+- [ ] T098 [US3] Populate `config/knowledge-bases/templates.yml` with template source, chunking, sparse, vector, fusion, and refresh settings
+- [ ] T099 [US3] Populate `config/knowledge-bases/slide-patterns.yml` with slide-pattern knowledge-base settings
+- [ ] T100 [US3] Populate `config/knowledge-bases/domain-knowledge.yml` with domain-knowledge settings
+- [ ] T101 [US3] Implement template matcher worker using `retrieval/query_router.py` in `src/ppt_agent/workers/template_matcher.py`
+- [ ] T102 [US3] Complete `ppt-design-director` SKILL instructions for theme, layout grammar, visual density, and design scoring in `.catpaw/skills/ppt-design-director/SKILL.md`
+- [ ] T103 [US3] Add design director examples in `.catpaw/skills/ppt-design-director/examples/slide_design_plan.example.json`
+- [ ] T104 [US3] Implement design director worker that writes `slide_design_plan.json` in `src/ppt_agent/workers/design_director.py`
+- [ ] T105 [US3] Implement style-aware slide-to-layout selection using `slide_design_plan.json` in `src/ppt_agent/workers/content_mapper.py`
+- [ ] T106 [US3] Implement GPTImage2 adapter converting `slide_contents.json` to batch config in `src/ppt_agent/skills/adapters/gptimage2.py`
+- [ ] T107 [US3] Implement image generation worker invoking existing `.catpaw/skills/gptimage2-generator/scripts/gptimage2_client.py` in `src/ppt_agent/workers/image_generator.py`
+- [ ] T108 [US3] Complete `ppt-image-layer` SKILL instructions for generated/template image layer analysis in `.catpaw/skills/ppt-image-layer/SKILL.md`
+- [ ] T109 [US3] Implement image layer fallback analyzer in `src/ppt_agent/assembly/render_verify.py`
+- [ ] T110 [US3] Add dispatch routes for template retrieval, design planning, and visual generation in `config/dispatcher.yml`
 
 **Checkpoint**: User Story 3 can match templates through a configurable knowledge base, prepare visuals, call the existing GPTImage2 skill when configured, and fallback when unavailable.
 
@@ -200,18 +215,19 @@
 
 ### Tests for User Story 4
 
-- [ ] T099 [P] [US4] Add contract test for `validation_report.json` including `text_editable` checks in `tests/contract/test_validation_report_contract.py`
-- [ ] T100 [P] [US4] Add integration test for final PPT validation warnings in `tests/integration/test_us4_validation_report.py`
-- [ ] T101 [P] [US4] Add unit test for text preservation and editability comparison in `tests/unit/test_text_preservation_validation.py`
+- [ ] T111 [P] [US4] Add contract test for `validation_report.json` including `text_editable` checks in `tests/contract/test_validation_report_contract.py`
+- [ ] T112 [P] [US4] Add integration test for final PPT validation warnings in `tests/integration/test_us4_validation_report.py`
+- [ ] T113 [P] [US4] Add unit test for text preservation and editability comparison in `tests/unit/test_text_preservation_validation.py`
 
 ### Implementation for User Story 4
 
-- [ ] T102 [US4] Implement PPT render/inspection helper in `src/ppt_agent/assembly/render_verify.py`
-- [ ] T103 [US4] Implement verifier worker checking slide count, content presence, text preservation, text editability, text fit, image fit, and fallback resolution in `src/ppt_agent/workers/ppt_verifier.py`
-- [ ] T104 [US4] Add validation report artifact writing in `src/ppt_agent/models/validation.py`
-- [ ] T105 [US4] Update workflow to run verification as an independent final Worker in `src/ppt_agent/coordinator/workflow.py`
-- [ ] T106 [US4] Add dispatch route for final verification in `config/dispatcher.yml`
-- [ ] T107 [US4] Update `run` CLI to print validation summary and manual review items in `src/ppt_agent/cli.py`
+- [ ] T114 [US4] Implement PPT render/inspection helper in `src/ppt_agent/assembly/render_verify.py`
+- [ ] T115 [US4] Implement verifier worker checking slide count, content presence, text preservation, text editability, text fit, image fit, fallback resolution, and design score in `src/ppt_agent/workers/ppt_verifier.py`
+- [ ] T116 [US4] Add design score and design suggestions to validation report generation in `src/ppt_agent/design/design_scorer.py`
+- [ ] T117 [US4] Add validation report artifact writing in `src/ppt_agent/models/validation.py`
+- [ ] T118 [US4] Update workflow to run verification as an independent final Worker in `src/ppt_agent/coordinator/workflow.py`
+- [ ] T119 [US4] Add dispatch route for final verification in `config/dispatcher.yml`
+- [ ] T120 [US4] Update `run` CLI to print validation summary and manual review items in `src/ppt_agent/cli.py`
 
 **Checkpoint**: User Story 4 produces a useful quality report and does not rely on assembler self-checks.
 
@@ -221,14 +237,14 @@
 
 **Purpose**: Harden the workflow, documentation, examples, and quickstart validation after the user stories work.
 
-- [ ] T108 [P] Add `validate-artifacts` CLI command for schema validation in `src/ppt_agent/cli.py`
-- [ ] T109 [P] Add quickstart fixture validation script in `tests/integration/test_quickstart_scenarios.py`
-- [ ] T110 [P] Document local setup, fixture workflow, and fallback behavior in `README.md`
-- [ ] T111 [P] Add sample template metadata and previews placeholder manifest in `templates/sample/default/meta.json`
-- [ ] T112 Add end-to-end quickstart validation covering all four scenarios from `quickstart.md` in `tests/integration/test_quickstart_scenarios.py`
-- [ ] T113 Add task for checking all JSON schemas are valid with `python3 -m json.tool` in `tests/contract/test_schema_files_parse.py`
-- [ ] T114 Review all new `.catpaw/skills/*/SKILL.md` files for trigger clarity and progressive loading boundaries in `.catpaw/skills/`
-- [ ] T115 Run full local validation command documented in `quickstart.md` and record expected outputs in `README.md`
+- [ ] T121 [P] Add `validate-artifacts` CLI command for schema validation in `src/ppt_agent/cli.py`
+- [ ] T122 [P] Add quickstart fixture validation script in `tests/integration/test_quickstart_scenarios.py`
+- [ ] T123 [P] Document local setup, fixture workflow, and fallback behavior in `README.md`
+- [ ] T124 [P] Add sample template metadata and previews placeholder manifest in `templates/sample/default/meta.json`
+- [ ] T125 Add end-to-end quickstart validation covering all four scenarios from `quickstart.md` in `tests/integration/test_quickstart_scenarios.py`
+- [ ] T126 Add task for checking all JSON schemas are valid with `python3 -m json.tool` in `tests/contract/test_schema_files_parse.py`
+- [ ] T127 Review all new `.catpaw/skills/*/SKILL.md` files for trigger clarity and progressive loading boundaries in `.catpaw/skills/`
+- [ ] T128 Run full local validation command documented in `quickstart.md` and record expected outputs in `README.md`
 
 ---
 
@@ -255,42 +271,43 @@
 
 1. `ppt-outline-generator`
 2. `ppt-template-matcher`
-3. `ppt-content-mapper`
-4. `ppt-assembler`
-5. `ppt-image-layer`
-6. Existing `gptimage2-generator` adapter integration
+3. `ppt-design-director`
+4. `ppt-content-mapper`
+5. `ppt-assembler`
+6. `ppt-image-layer`
+7. Existing `gptimage2-generator` adapter integration
 
 ### Parallel Opportunities
 
 - T003-T009 can run in parallel after T001-T002.
 - T010-T019 can run in parallel by model/contract area.
-- T021-T024 can run in parallel after T020.
-- T033-T044 can run in parallel before T045.
-- T047-T052 can run in parallel.
-- US1 tests T053-T056 can run in parallel before implementation.
-- US3 tests T082-T085 and knowledge-base config tasks T089-T091 can run in parallel.
-- US4 tests T099-T101 can run in parallel.
+- T023-T026 can run in parallel after T022.
+- T035-T046 can run in parallel before T047.
+- T055-T061 can run in parallel.
+- US1 tests T062-T065 can run in parallel before implementation.
+- US3 tests T091-T094 and knowledge-base config tasks T098-T100 can run in parallel.
+- US4 tests T111-T113 can run in parallel.
 
 ---
 
 ## Parallel Example: User Story 1
 
 ```bash
-Task: "T053 Add integration fixture project plan and screenshot in tests/fixtures/sample_project/input/"
-Task: "T054 Add contract test for outline.json generation in tests/contract/test_outline_contract.py"
-Task: "T055 Add contract test for slide_contents.json MVP output in tests/contract/test_slide_contents_contract.py"
-Task: "T058 Implement source material extraction worker in src/ppt_agent/workers/document_analyst.py"
-Task: "T059 Implement source_summary.json artifact writer in src/ppt_agent/models/source_summary.py"
+Task: "T062 Add integration fixture project plan and screenshot in tests/fixtures/sample_project/input/"
+Task: "T063 Add contract test for outline.json generation in tests/contract/test_outline_contract.py"
+Task: "T064 Add contract test for slide_contents.json MVP output in tests/contract/test_slide_contents_contract.py"
+Task: "T067 Implement source material extraction worker in src/ppt_agent/workers/document_analyst.py"
+Task: "T068 Implement source_summary.json artifact writer in src/ppt_agent/models/source_summary.py"
 ```
 
 ## Parallel Example: User Story 3
 
 ```bash
-Task: "T086 Complete ppt-template-matcher SKILL instructions in .catpaw/skills/ppt-template-matcher/SKILL.md"
-Task: "T089 Populate config/knowledge-bases/templates.yml"
-Task: "T090 Populate config/knowledge-bases/slide-patterns.yml"
-Task: "T091 Populate config/knowledge-bases/domain-knowledge.yml"
-Task: "T094 Implement GPTImage2 adapter in src/ppt_agent/skills/adapters/gptimage2.py"
+Task: "T095 Complete ppt-template-matcher SKILL instructions in .catpaw/skills/ppt-template-matcher/SKILL.md"
+Task: "T098 Populate config/knowledge-bases/templates.yml"
+Task: "T099 Populate config/knowledge-bases/slide-patterns.yml"
+Task: "T100 Populate config/knowledge-bases/domain-knowledge.yml"
+Task: "T106 Implement GPTImage2 adapter in src/ppt_agent/skills/adapters/gptimage2.py"
 ```
 
 ---

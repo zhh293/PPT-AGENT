@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "slide-design-plan.schema.json",
+  "title": "SlideDesignPlan",
+  "type": "object",
+  "required": ["theme_profile", "slides"],
+  "properties": {
+    "theme_profile": {
+      "type": "object",
+      "required": ["theme_id", "color_tokens", "typography_tokens", "spacing_tokens"],
+      "properties": {
+        "theme_id": {"type": "string", "minLength": 1},
+        "color_tokens": {"type": "object", "additionalProperties": {"type": "string"}},
+        "typography_tokens": {"type": "object", "additionalProperties": true},
+        "spacing_tokens": {"type": "object", "additionalProperties": true},
+        "shape_tokens": {"type": "object", "additionalProperties": true},
+        "image_treatment": {"type": "object", "additionalProperties": true},
+        "chart_style": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["slide_index", "layout_id", "visual_density", "block_plan", "visual_strategy", "text_budget"],
+        "properties": {
+          "slide_index": {"type": "integer", "minimum": 0},
+          "layout_id": {
+            "type": "string",
+            "enum": [
+              "cover.hero",
+              "section.divider",
+              "content.left-text-right-image",
+              "content.three-cards",
+              "content.metric-grid",
+              "content.timeline",
+              "content.comparison",
+              "content.process-flow",
+              "product.screenshot-callouts",
+              "data.big-number-plus-chart",
+              "fallback.basic"
+            ]
+          },
+          "visual_density": {"type": "string", "enum": ["low", "medium", "high"]},
+          "block_plan": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["block_type"],
+              "properties": {
+                "block_type": {"type": "string"},
+                "purpose": {"type": "string"},
+                "priority": {"type": "string", "enum": ["primary", "secondary", "supporting"], "default": "supporting"}
+              },
+              "additionalProperties": true
+            }
+          },
+          "visual_strategy": {
+            "type": "string",
+            "enum": ["template_only", "user_image", "generated_background", "generated_region", "chart", "placeholder"]
+          },
+          "text_budget": {
+            "type": "object",
+            "properties": {
+              "max_title_chars": {"type": "integer", "minimum": 1},
+              "max_bullets": {"type": "integer", "minimum": 0},
+              "max_lines_per_block": {"type": "integer", "minimum": 1}
+            },
+            "additionalProperties": false
+          },
+          "design_constraints": {"type": "array", "items": {"type": "string"}},
+          "design_warnings": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "global_style_notes": {"type": "array", "items": {"type": "string"}},
+    "design_risks": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

@@ -32,6 +32,7 @@ Expected result:
 
 - `source_summary.json` exists.
 - `outline.json` exists.
+- `slide_design_plan.json` exists.
 - `template_meta.json` exists.
 - `slide_contents.json` exists and is readable/editable.
 
@@ -110,4 +111,4 @@ python -m ppt_agent.cli validate-artifacts \
 
 Expected result:
 
-- `outline.json`, `slide_contents.json`, `template_meta.json`, image generation config/report, and validation report conform to their contracts.
+- `outline.json`, `slide_design_plan.json`, `slide_contents.json`, `template_meta.json`, image generation config/report, and validation report conform to their contracts.

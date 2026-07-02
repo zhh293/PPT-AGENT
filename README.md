@@ -37,6 +37,7 @@ PPT-AGENT 希望把这套流程拆成可控、可审查、可恢复的 Agent 工
 - **大纲生成**：根据行业、受众和项目材料生成 PPT 页面结构。
 - **模板匹配**：从模板库中检索适合的风格、版式和页数。
 - **内容映射**：把大纲内容映射到模板区域，生成可人工审核的 `slide_contents.json`。
+- **设计导演**：在内容映射前选择主题、版式语法、视觉密度和页面表达方式，避免只是“机械填模板”。
 - **图片生成**：复用现有 `gptimage2-generator` skill，为封面、概念图、产品页等生成视觉素材。
 - **PPT 组装**：生成 `.pptx`，并保证用户确认文字可编辑。
 - **输出验证**：检查页数、内容完整性、文字可编辑性、溢出、图片变形和 fallback 情况。
@@ -156,6 +157,40 @@ src/ppt_agent/retrieval/query_router.py
 
 后续新增向量数据库或检索方法时，只需要增加 adapter 和配置，不重写业务 Worker。
 
+## 设计系统
+
+如果要追求精美 PPT，PPT-AGENT 不能只做“模板填充”。计划中会加入一层设计系统：
+
+```text
+src/ppt_agent/design/
+├── theme.py
+├── layout_grammar.py
+├── visual_density.py
+├── design_scorer.py
+└── rewrite_suggestions.py
+```
+
+核心概念：
+
+- **ThemeProfile**：颜色、字体、间距、形状、图表和图片风格 token。
+- **LayoutGrammar**：封面、章节页、三卡片、左右图文、时间线、对比页、流程图、截图标注页、数据洞察页等版式语法。
+- **VisualDensity**：控制每页信息密度，避免文字太满、留白不足。
+- **DesignScorer**：检查视觉层级、对齐、间距、图片一致性和风格统一性。
+
+对应的 skill 是：
+
+```text
+.catpaw/skills/ppt-design-director/
+```
+
+它会在 `outline.json` 和 `template_meta.json` 之后生成：
+
+```text
+slide_design_plan.json
+```
+
+再由 `content_mapper` 根据设计计划生成 `slide_contents.json`。
+
 ## Skills 设计
 
 项目采用渐进式 skill 加载。每个阶段只加载当前需要的 skill，避免上下文膨胀。
@@ -165,6 +200,7 @@ src/ppt_agent/retrieval/query_router.py
 ```text
 .catpaw/skills/ppt-outline-generator/
 .catpaw/skills/ppt-template-matcher/
+.catpaw/skills/ppt-design-director/
 .catpaw/skills/ppt-content-mapper/
 .catpaw/skills/ppt-image-layer/
 .catpaw/skills/ppt-assembler/
@@ -226,6 +262,7 @@ specs/001-ppt-generation-agent/
 ```text
 outline.schema.json
 slide-contents.schema.json
+slide-design-plan.schema.json
 template-meta.schema.json
 image-generation-config.schema.json
 validation-report.schema.json
