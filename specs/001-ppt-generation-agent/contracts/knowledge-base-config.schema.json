@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "knowledge-base-config.schema.json",
+  "title": "KnowledgeBaseConfig",
+  "type": "object",
+  "required": ["name", "sources", "chunking", "retrieval"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "enum": ["markdown", "json", "ppt-template-meta", "image-captions", "plain-text"]},
+          "include": {"type": "array", "items": {"type": "string"}},
+          "exclude": {"type": "array", "items": {"type": "string"}},
+          "metadata": {"type": "object", "additionalProperties": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "chunking": {
+      "type": "object",
+      "required": ["strategy"],
+      "properties": {
+        "strategy": {"type": "string", "enum": ["markdown-heading", "json-object", "template-slide", "recursive-text"]},
+        "max_tokens": {"type": "integer", "minimum": 100},
+        "overlap_tokens": {"type": "integer", "minimum": 0},
+        "contextual_enrichment": {"type": "boolean", "default": true}
+      },
+      "additionalProperties": false
+    },
+    "embedding": {
+      "type": "object",
+      "properties": {
+        "provider": {"type": "string"},
+        "model": {"type": "string"},
+        "dimension": {"type": "integer", "minimum": 1},
+        "batch_size": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": true
+    },
+    "retrieval": {
+      "type": "object",
+      "required": ["methods"],
+      "properties": {
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "enum": ["bm25", "vector", "metadata-filter", "rerank"]}
+        },
+        "sparse": {
+          "type": "object",
+          "properties": {
+            "backend": {"type": "string", "enum": ["local-bm25"]},
+            "top_k": {"type": "integer", "minimum": 1}
+          },
+          "additionalProperties": true
+        },
+        "vector": {
+          "type": "object",
+          "properties": {
+            "backend": {"type": "string", "enum": ["local", "qdrant", "milvus", "pgvector"]},
+            "collection": {"type": "string"},
+            "top_k": {"type": "integer", "minimum": 1},
+            "connection": {"type": "object", "additionalProperties": true}
+          },
+          "additionalProperties": true
+        },
+        "fusion": {
+          "type": "object",
+          "properties": {
+            "method": {"type": "string", "enum": ["rrf", "weighted-score"]},
+            "rrf_k": {"type": "integer", "minimum": 1}
+          },
+          "additionalProperties": true
+        },
+        "reranker": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "provider": {"type": "string"},
+            "top_k": {"type": "integer", "minimum": 1}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "refresh": {
+      "type": "object",
+      "properties": {
+        "mode": {"type": "string", "enum": ["manual", "on_startup", "watch"]},
+        "rebuild_on_schema_change": {"type": "boolean", "default": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

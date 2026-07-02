@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workflow-events.schema.json",
+  "title": "WorkflowEvent",
+  "type": "object",
+  "required": ["event_id", "job_id", "phase", "type", "timestamp"],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "job_id": {"type": "string", "minLength": 1},
+    "phase": {
+      "type": "string",
+      "enum": ["document_analysis", "outline_generation", "template_matching", "content_mapping", "visual_generation", "ppt_assembly", "verification"]
+    },
+    "agent": {"type": "string"},
+    "type": {"type": "string", "enum": ["started", "progress", "artifact_created", "warning", "failed", "completed", "user_input_required"]},
+    "timestamp": {"type": "string"},
+    "message": {"type": "string"},
+    "artifact_path": {"type": "string"},
+    "metadata": {"type": "object", "additionalProperties": true}
+  },
+  "additionalProperties": false
+}

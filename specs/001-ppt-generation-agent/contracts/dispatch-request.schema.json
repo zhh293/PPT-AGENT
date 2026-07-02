@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dispatch-request.schema.json",
+  "title": "DispatchRequest",
+  "type": "object",
+  "required": ["job_id", "phase", "capability", "inputs"],
+  "properties": {
+    "job_id": {"type": "string", "minLength": 1},
+    "phase": {
+      "type": "string",
+      "enum": ["document_analysis", "outline_generation", "template_matching", "content_mapping", "visual_generation", "ppt_assembly", "verification"]
+    },
+    "capability": {"type": "string", "minLength": 1},
+    "inputs": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "object", "additionalProperties": true},
+    "user_decisions": {"type": "object", "additionalProperties": true},
+    "context_policy": {
+      "type": "object",
+      "properties": {
+        "compression_level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "exact_artifacts": {"type": "array", "items": {"type": "string"}},
+        "summary_artifacts": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

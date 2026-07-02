@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "outline.schema.json",
+  "title": "PresentationOutline",
+  "type": "object",
+  "required": ["meta", "slides"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["project_name", "domain", "audience", "tone", "total_slides"],
+      "properties": {
+        "project_name": {"type": "string", "minLength": 1},
+        "domain": {"type": "string", "minLength": 1},
+        "audience": {"type": "string", "minLength": 1},
+        "tone": {"type": "string", "minLength": 1},
+        "color_preference": {"type": "string"},
+        "total_slides": {"type": "integer", "minimum": 1},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "needs_user_review": {"type": "boolean", "default": true}
+      },
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["slide_index", "type", "title", "purpose", "image_needs"],
+        "properties": {
+          "slide_index": {"type": "integer", "minimum": 0},
+          "type": {
+            "type": "string",
+            "enum": ["cover", "background", "problem", "solution", "product", "market", "evidence", "team", "roadmap", "closing", "other"]
+          },
+          "title": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "bullets": {"type": "array", "items": {"type": "string"}},
+          "source_refs": {"type": "array", "items": {"type": "string"}},
+          "image_needs": {"type": "string"},
+          "priority": {"type": "string", "enum": ["required", "recommended", "optional"], "default": "recommended"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

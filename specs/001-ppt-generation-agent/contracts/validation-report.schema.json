@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "validation-report.schema.json",
+  "title": "ValidationReport",
+  "type": "object",
+  "required": ["job_id", "status", "summary", "slide_results"],
+  "properties": {
+    "job_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["passed", "passed_with_warnings", "failed"]},
+    "checked_at": {"type": "string"},
+    "summary": {"type": "string"},
+    "manual_review_items": {"type": "array", "items": {"type": "string"}},
+    "slide_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slide_index", "status", "checks"],
+        "properties": {
+          "slide_index": {"type": "integer", "minimum": 0},
+          "status": {"type": "string", "enum": ["passed", "warning", "failed"]},
+          "checks": {
+            "type": "object",
+            "required": ["content_present", "text_preserved", "text_editable", "text_fit", "image_fit", "fallback_resolved"],
+            "properties": {
+              "content_present": {"type": "boolean"},
+              "text_preserved": {"type": "boolean"},
+              "text_editable": {"type": "boolean"},
+              "text_fit": {"type": "boolean"},
+              "image_fit": {"type": "boolean"},
+              "fallback_resolved": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          },
+          "issues": {"type": "array", "items": {"type": "string"}},
+          "recommended_action": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-generation-config.schema.json",
+  "title": "ImageGenerationBatchConfig",
+  "type": "object",
+  "required": ["slides"],
+  "properties": {
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "prompt", "aspect_ratio", "resolution"],
+        "properties": {
+          "index": {"type": "integer", "minimum": 0},
+          "mode": {"type": "string", "enum": ["whole_slide", "region"], "default": "region"},
+          "prompt": {"type": "string", "minLength": 1},
+          "aspect_ratio": {"type": "string", "enum": ["auto", "1:1", "9:16", "16:9", "4:3", "3:4"]},
+          "resolution": {"type": "string", "enum": ["1K", "2K", "4K"]},
+          "reference_image": {"type": "string"},
+          "output_name": {"type": "string"},
+          "fallback": {"type": "string", "enum": ["template", "user_image", "placeholder", "skip"], "default": "placeholder"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
