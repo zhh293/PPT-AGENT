@@ -1,0 +1,13 @@
+{
+  "template_id": "fallback.default",
+  "review_status": "draft",
+  "slides": [
+    {
+      "slide_index": 0,
+      "layout": "cover.hero",
+      "zones": [
+        {"zone_id": "title", "type": "title", "position": [0.08, 0.08, 0.84, 0.16], "content": "Project", "editable": true}
+      ]
+    }
+  ]
+}

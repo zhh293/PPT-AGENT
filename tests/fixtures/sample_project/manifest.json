@@ -1,0 +1,5 @@
+{
+  "name": "sample_project",
+  "description": "Fixture project used by PPT Generation Agent tests.",
+  "inputs": ["input/project_plan.md"]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-summary.schema.json",
+  "title": "SourceSummary",
+  "type": "object",
+  "required": ["project_name", "domain", "target_audience", "tone", "value_proposition", "product_capabilities", "evidence_items", "image_inventory", "unsupported_claims", "confidence"],
+  "properties": {
+    "project_name": {"type": "string", "minLength": 1},
+    "domain": {"type": "string", "minLength": 1},
+    "target_audience": {"type": "string", "minLength": 1},
+    "tone": {"type": "string", "minLength": 1},
+    "value_proposition": {"type": "string"},
+    "product_capabilities": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "evidence_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "summary", "source_refs"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "summary": {"type": "string", "minLength": 1},
+          "source_refs": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "image_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["image_id", "path", "detected_usage"],
+        "properties": {
+          "image_id": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "detected_usage": {"type": "string", "enum": ["screenshot", "certificate", "logo", "reference_image", "unknown"]},
+          "summary": {"type": "string"},
+          "relevance": {"type": "string", "enum": ["primary", "supporting", "low", "ignored"], "default": "supporting"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unsupported_claims": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  },
+  "additionalProperties": false
+}

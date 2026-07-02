@@ -1,0 +1,4 @@
+{
+  "theme_profile": {"theme_id": "fallback.professional", "color_tokens": {}, "typography_tokens": {}, "spacing_tokens": {}},
+  "slides": [{"slide_index": 0, "layout_id": "cover.hero", "visual_density": "low", "block_plan": [{"block_type": "title"}], "visual_strategy": "placeholder", "text_budget": {"max_title_chars": 70, "max_bullets": 3, "max_lines_per_block": 6}}]
+}

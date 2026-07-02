@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "selected-template.schema.json",
+  "title": "SelectedTemplate",
+  "type": "object",
+  "required": ["template_id", "selection_status", "score", "ranking"],
+  "properties": {
+    "template_id": {"type": "string", "minLength": 1},
+    "selection_status": {"type": "string", "enum": ["matched", "fallback"]},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "reason": {"type": "string"},
+    "fallback_reason": {"type": "string"},
+    "ranking": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["template_id", "score", "rank"],
+        "properties": {
+          "template_id": {"type": "string", "minLength": 1},
+          "score": {"type": "number", "minimum": 0, "maximum": 1},
+          "rank": {"type": "integer", "minimum": 1},
+          "domain_fit": {"type": "number", "minimum": 0, "maximum": 1},
+          "layout_fit": {"type": "number", "minimum": 0, "maximum": 1},
+          "tone_fit": {"type": "number", "minimum": 0, "maximum": 1},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

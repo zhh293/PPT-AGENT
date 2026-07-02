@@ -32,8 +32,9 @@ Expected result:
 
 - `source_summary.json` exists.
 - `outline.json` exists.
-- `slide_design_plan.json` exists.
-- `template_meta.json` exists.
+- `selected_template.json` exists. In MVP fallback mode this may identify the default template.
+- `template_meta.json` exists. In MVP fallback mode this may describe the default template.
+- `slide_design_plan.json` exists. In MVP fallback mode this may use `fallback.basic` layouts.
 - `slide_contents.json` exists and is readable/editable.
 
 ```bash
@@ -55,6 +56,7 @@ python -m ppt_agent.cli run \
 Expected result:
 
 - `generated_slides/` contains generated or fallback visuals.
+- `image_generation_report.json` exists and records generated, skipped, or fallback visuals.
 - `final.pptx` exists.
 - `validation_report.json` exists.
 
@@ -111,4 +113,4 @@ python -m ppt_agent.cli validate-artifacts \
 
 Expected result:
 
-- `outline.json`, `slide_design_plan.json`, `slide_contents.json`, `template_meta.json`, image generation config/report, and validation report conform to their contracts.
+- `source_summary.json`, `outline.json`, `selected_template.json`, `slide_design_plan.json`, `slide_contents.json`, `template_meta.json`, `image_generation_config.json`, `image_generation_report.json`, and `validation_report.json` conform to their contracts.

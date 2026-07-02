@@ -393,3 +393,30 @@ workspace/jobs/sample-project/validation_report.json
 ## 许可证
 
 当前尚未声明许可证。
+# PPT Generation Agent
+
+This repository now contains a file-system-first MVP for the Spec Kit feature
+`001-ppt-generation-agent`.
+
+## Local Workflow
+
+```bash
+PYTHONPATH=src python3 -m ppt_agent.cli create-job \
+  --input tests/fixtures/sample_project/input \
+  --output workspace/jobs/sample-project
+
+PYTHONPATH=src python3 -m ppt_agent.cli run \
+  --job workspace/jobs/sample-project \
+  --until content-review
+
+PYTHONPATH=src python3 -m ppt_agent.cli approve \
+  --job workspace/jobs/sample-project
+
+PYTHONPATH=src python3 -m ppt_agent.cli run \
+  --job workspace/jobs/sample-project \
+  --from visual-generation
+```
+
+The MVP writes inspectable JSON artifacts, uses fallback template metadata, and
+creates `final.pptx` with editable DrawingML text. Visual generation currently
+falls back to placeholders unless a future GPTImage2 integration is configured.

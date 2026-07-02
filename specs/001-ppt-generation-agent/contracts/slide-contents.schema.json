@@ -6,7 +6,7 @@
   "required": ["template_id", "slides"],
   "properties": {
     "template_id": {"type": "string", "minLength": 1},
-    "review_status": {"type": "string", "enum": ["draft", "approved", "needs_review"], "default": "draft"},
+    "review_status": {"type": "string", "enum": ["draft", "edited", "approved", "needs_review"], "default": "draft"},
     "slides": {
       "type": "array",
       "minItems": 1,

@@ -1,0 +1,18 @@
+name: slide-patterns
+description: Reusable slide pattern descriptions for layout selection.
+sources:
+  - path: specs/001-ppt-generation-agent/data-model.md
+    type: markdown
+chunking:
+  strategy: markdown-heading
+  max_tokens: 800
+  overlap_tokens: 80
+  contextual_enrichment: true
+retrieval:
+  methods: [bm25]
+  sparse:
+    backend: local-bm25
+    top_k: 5
+refresh:
+  mode: manual
+  rebuild_on_schema_change: true

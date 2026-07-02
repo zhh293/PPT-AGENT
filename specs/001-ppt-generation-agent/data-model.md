@@ -98,6 +98,25 @@ Represents a reusable template and its matching metadata.
 - `layouts`: Ordered list of `TemplateSlideLayout`.
 - `retrieval_text`
 
+## SelectedTemplate
+
+Represents the template choice and ranking evidence for a job.
+
+**Fields**:
+
+- `template_id`
+- `selection_status`: `matched`, `fallback`.
+- `score`
+- `reason`
+- `fallback_reason`
+- `ranking`: Ordered list of candidate template scores.
+- `warnings`
+
+**Validation rules**:
+
+- Fallback selections must include `fallback_reason`.
+- Ranking entries must preserve deterministic rank order for replay and debugging.
+
 ## TemplateSlideLayout
 
 Represents layout zones for one template page.
@@ -200,6 +219,8 @@ Represents user-reviewable content mapped to one slide.
 - `draft` -> `needs_review`
 - `needs_review` -> `edited` -> `approved`
 
+At the deck level, `review_status` is an aggregate status. It may be `edited` when any slide has been changed but the deck is not fully approved yet.
+
 ## SlideZoneContent
 
 Represents content for a template zone.
@@ -243,6 +264,26 @@ Represents one requested visual generation task.
 
 - `whole_slide` jobs should not be the only source of editable text.
 - Failed jobs must set a fallback or manual-review flag.
+
+## ImageGenerationReport
+
+Represents the visual generation outcome for the full job.
+
+**Fields**:
+
+- `job_id`
+- `status`: `succeeded`, `succeeded_with_fallbacks`, `failed`.
+- `started_at`
+- `finished_at`
+- `summary`
+- `provider`
+- `slide_results`: Ordered list of per-slide visual generation outcomes.
+- `warnings`
+
+**Validation rules**:
+
+- Any failed or skipped slide that still contributes to assembly must record a fallback.
+- Slides with generated visual failures should set manual review when the fallback may affect quality.
 
 ## PresentationArtifact
 

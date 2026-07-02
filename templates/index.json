@@ -1,0 +1,11 @@
+{
+  "templates": [
+    {
+      "template_id": "fallback.default",
+      "path": "templates/sample/default",
+      "domain_tags": ["general", "business", "software"],
+      "tone_tags": ["professional", "clear"],
+      "retrieval_text": "general professional business project report fallback template"
+    }
+  ]
+}

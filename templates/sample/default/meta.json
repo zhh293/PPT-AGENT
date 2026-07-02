@@ -1,0 +1,28 @@
+{
+  "template_id": "fallback.default",
+  "style": "Clean professional fallback template",
+  "slide_count": 8,
+  "domain_tags": ["general", "business", "software"],
+  "audience_tags": ["stakeholders"],
+  "tone_tags": ["professional"],
+  "color_scheme": {
+    "primary": "#1F4E79",
+    "secondary": "#70AD47",
+    "accent": "#F4B183",
+    "background": "#FFFFFF"
+  },
+  "preview_paths": [],
+  "retrieval_text": "general professional business project report fallback template",
+  "slides": [
+    {
+      "index": 0,
+      "layout": "cover.hero",
+      "visual_density": "low",
+      "supports_generated_background": false,
+      "zones": [
+        {"zone_id": "title", "type": "title", "position": [0.08, 0.08, 0.84, 0.16], "font_size": 36},
+        {"zone_id": "bullets", "type": "bullets", "position": [0.10, 0.30, 0.56, 0.50], "font_size": 20}
+      ]
+    }
+  ]
+}

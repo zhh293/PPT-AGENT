@@ -1,0 +1,47 @@
+routes:
+  document_analysis:
+    worker: ppt_agent.workers.document_analyst:run
+    permission_profile: workspace-write
+    expected_outputs: [source_summary.json]
+  outline_generation:
+    worker: ppt_agent.workers.outline_generator:run
+    skill: ppt-outline-generator
+    permission_profile: workspace-write
+    expected_outputs: [outline.json]
+  template_matching:
+    worker: ppt_agent.workers.template_matcher:run
+    skill: ppt-template-matcher
+    knowledge_base: templates
+    permission_profile: workspace-write
+    expected_outputs: [selected_template.json, template_meta.json]
+  design_planning:
+    worker: ppt_agent.workers.design_director:run
+    skill: ppt-design-director
+    permission_profile: workspace-write
+    expected_outputs: [slide_design_plan.json]
+  content_mapping:
+    worker: ppt_agent.workers.content_mapper:run
+    skill: ppt-content-mapper
+    permission_profile: workspace-write
+    expected_outputs: [slide_contents.json]
+  content_approval:
+    worker: ppt_agent.cli:cmd_approve
+    permission_profile: workspace-write
+    expected_outputs: [slide_contents.json]
+  visual_generation:
+    worker: ppt_agent.workers.image_generator:run
+    skill: ppt-image-layer
+    permission_profile: workspace-write
+    retry_policy:
+      max_attempts: 1
+      fallback_capability: visual_placeholder
+    expected_outputs: [image_generation_report.json]
+  ppt_assembly:
+    worker: ppt_agent.workers.ppt_assembler:run
+    skill: ppt-assembler
+    permission_profile: workspace-write
+    expected_outputs: [final.pptx]
+  verification:
+    worker: ppt_agent.workers.ppt_verifier:run
+    permission_profile: workspace-write
+    expected_outputs: [validation_report.json]

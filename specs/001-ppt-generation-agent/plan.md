@@ -54,9 +54,12 @@ specs/001-ppt-generation-agent/
 ├── quickstart.md
 ├── contracts/
 │   ├── outline.schema.json
+│   ├── source-summary.schema.json
 │   ├── slide-contents.schema.json
 │   ├── template-meta.schema.json
+│   ├── selected-template.schema.json
 │   ├── image-generation-config.schema.json
+│   ├── image-generation-report.schema.json
 │   ├── validation-report.schema.json
 │   ├── slide-design-plan.schema.json
 │   ├── workflow-events.schema.json
@@ -80,12 +83,31 @@ src/
 │   ├── context/
 │   │   ├── memory_layers.py
 │   │   ├── compression.py
-│   │   └── session_summary.py
+│   │   ├── session_summary.py
+│   │   └── dream.py
+│   ├── runtime/
+│   │   ├── task_types.py
+│   │   ├── task_manager.py
+│   │   ├── coordinator_tools.py
+│   │   ├── mailbox.py
+│   │   └── agent_context.py
 │   ├── skills/
 │   │   ├── registry.py
 │   │   ├── loader.py
 │   │   └── adapters/
 │   │       └── gptimage2.py
+│   ├── tools/
+│   │   ├── registry.py
+│   │   ├── permissions.py
+│   │   ├── execution.py
+│   │   ├── filesystem.py
+│   │   ├── artifacts.py
+│   │   ├── documents.py
+│   │   ├── ocr.py
+│   │   ├── skill_script.py
+│   │   ├── image_generation.py
+│   │   ├── ppt.py
+│   │   └── verification.py
 │   ├── workers/
 │   │   ├── document_analyst.py
 │   │   ├── outline_generator.py
@@ -116,9 +138,12 @@ src/
 │   │       └── base.py
 │   ├── models/
 │   │   ├── artifacts.py
+│   │   ├── source_summary.py
 │   │   ├── outline.py
 │   │   ├── slide_contents.py
 │   │   ├── template_meta.py
+│   │   ├── selected_template.py
+│   │   ├── image_generation.py
 │   │   ├── design_plan.py
 │   │   └── validation.py
 │   ├── design/
@@ -142,11 +167,15 @@ workspace/
 └── jobs/
     └── <job-id>/
         ├── input/
+        ├── source_summary.json
         ├── outline.json
+        ├── selected_template.json
         ├── slide_design_plan.json
         ├── template_meta.json
         ├── slide_contents.json
         ├── generated_slides/
+        ├── image_generation_config.json
+        ├── image_generation_report.json
         ├── layer_analysis/
         ├── final.pptx
         └── validation_report.json
@@ -209,10 +238,144 @@ capability: visual.generate
   worker: image_generator
   skill: gptimage2-generator
   inputs: image_generation_config.json
-  outputs: generated_slides/, batch_report.json
+  outputs: generated_slides/, image_generation_report.json
 ```
 
 `config/dispatcher.yml` owns routing rules so new Workers or skills can be added without rewriting Coordinator flow logic.
+
+### Agent Runtime Model
+
+The PPT Agent uses the agent runtime patterns from `AGENT_ARCHITECTURE.md` but keeps v1 CLI-first and file-system-first. Runtime features exist to make execution auditable, resumable, and isolated; they are not a requirement to build a web UI or heavyweight workflow engine in v1.
+
+#### Task Types
+
+Runtime work is represented as typed tasks so the Coordinator can distinguish quick in-process phase work from long-running or isolated execution. v1 must model all architecture task types even if only a subset is fully implemented.
+
+| TaskType | ID Prefix | v1 PPT Usage | Execution Policy |
+|----------|-----------|--------------|------------------|
+| `local_bash` | `b-` | Optional long-running validation/render commands | Spawned process with event logging and timeout |
+| `local_agent` | `a-` | Phase-specific Worker agent for analysis, mapping, verification | Logical worker with isolated context bundle |
+| `remote_agent` | `r-` | Out of scope for normal CLI flow; reserved for heavy isolated jobs | Must be disabled unless configured |
+| `in_process_teammate` | `t-` | Optional future collaboration mode | Uses `agent_context.py` attribution when enabled |
+| `local_workflow` | `w-` | Main PPT generation workflow | Deterministic state machine in `workflow.py` |
+| `monitor_mcp` | `m-` | Optional future monitoring for external services | Disabled in v1 unless MCP support is configured |
+| `dream` | `d-` | Session-end memory consolidation | Background low-priority task with relevance gate |
+
+`task_manager.py` assigns IDs, tracks status, records parent/child relationships, emits lifecycle events, and persists task summaries to `history.jsonl`. Tasks do not share mutable state; they communicate through artifacts, event records, or mailbox messages.
+
+#### Coordinator Tool Allowlist
+
+Coordinator tool access is intentionally narrow. It may use exactly four orchestration tools:
+
+- `AgentTool`: start a Worker task with a bounded context bundle and declared outputs.
+- `TaskStopTool`: stop or cancel an active task.
+- `SendMessageTool`: send a message to an active Worker through the mailbox.
+- `SyntheticOutput`: compose final user-facing output from completed task summaries and artifacts.
+
+The Coordinator must not receive filesystem, execution, network, retrieval, image, PPT, or validation tools. Permission tests must reject any Coordinator attempt to use tools outside this allowlist.
+
+#### File-Based Mailbox
+
+Workers and long-running tasks communicate through a file-backed mailbox instead of shared mutable state. Mailboxes live inside the job workspace:
+
+```text
+workspace/jobs/<job-id>/mailbox/
+├── coordinator.jsonl
+├── document_analyst.jsonl
+├── image_generator.jsonl
+└── ppt_verifier.jsonl
+```
+
+Each mailbox line is an append-only JSON message with sender, recipient, timestamp, task id, summary, full text, read status, and optional artifact references. Writes must use file locking plus atomic append where available. Message frequency is expected to be low; debuggability and crash recovery matter more than high throughput.
+
+#### Agent Context Attribution
+
+`agent_context.py` provides Python `contextvars`-based attribution for all task execution, tool calls, event emission, and artifact writes. Every runtime action records:
+
+- agent id and agent name.
+- task id and task type.
+- parent task id when present.
+- current job id.
+- invoking request id or dispatch id when available.
+
+This replaces shared global state and keeps concurrent Worker activity attributable in logs, events, and validation reports.
+
+#### Dream Memory Consolidation
+
+`dream.py` implements the session-end memory consolidation task. It reads `history.jsonl`, `session.md`, task summaries, and final validation results after the workflow completes. It applies a relevance gate before appending to `memory.md`.
+
+The dream task may persist:
+
+- durable user preferences about PPT style, review workflow, or output conventions.
+- recurring failure patterns and their mitigations.
+- stable project conventions that affect future jobs.
+- reusable template or skill tuning notes.
+
+It must not persist transient source content, sensitive project facts, generated slide text, or one-off errors unless explicitly marked reusable. Dream writes are append-only and must record their source task id.
+
+### Tool Execution Model
+
+The PPT Agent needs a real execution layer for file creation, artifact persistence, document parsing, OCR, retrieval, image generation, PPT writing, and verification. These actions must not be treated as prompt-only behavior. A model may request or plan an action, but a Worker or host runtime must execute it through a registered tool.
+
+The architecture follows `AGENT_ARCHITECTURE.md`:
+
+- Coordinator is a pure orchestrator. It may dispatch work, stop work, send messages, and synthesize results, but it must not directly read files, write files, execute shell commands, call network APIs, or search knowledge bases.
+- Dispatcher returns the selected Worker plus an explicit `allowed_tools` set, permission profile, sandbox constraints, timeout/retry policy, and expected output contracts.
+- Workers call tools through a Tool Registry. Workers must not bypass the registry to perform filesystem, process, network, or external-service actions.
+- Function calling is an optional transport. If the runtime supports model tool calls, they are routed through the same Tool Registry. If it does not, the Python Worker/CLI executes deterministic tool calls from structured Worker decisions.
+- Every tool invocation emits `tool_call_start`, `tool_result`, and `error` events and appends auditable records to `history.jsonl`.
+- Tool results may be summarized for context compression, but active tool results, error records, and user-approved artifacts are preserved according to the compression invariants.
+
+Tool categories and v1 responsibilities:
+
+```text
+filesystem
+  FileSystemTool: create job directories, copy inputs, read/write files, atomic writes.
+
+artifact
+  JsonArtifactTool: validate JSON against contracts, version artifacts, write history entries.
+
+document
+  DocumentExtractionTool: extract text, images, metadata, and warnings from project materials.
+  OCRTool: extract text from screenshots, certificates, scanned pages, and image-heavy inputs.
+
+retrieval
+  RetrievalTool: call query_router.py for sparse/vector/fusion/rerank retrieval.
+
+skill
+  SkillScriptTool: execute deterministic scripts under .catpaw/skills/<skill-name>/scripts/
+  after skill loading, permission checks, and sandbox path validation.
+
+visual
+  ImageGenerationTool: adapt approved slide needs to gptimage2-generator batch execution,
+  including fallback when accounts, network, or generation results are unavailable.
+
+ppt
+  PPTAssemblyTool: write final.pptx with editable text objects and placed visuals.
+
+verification
+  RenderVerifyTool: render/inspect PPT output, compare approved text, detect layout/image issues.
+```
+
+Permission model:
+
+- `coordinator`: orchestration only; no filesystem, execution, network, retrieval, or PPT tools.
+- `document_analyst`: read job inputs, write `source_summary.json`, use document/OCR tools.
+- `outline_generator`: read source summary, write `outline.json`, use skill and artifact tools.
+- `template_matcher`: read outline/template index, use retrieval tools, write selected template artifacts.
+- `design_director` and `content_mapper`: read approved upstream artifacts, write design/content artifacts, use skill and artifact tools.
+- `image_generator`: read approved slide contents, use visual tools, write generated images and reports; network access is optional and gated.
+- `ppt_assembler`: read approved content and visual artifacts, use PPT/filesystem tools, write `final.pptx`.
+- `ppt_verifier`: read final deck and approved artifacts, use verification tools, write `validation_report.json`.
+
+Sandbox rules:
+
+- Job workspace is mounted read-write; skill directories and templates are read-only unless a task explicitly creates or updates skill/template files.
+- Tool paths must be resolved and checked before execution to prevent writes outside the job workspace except declared output roots.
+- Destructive filesystem actions are out of scope for v1 except replacing generated artifacts by atomic write.
+- External network use is limited to optional visual generation and configured vector/database services; fallback mode must not require network.
+
+This means file creation is handled by `FileSystemTool`/`JsonArtifactTool` under Worker control, not by the Coordinator and not by unverified model text.
 
 ### Coordinator-Worker Flow
 

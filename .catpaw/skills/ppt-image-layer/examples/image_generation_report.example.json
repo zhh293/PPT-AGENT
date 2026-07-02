@@ -1,0 +1,5 @@
+{
+  "job_id": "sample",
+  "status": "succeeded_with_fallbacks",
+  "slide_results": [{"slide_index": 0, "status": "fallback_used", "mode": "region", "fallback": "placeholder"}]
+}

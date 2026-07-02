@@ -1,0 +1,6 @@
+{
+  "template_id": "fallback.default",
+  "selection_status": "fallback",
+  "score": 0.5,
+  "ranking": [{"template_id": "fallback.default", "score": 0.5, "rank": 1}]
+}

@@ -1,0 +1,10 @@
+from __future__ import annotations
+
+from ppt_agent.retrieval.vector.local import LocalVectorBackend
+
+
+class PgVectorBackend(LocalVectorBackend):
+    def __init__(self, config: dict) -> None:
+        if not config.get("collection"):
+            raise ValueError("pgvector config requires collection")
+        super().__init__([])

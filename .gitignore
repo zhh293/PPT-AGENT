@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+dist/
+*.egg-info/
+*.log
+.env*
+.DS_Store
+Thumbs.db
+workspace/jobs/*
+!workspace/jobs/.gitkeep

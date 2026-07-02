@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-generation-report.schema.json",
+  "title": "ImageGenerationReport",
+  "type": "object",
+  "required": ["job_id", "status", "slide_results"],
+  "properties": {
+    "job_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["succeeded", "succeeded_with_fallbacks", "failed"]},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"},
+    "summary": {"type": "string"},
+    "provider": {"type": "string"},
+    "slide_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slide_index", "status", "mode"],
+        "properties": {
+          "slide_index": {"type": "integer", "minimum": 0},
+          "mode": {"type": "string", "enum": ["whole_slide", "region"]},
+          "status": {"type": "string", "enum": ["succeeded", "failed", "skipped", "fallback_used"]},
+          "output_path": {"type": "string"},
+          "fallback": {"type": "string", "enum": ["template", "user_image", "placeholder", "skip"]},
+          "error": {"type": "string"},
+          "manual_review": {"type": "boolean", "default": false}
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
