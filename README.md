@@ -1,200 +1,166 @@
 # PPT-AGENT
 
-PPT-AGENT 是一个面向“项目材料自动生成可编辑 PPT”的 Agent 工作流项目。它的目标是把项目计划书、软著证书、产品截图、Logo 和其他辅助图片，转换成一份结构完整、视觉合适、文字可编辑的 PowerPoint 文件。
+PPT-AGENT 是一个“项目材料 → 可编辑 PPT”的智能生成系统。它面向路演、比赛、项目汇报、产品介绍等场景，目标是把项目计划书、软著证书、产品截图、Logo、业务图片等材料，自动整理成一份结构清晰、视觉统一、内容可编辑的 PowerPoint 文件。
 
-项目当前处于 SDD / Spec Kit 设计阶段。仓库里已经包含架构文档、功能规格、实施计划、数据模型、接口合约、Quickstart 验证说明和任务拆解，后续可以按 `tasks.md` 逐步进入工程实现。
+> 当前状态：项目处于 SDD / Spec Kit 设计阶段，已完成架构设计、功能规格、实施计划、数据合约和任务拆解；核心工程代码尚未开始实现。
 
-## 项目目标
+## 解决什么问题
 
-系统需要接收用户提供的项目材料，并通过阶段化流程产出 `.pptx` 文件：
+传统做 PPT 的流程通常是：
 
-1. 分析项目文档和图片。
-2. 生成 PPT 大纲。
-3. 匹配合适的 PPT 模板。
-4. 将确认后的内容映射到模板版式中。
-5. 生成或分配视觉素材。
-6. 组装成可编辑的 PowerPoint。
-7. 校验最终输出，并报告需要人工复查的问题。
+1. 人工阅读项目计划书。
+2. 手动提炼大纲。
+3. 找模板。
+4. 一页页复制文字和截图。
+5. 补配图、调排版。
+6. 最后检查有没有错字、溢出、图片变形。
 
-最核心的要求不是“生成一张 PPT 图片”，而是：用户确认过的标题、副标题和正文 bullet 必须在最终 PPT 中保持可编辑。
+PPT-AGENT 希望把这套流程拆成可控、可审查、可恢复的 Agent 工作流：
 
-## 当前状态
+```text
+项目材料
+  -> 文档分析
+  -> 大纲生成
+  -> 模板匹配
+  -> 内容映射
+  -> 图片生成/分配
+  -> PPT 组装
+  -> 输出验证
+  -> final.pptx
+```
 
-当前仓库包含：
+系统不是简单生成一张 PPT 图片，而是生成真正可编辑的 `.pptx`。用户确认过的标题、正文和 bullet 必须保留为 PowerPoint 文本对象。
 
-- 通用 Agent Runtime 架构：[AGENT_ARCHITECTURE.md](./AGENT_ARCHITECTURE.md)
-- PPT Agent 架构设计：[PPT-Agent-架构设计.md](./PPT-Agent-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md)
-- GPTImage2 API 分析文档：[gptimage2-API文档.md](./gptimage2-API%E6%96%87%E6%A1%A3.md)
-- Spec Kit / SDD 文档：[specs/001-ppt-generation-agent/](./specs/001-ppt-generation-agent/)
-- 已有 GPTImage2 生图 skill：[.catpaw/skills/gptimage2-generator/](./.catpaw/skills/gptimage2-generator/)
+## 核心功能规划
 
-目前还没有创建 `src/ppt_agent/` 下的正式实现代码。下一步应按照 [tasks.md](./specs/001-ppt-generation-agent/tasks.md) 开始实现。
+- **材料解析**：读取项目计划书、截图、证书、Logo 等输入材料，提取项目名称、产品能力、关键证据、业务卖点和图片清单。
+- **大纲生成**：根据行业、受众和项目材料生成 PPT 页面结构。
+- **模板匹配**：从模板库中检索适合的风格、版式和页数。
+- **内容映射**：把大纲内容映射到模板区域，生成可人工审核的 `slide_contents.json`。
+- **图片生成**：复用现有 `gptimage2-generator` skill，为封面、概念图、产品页等生成视觉素材。
+- **PPT 组装**：生成 `.pptx`，并保证用户确认文字可编辑。
+- **输出验证**：检查页数、内容完整性、文字可编辑性、溢出、图片变形和 fallback 情况。
+- **可扩展知识库**：支持模板知识库、页面结构知识库、行业知识库，并预留 Qdrant / Milvus / pgvector 等向量数据库适配。
 
-## 架构概览
+## 当前仓库包含什么
 
-计划中的运行时采用 Coordinator-Worker 架构。
+```text
+.
+├── AGENT_ARCHITECTURE.md              # 通用 Agent Runtime 架构
+├── PPT-Agent-架构设计.md              # PPT Agent 业务架构
+├── gptimage2-API文档.md               # GPTImage2.online API 分析
+├── .catpaw/skills/gptimage2-generator # 已有生图 skill
+├── .specify/                          # Spec Kit / SDD 工程配置
+├── .agents/skills/                    # Spec Kit 相关 skills
+├── specs/001-ppt-generation-agent/    # 当前 feature 的 SDD 文档
+├── js_analysis/                       # GPTImage2 前端分析材料
+└── 图书管理系统/                       # 示例/实验材料
+```
 
-Coordinator 是纯编排器，不直接解析文件、不做 OCR、不调用图片 API，也不直接组装 PPT。它只负责通过统一分配入口，把任务派发给专门的 Worker：
+当前还没有 `src/ppt_agent/` 实现目录。后续应按照 [tasks.md](./specs/001-ppt-generation-agent/tasks.md) 从项目骨架开始实现。
+
+## 架构设计
+
+PPT-AGENT 采用 **Coordinator + Worker** 架构。
+
+Coordinator 是纯编排器，只负责：
+
+- 判断当前任务阶段
+- 选择 Worker
+- 加载对应 skill
+- 分配上下文
+- 记录事件
+- 处理重试和 fallback
+
+具体工作由 Worker 完成：
+
+```text
+document_analyst     # 文档/图片分析
+outline_generator    # PPT 大纲生成
+template_matcher     # 模板匹配
+content_mapper       # 内容映射
+image_generator      # 图片生成
+ppt_assembler        # PPT 组装
+ppt_verifier         # 输出验证
+```
+
+统一分配入口计划为：
 
 ```text
 src/ppt_agent/coordinator/dispatcher.py
 ```
 
-计划中的 Worker 包括：
+路由配置计划为：
 
 ```text
-document_analyst.py
-outline_generator.py
-template_matcher.py
-content_mapper.py
-image_generator.py
-ppt_assembler.py
-ppt_verifier.py
+config/dispatcher.yml
 ```
 
-Worker 之间通过明确的文件产物交接，而不是共享内存状态。核心产物包括：
+这样后续新增 Worker、替换 skill、增加 fallback 策略时，不需要把逻辑写死在主流程里。
 
-```text
-source_summary.json
-outline.json
-selected_template.json
-template_meta.json
-slide_contents.json
-image_generation_config.json
-generated_slides/
-layer_analysis/
-final.pptx
-validation_report.json
-history.jsonl
-session.md
-```
-
-## 工作流程
-
-### 1. 创建任务空间
+## 工作流产物
 
 每次生成任务都会创建独立工作区：
 
 ```text
 workspace/jobs/<job-id>/
-├── input/
-├── history.jsonl
-├── session.md
-├── outline.json
-├── slide_contents.json
+├── input/                    # 用户输入材料
+├── history.jsonl             # 事件流和执行记录
+├── session.md                # 当前任务状态、错误和用户决策
+├── source_summary.json       # 项目材料摘要
+├── outline.json              # PPT 大纲
+├── selected_template.json    # 模板匹配结果
+├── template_meta.json        # 模板版式描述
+├── slide_contents.json       # 用户可审核的页面内容
+├── image_generation_config.json
 ├── generated_slides/
+├── layer_analysis/
 ├── final.pptx
 └── validation_report.json
 ```
 
-这样可以保证中间结果可查看、可恢复、可调试。
+这种文件系统优先的方式有三个好处：
 
-### 2. 文档分析
+- 中间结果可读、可改、可调试。
+- 失败后可以从某个阶段恢复。
+- 后续接入 Web UI 或远程任务系统时，状态边界清晰。
 
-`document_analyst` 从用户材料中提取文本和 OCR 信息，识别文件类型、产品名称、关键事实和辅助证据，并输出：
+## 知识库与检索
 
-```text
-source_summary.json
-```
-
-### 3. 大纲生成
-
-`outline_generator` 根据项目摘要生成结构化大纲：
+模板匹配和大纲生成不能只靠写死规则。项目规划了可配置知识库层：
 
 ```text
-outline.json
+config/knowledge-bases/
+├── templates.yml        # 模板库
+├── slide-patterns.yml   # PPT 页面结构和优秀案例
+└── domain-knowledge.yml # 行业术语和表达方式
 ```
 
-大纲包含每页标题、页面目的、关键 bullet、来源引用和视觉需求。
+检索层计划支持：
 
-### 4. 模板匹配
-
-`template_matcher` 根据项目行业、受众、风格、页数和版式需求，从模板库中匹配合适模板。
-
-检索层不会写死在某个本地向量库里，而是设计为可配置知识库层。计划支持：
-
-- BM25 稀疏检索
+- BM25
 - 向量检索
 - 元数据过滤
-- RRF 融合排序
+- RRF 融合
 - reranker 重排
 - 本地向量索引
 - Qdrant
 - Milvus
 - pgvector
 
-知识库配置计划放在：
+Worker 不直接依赖某个向量数据库客户端，而是统一调用：
 
 ```text
-config/knowledge-bases/
-├── templates.yml
-├── slide-patterns.yml
-└── domain-knowledge.yml
+src/ppt_agent/retrieval/query_router.py
 ```
 
-### 5. 内容映射
+后续新增向量数据库或检索方法时，只需要增加 adapter 和配置，不重写业务 Worker。
 
-`content_mapper` 将 `outline.json` 和 `template_meta.json` 合并，生成用户可审阅的：
+## Skills 设计
 
-```text
-slide_contents.json
-```
+项目采用渐进式 skill 加载。每个阶段只加载当前需要的 skill，避免上下文膨胀。
 
-这是整个流程中最重要的人工确认点。用户可以在这里修改标题、bullet、页面顺序、图片选择和生图 prompt。
-
-### 6. 图片生成
-
-图片生成阶段复用现有 skill：
-
-```text
-.catpaw/skills/gptimage2-generator/
-```
-
-PPT-AGENT 不应该重复实现 GPTImage2 API 逻辑。正确做法是写一个 adapter，把确认后的 `slide_contents.json` 转成该 skill 支持的批量生图配置，再由该 skill 处理登录、参考图上传、轮询、下载和账号切换。
-
-如果图片生成不可用，流程必须降级：
-
-- 使用模板原图
-- 使用用户上传图片
-- 使用占位图
-- 使用整页背景图 + 可编辑文字覆盖
-
-### 7. PPT 组装
-
-`ppt_assembler` 根据模板、确认后的 slide 内容、用户图片、生图结果和图层分析结果，生成：
-
-```text
-final.pptx
-```
-
-关键规则：用户确认过的文字必须写成 PowerPoint 可编辑文本对象，不能被压平成图片。
-
-### 8. 输出验证
-
-`ppt_verifier` 是独立的最终检查 Worker，输出：
-
-```text
-validation_report.json
-```
-
-它负责检查：
-
-- 页数和必要章节是否完整
-- 内容是否存在
-- 文本是否被保留
-- 文本是否可编辑
-- 文本是否溢出
-- 图片是否变形或越界
-- fallback 是否已处理
-- 是否存在需要人工复查的页面
-
-验证合约中包含 `text_editable` 字段，因为“可编辑”是本项目的核心验收标准。
-
-## 计划中的 Skills
-
-项目采用渐进式 skill 加载。每个阶段只加载当前需要的 skill，避免把所有能力一次性塞进上下文。
-
-计划新增的 PPT 专用 skill：
+计划新增的 PPT 专用 skills：
 
 ```text
 .catpaw/skills/ppt-outline-generator/
@@ -204,31 +170,48 @@ validation_report.json
 .catpaw/skills/ppt-assembler/
 ```
 
-已有 skill：
+已有生图 skill：
 
 ```text
 .catpaw/skills/gptimage2-generator/
 ```
 
-每个新增 skill 建议包含：
+`gptimage2-generator` 已经包含：
 
-```text
-SKILL.md
-scripts/
-references/
-examples/
-assets/
-```
+- 登录认证
+- 积分查询
+- 参考图上传
+- 文生图 / 图生图
+- 结果轮询
+- 图片下载
+- 账号切换
 
-## SDD 文档入口
+PPT-AGENT 后续只应该写 adapter，把 `slide_contents.json` 转换成该 skill 的批量生图配置，不应该重复实现 GPTImage2 API。
 
-当前活跃的 Spec Kit feature 是：
+## 输出质量验证
+
+最终生成的 `validation_report.json` 不负责评价“好不好看”，而是检查能不能交付：
+
+- PPT 页数是否正确
+- 必要章节是否存在
+- 用户确认文本是否保留
+- 用户确认文本是否可编辑
+- 文本是否溢出
+- 图片是否变形
+- 生图失败是否有 fallback
+- 哪些页面需要人工复查
+
+其中 `text_editable` 是强制检查项，因为这是本项目和“整页图片生成器”的关键区别。
+
+## SDD 文档
+
+当前 feature 目录：
 
 ```text
 specs/001-ppt-generation-agent/
 ```
 
-关键文档：
+主要文档：
 
 - [spec.md](./specs/001-ppt-generation-agent/spec.md)：功能规格
 - [plan.md](./specs/001-ppt-generation-agent/plan.md)：实施计划
@@ -236,42 +219,62 @@ specs/001-ppt-generation-agent/
 - [data-model.md](./specs/001-ppt-generation-agent/data-model.md)：数据模型
 - [quickstart.md](./specs/001-ppt-generation-agent/quickstart.md)：验证指南
 - [tasks.md](./specs/001-ppt-generation-agent/tasks.md)：实现任务清单
-- [contracts/](./specs/001-ppt-generation-agent/contracts/)：阶段产物 JSON Schema
+- [contracts/](./specs/001-ppt-generation-agent/contracts/)：JSON Schema 合约
 
-重要合约：
+重点合约：
 
-- `outline.schema.json`
-- `slide-contents.schema.json`
-- `template-meta.schema.json`
-- `image-generation-config.schema.json`
-- `validation-report.schema.json`
-- `workflow-events.schema.json`
-- `knowledge-base-config.schema.json`
-- `dispatch-request.schema.json`
-- `dispatch-decision.schema.json`
+```text
+outline.schema.json
+slide-contents.schema.json
+template-meta.schema.json
+image-generation-config.schema.json
+validation-report.schema.json
+workflow-events.schema.json
+knowledge-base-config.schema.json
+dispatch-request.schema.json
+dispatch-decision.schema.json
+```
 
-## 建议实现顺序
+## 计划中的目录结构
 
-建议先做一个最小本地 MVP：
+后续核心代码计划放在：
 
-1. 创建项目骨架和 CLI。
-2. 实现任务工作区、产物 schema、事件日志和统一分配入口。
-3. 实现上下文/session 管理和 skill 加载。
-4. 先跑通 fallback PPT 路径：
-   - 文档分析
-   - 大纲生成
-   - 基础内容映射
-   - 可编辑 PPT 组装
-5. 增加 `slide_contents.json` 的用户审核和确认流程。
-6. 增加可配置知识库检索和模板匹配。
-7. 接入 GPTImage2 adapter 和图片生成。
-8. 增加最终验证和 quickstart 测试。
+```text
+src/ppt_agent/
+├── coordinator/
+├── context/
+├── skills/
+├── workers/
+├── retrieval/
+├── models/
+├── assembly/
+└── cli.py
+```
 
-MVP 阶段不应该依赖外部生图服务，也不应该强依赖向量数据库。
+测试目录：
 
-## Quickstart 目标形态
+```text
+tests/
+├── contract/
+├── integration/
+├── unit/
+└── fixtures/
+```
 
-计划中的 CLI 形态如下：
+模板目录：
+
+```text
+templates/
+├── index.json
+└── <domain>/<template-id>/
+    ├── template.pptx
+    ├── meta.json
+    └── preview/
+```
+
+## 使用方式（规划中）
+
+当前还没有可运行 CLI。计划中的使用方式如下：
 
 ```bash
 python -m ppt_agent.cli create-job \
@@ -291,7 +294,52 @@ python -m ppt_agent.cli run \
   --from visual-generation
 ```
 
-详细验证场景见 [quickstart.md](./specs/001-ppt-generation-agent/quickstart.md)。
+目标输出：
+
+```text
+workspace/jobs/sample-project/final.pptx
+workspace/jobs/sample-project/validation_report.json
+```
+
+## 开发路线
+
+建议按以下顺序实现：
+
+1. 创建 Python 项目骨架和 CLI。
+2. 实现 job workspace、JSON schema 校验、事件日志。
+3. 实现统一 dispatch 入口和 routing 配置。
+4. 实现上下文压缩、session、history 管理。
+5. 创建 PPT 专用 skills 的 SKILL.md 和示例。
+6. 跑通无生图、无向量数据库的 fallback PPT MVP。
+7. 增加 `slide_contents.json` 审核和确认流程。
+8. 实现可配置知识库与模板匹配。
+9. 接入 GPTImage2 adapter。
+10. 实现最终 PPT 验证。
+
+任务拆解见：[tasks.md](./specs/001-ppt-generation-agent/tasks.md)
+
+## MVP 范围
+
+第一版建议只做：
+
+- 单机 CLI
+- 单用户任务
+- 本地文件工作区
+- 项目计划书 + 图片输入
+- 16:9 PPT
+- 本地模板库
+- fallback PPT 生成
+- 可编辑文本
+- 基础验证报告
+
+暂不做：
+
+- Web UI
+- 多用户任务调度
+- 模板自训练
+- 多模型生图
+- 动画
+- 复杂图表自动重建
 
 ## 质量门禁
 
@@ -305,6 +353,6 @@ python -m ppt_agent.cli run \
 - 上下文压缩不能丢失用户确认内容和错误记录。
 - Quickstart 场景必须跑通。
 
-## 仓库说明
+## 许可证
 
-仓库中还包含规划阶段使用的分析文件和示例文件。SDD 计划中提到的一些实现目录目前还没有创建，后续应按照 [tasks.md](./specs/001-ppt-generation-agent/tasks.md) 逐步实现。
+当前尚未声明许可证。
