@@ -1,0 +1,84 @@
+{
+  "slides": [
+    {
+      "index": 0,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_00.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 1,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_01.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 2,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_02.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 3,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_03.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 4,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_04.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 5,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_05.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 6,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_06.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 7,
+      "mode": "region",
+      "prompt": "Use relevant user image or simple placeholder.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_07.png",
+      "fallback": "placeholder"
+    }
+  ]
+}

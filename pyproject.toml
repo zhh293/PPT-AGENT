@@ -8,8 +8,18 @@ version = "0.1.0"
 description = "File-system-first agent workflow for editable PPT generation."
 requires-python = ">=3.11"
 dependencies = [
-  "PyYAML>=6.0"
+  "PyYAML>=6.0",
+  "python-pptx>=1.0",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "python-multipart>=0.0.9",
 ]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.30"]
+openai = ["openai>=1.30"]
+all = ["anthropic>=0.30", "openai>=1.30", "fastapi>=0.115", "uvicorn[standard]>=0.30"]
+dev = ["pytest>=7.0", "anthropic>=0.30", "openai>=1.30"]
 
 [project.scripts]
 ppt-agent = "ppt_agent.cli:main"

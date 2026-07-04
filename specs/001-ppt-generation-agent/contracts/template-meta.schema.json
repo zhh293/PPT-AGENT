@@ -58,13 +58,13 @@
                 "capacity_hint": {"type": "string"},
                 "style_hint": {"type": "string"}
               },
-              "additionalProperties": false
+              "additionalProperties": true
             }
           }
         },
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }

@@ -81,7 +81,7 @@ GPTImage2.online 是一个基于 GPT Image 2 模型的在线 AI 生图服务。�
 当所有现有账号的积分都耗尽时，需要注册新账号：
 
 ```
-1. 生成新邮箱（可用临时邮箱服务或自有邮箱）
+1. 生成新邮箱（捏造一个格式正确的邮箱即可）
 2. POST /zh/sign-up (Server Action)
    Headers:
      Next-Action: 600106e3c3b2e4e139cf6f45b97fd16194794326c3
@@ -91,7 +91,7 @@ GPTImage2.online 是一个基于 GPT Image 2 模型的在线 AI 生图服务。�
      next: /zh
      signup_device_id: <随机UUID>
      $ACTION_2:0: {"id":"600106e3c3b2e4e139cf6f45b97fd16194794326c3","bound":"$@1"}
-3. 等待注册完成（可能需要邮箱验证）
+3. 等待注册完成
 4. 登录新账号
 5. 记录到 accounts.json
 ```

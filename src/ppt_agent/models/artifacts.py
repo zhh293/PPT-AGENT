@@ -17,6 +17,8 @@ ARTIFACT_NAMES = {
     "image_generation_config": "image_generation_config.json",
     "image_generation_report": "image_generation_report.json",
     "validation_report": "validation_report.json",
+    "layer_analysis_report": "layer_analysis_report.json",
+    "template_zones": "template_zones.json",
 }
 
 
@@ -36,6 +38,10 @@ class JobWorkspace:
         return self.root / "generated_slides"
 
     @property
+    def background_images_dir(self) -> Path:
+        return self.root / "background_images"
+
+    @property
     def history_path(self) -> Path:
         return self.root / "history.jsonl"
 
@@ -46,6 +52,7 @@ class JobWorkspace:
     def ensure(self) -> None:
         self.input_dir.mkdir(parents=True, exist_ok=True)
         self.generated_slides_dir.mkdir(parents=True, exist_ok=True)
+        self.background_images_dir.mkdir(parents=True, exist_ok=True)
         (self.root / "layer_analysis").mkdir(parents=True, exist_ok=True)
 
 

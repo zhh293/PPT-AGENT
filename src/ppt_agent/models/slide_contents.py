@@ -13,14 +13,19 @@ VALID_TRANSITIONS = {
 @dataclass
 class SlideZoneContent:
     zone_id: str
-    type: str
-    position: list[float]
+    type: str           # "title", "bullets", "image", "footer", etc.
+    position: list[float]  # [x, y, w, h] as 0-1 fractions
     editable: bool
     content: str | list[str] | None = None
     source: str = "none"
     image_ref: str | None = None
     image_prompt: str | None = None
     fit_status: str = "unknown"
+
+    # Convenience alias
+    @property
+    def zone_type(self) -> str:
+        return self.type
 
     def to_dict(self) -> dict:
         return {k: v for k, v in asdict(self).items() if v is not None}
@@ -36,6 +41,7 @@ class SlideContent:
     review_status: str = "draft"
     source_refs: list[str] = field(default_factory=list)
     fallback_flags: list[str] = field(default_factory=list)
+    template_image: str | None = None  # Path to template slide image for img2img
 
     def to_dict(self) -> dict:
         data = asdict(self)

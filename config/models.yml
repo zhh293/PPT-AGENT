@@ -1,0 +1,44 @@
+default_provider: deepseek
+
+providers:
+  deepseek:
+    protocol: openai_chat_completions
+    api_key: sk-d0588f9b67444710968afb1ec4b3d298
+    endpoint: https://api.deepseek.com/v1
+    text_model: deepseek-chat
+    vision_model: deepseek-chat
+    temperature: 0.3
+    max_tokens: 8000
+    timeout_seconds: 120
+
+  anthropic:
+    protocol: anthropic_messages
+    api_key_env: ANTHROPIC_API_KEY
+    base_url_env: ANTHROPIC_BASE_URL
+    text_model: claude-sonnet-4-20250514
+    vision_model: claude-sonnet-4-20250514
+    temperature: 0.3
+    max_tokens: 8000
+    timeout_seconds: 120
+
+  openai:
+    protocol: openai_chat_completions
+    api_key_env: OPENAI_API_KEY
+    base_url_env: OPENAI_BASE_URL
+    text_model: gpt-4.1
+    vision_model: gpt-4.1
+    temperature: 0.4
+    max_tokens: 8000
+    timeout_seconds: 90
+
+  local:
+    protocol: openai_chat_completions
+    endpoint: http://localhost:11434/v1
+    text_model: qwen2.5:14b
+    temperature: 0.4
+    max_tokens: 4000
+    timeout_seconds: 120
+
+  fake:
+    protocol: fake
+    text_model: fake
