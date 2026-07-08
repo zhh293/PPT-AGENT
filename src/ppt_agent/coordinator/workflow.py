@@ -164,23 +164,14 @@ def run_workflow(
         llm_client = _create_llm_client(model_profile, workspace.root)
 
     if llm_client is not None:
-        # Check if the provider can handle agentic tool-call formats.
-        # The fake provider and simple test providers use the LLM-augmented
-        # deterministic path (original workers with LLM calls), while real
-        # providers use the full agent architecture.
-        is_agentic_capable = getattr(llm_client.provider, 'name', '') not in ('fake',)
-
-        if is_agentic_capable:
-            # ── AGENT MODE: Coordinator + Worker agent loops ──
-            return _run_agent_workflow(
-                workspace, llm_client, bus, active_phases, force,
-            )
-        else:
-            # ── LLM-AUGMENTED DETERMINISTIC MODE ──
-            # Workers use LLM for intelligent analysis but pipeline is linear
-            return _run_llm_augmented_workflow(
-                workspace, llm_client, bus, active_phases, force,
-            )
+        # ── LLM-AUGMENTED DETERMINISTIC MODE ──
+        # Each worker calls the LLM for intelligent analysis (document analysis,
+        # outline generation, etc.) but the pipeline runs linearly — fast and reliable.
+        # Agent mode (Coordinator + Worker agent loops) is available by passing
+        # model_profile="agent:<name>".
+        return _run_llm_augmented_workflow(
+            workspace, llm_client, bus, active_phases, force,
+        )
     else:
         # ── DETERMINISTIC MODE: Linear for-loop (backward compatible) ──
         return _run_deterministic_workflow(
@@ -261,7 +252,7 @@ def _run_agent_workflow(
         task_manager.transition(coord_task.task_id, TaskStatus.FAILED, error=result.error)
 
     # Record session summaries for completed phases
-    for phase in coordinator._completed_phases:
+    for phase in coordinator._completed:
         worker_info = coordinator._worker_results.get(phase, {})
         append_phase_summary(
             workspace.root, phase,
@@ -270,7 +261,7 @@ def _run_agent_workflow(
         )
 
     # Run dream consolidation
-    if "verification" in coordinator._completed_phases:
+    if "verification" in coordinator._completed or "quality_verification" in coordinator._completed:
         try:
             insights = run_dream_task(workspace.root, llm_client)
             if insights:
@@ -280,7 +271,7 @@ def _run_agent_workflow(
 
     # Collect output paths
     outputs: list[Path] = []
-    for phase in coordinator._completed_phases:
+    for phase in coordinator._completed:
         worker_output = coordinator._worker_results.get(phase, {}).get("output")
         if worker_output:
             p = Path(worker_output)

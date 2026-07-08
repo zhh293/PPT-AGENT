@@ -16,6 +16,7 @@ This produces PPTs where:
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from pathlib import Path
 
 from pptx import Presentation
@@ -444,7 +445,7 @@ def _resolve_background_image(
     if workspace_root:
         idx = slide_data.get("slide_index", 0)
         for subdir in ("background_images", "generated_slides"):
-            for pattern in [f"slide_{idx:02d}.png", f"slide_{idx}.png"]:
+            for pattern in [f"slide-{idx:03d}.png", f"slide_{idx:02d}.png", f"slide_{idx}.png"]:
                 candidate = workspace_root / subdir / pattern
                 if candidate.exists():
                     return candidate
@@ -502,26 +503,217 @@ def _build_slide_legacy(
 
 def write_pptx(
     slide_contents: dict,
-    output_path: Path,
+    output_path: Path | str,
     workspace_root: Path | None = None,
-) -> None:
+    template_path: Path | None = None,
+) -> Path:
     """Write a PPTX file from *slide_contents*.
 
-    Automatically chooses between:
-    - Background-image mode (when background images are available)
-    - Legacy solid-background mode (when no background images exist)
+    When *template_path* is provided, the template's slides are KEPT as
+    visual backgrounds — text zones from the outline are overlaid on top
+    of the existing template slides.  If the outline has more slides than
+    the template, template slides are cycled.
 
-    Each slide can independently use either mode.
+    Without a template, blank 16:9 slides are created with AI-generated
+    backgrounds or solid-color fallbacks.
     """
     slides = slide_contents.get("slides", [])
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    prs = Presentation()
-    prs.slide_width = Emu(SLIDE_W)
-    prs.slide_height = Emu(SLIDE_H)
+    if template_path and Path(template_path).exists():
+        prs = Presentation(str(template_path))
+        # Template mode: keep template slides, overlay text
+        return _write_with_template(prs, slides, output_path, workspace_root)
+    else:
+        prs = Presentation()
+        prs.slide_width = Emu(SLIDE_W)
+        prs.slide_height = Emu(SLIDE_H)
+        for index, slide_data in enumerate(slides, start=1):
+            _build_slide_with_background(prs, slide_data, index, workspace_root)
+        prs.save(str(output_path))
+        return output_path
 
-    for index, slide_data in enumerate(slides, start=1):
-        _build_slide_with_background(prs, slide_data, index, workspace_root)
+
+def _write_with_template(
+    prs: Presentation,
+    slides: list[dict],
+    output_path: Path,
+    workspace_root: Path | None,
+) -> Path:
+    """Build PPT using template slides as visual base, overlaying text.
+
+    Strategy:
+    1. Keep all template slides as-is (preserve visual design).
+    2. For each outline slide, clone a matching template slide.
+    3. Overlay text zones from the outline on the cloned slide.
+    4. If outline has more slides than template, cycle: use template[idx % N].
+    5. Delete unused template slides at the end.
+    """
+    n_template = len(prs.slides)
+    n_outline = len(slides)
+    logger.info("Template-based assembly: %d template slides, %d outline slides",
+                n_template, n_outline)
+
+    # Collect template slide IDs before cloning (to delete later)
+    original_slide_ids = [slide.slide_id for slide in prs.slides]
+
+    # For each outline slide, clone a template slide and overlay text
+    for idx, slide_data in enumerate(slides):
+        tpl_idx = idx % n_template
+        template_slide = prs.slides[tpl_idx]
+
+        # Clone the template slide
+        _clone_slide(prs, template_slide)
+
+        # The cloned slide is now the LAST slide
+        new_slide = prs.slides[-1]
+
+        # Overlay text zones on the cloned slide
+        _overlay_text_on_slide(new_slide, slide_data, workspace_root)
+
+    # Delete original template slides (keep only cloned + overlaid ones)
+    _delete_slides_by_id(prs, original_slide_ids)
 
     prs.save(str(output_path))
+    return output_path
+
+
+def _clone_slide(prs: Presentation, source_slide) -> None:
+    """Clone a slide by copying its XML and adding it to the presentation."""
+    from lxml import etree
+    from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+
+    # Get the slide layout used by the source
+    slide_layout = source_slide.slide_layout
+
+    # Add a new slide with the same layout
+    new_slide = prs.slides.add_slide(slide_layout)
+
+    # Copy all shapes from source to new slide
+    # Remove default shapes on the new slide
+    for shape in list(new_slide.shapes):
+        sp = shape._element
+        sp.getparent().remove(sp)
+
+    # Copy shapes from source
+    for shape in source_slide.shapes:
+        el = _copy_element(shape._element)
+        new_slide.shapes._spTree.append(el)
+
+    # Copy slide background
+    _copy_slide_background(source_slide, new_slide)
+
+
+def _copy_element(el):
+    """Deep-copy an XML element."""
+    from copy import deepcopy
+    return deepcopy(el)
+
+
+def _copy_slide_background(source, target) -> None:
+    """Copy background from source slide to target slide."""
+    from lxml import etree
+    ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main"}
+    src_bg = source._element.find(".//p:cSld/p:bg", ns)
+    if src_bg is not None:
+        tgt_csld = target._element.find(".//p:cSld", ns)
+        if tgt_csld is not None:
+            # Remove existing bg if any
+            existing = tgt_csld.find("p:bg", ns)
+            if existing is not None:
+                tgt_csld.remove(existing)
+            tgt_csld.insert(0, deepcopy(src_bg))
+
+
+def _delete_slides_by_id(prs: Presentation, slide_ids: list[int]) -> None:
+    """Delete slides by their slide_id."""
+    sld_id_lst = prs.slides._sldIdLst
+    for slide_id in slide_ids:
+        for elem in sld_id_lst:
+            if elem.get("id") == str(slide_id):
+                rId = elem.get("r:id")
+                prs.part.drop_rel(rId)
+                sld_id_lst.remove(elem)
+                break
+
+
+def _overlay_text_on_slide(slide, slide_data: dict, workspace_root: Path | None) -> None:
+    """Overlay text zones on an existing template slide.
+
+    Removes existing text shapes that overlap with content zones,
+    then adds new text boxes with the user's content.
+    """
+    zones = slide_data.get("zones", [])
+    for zone in zones:
+        zone_type = zone.get("type", "")
+        content = zone.get("content")
+        if not content or zone_type not in ("title", "subtitle", "bullets", "body"):
+            continue
+
+        position = zone.get("position", [0.1, 0.1, 0.8, 0.1])
+
+        # Try to find and replace text in matching existing shape
+        if not _replace_text_in_shape(slide, zone, position):
+            # No matching shape — add textbox overlay
+            _add_text_overlay(slide, {**zone, "position": position})
+
+
+def _replace_text_in_shape(slide, zone: dict, position: list[float]) -> bool:
+    """Try to find a matching shape on the slide and replace its text.
+
+    Returns True if a shape was found and text was replaced.
+    """
+    zx, zy, zw, zh = position
+
+    for shape in slide.shapes:
+        if not shape.has_text_frame:
+            continue
+
+        # Check position overlap
+        sx = shape.left / SLIDE_W if shape.left else 0
+        sy = shape.top / SLIDE_H if shape.top else 0
+        sw = shape.width / SLIDE_W if shape.width else 0
+        sh = shape.height / SLIDE_H if shape.height else 0
+
+        # 50% position overlap → likely the same zone
+        overlap = (min(zx + zw, sx + sw) - max(zx, sx)) * (min(zy + zh, sy + sh) - max(zy, sy))
+        zone_area = zw * zh
+        if zone_area > 0 and overlap / zone_area < 0.3:
+            continue
+
+        # Replace text
+        tf = shape.text_frame
+        content = zone.get("content", "")
+        zone_type = zone.get("type", "body")
+
+        if zone_type == "bullets" and isinstance(content, list):
+            items = content
+        elif isinstance(content, list):
+            items = content
+        else:
+            items = [str(content)]
+
+        for i, item in enumerate(items):
+            if i == 0:
+                p = tf.paragraphs[0]
+            else:
+                p = tf.add_paragraph()
+            p.text = str(item)
+
+        # Clear remaining paragraphs
+        for extra_p in tf.paragraphs[len(items):]:
+            extra_p.text = ""
+
+        # Adjust font
+        for p in tf.paragraphs:
+            if p.font.size is None or p.font.size < Pt(10):
+                from ppt_agent.assembly.layout_fit import bullet_font_size, title_font_size
+                if zone_type == "title":
+                    p.font.size = Pt(title_font_size(str(p.text)))
+                else:
+                    p.font.size = Pt(bullet_font_size(items))
+
+        return True
+
+    return False

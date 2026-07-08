@@ -1,4 +1,40 @@
 {
-  "accounts": [],
-  "current_index": 0
+  "accounts": [
+    {
+      "email": "pptagent_0b9e5a67@outlook.com",
+      "password": "Agent15254019!",
+      "status": "exhausted"
+    },
+    {
+      "email": "pptagent_90550fb8@outlook.com",
+      "password": "Agent997faded!",
+      "status": "exhausted"
+    },
+    {
+      "email": "pptagent_ae91b491@outlook.com",
+      "password": "Agent02585ef4!",
+      "status": "exhausted"
+    },
+    {
+      "email": "pptagent_36a4ee7b@outlook.com",
+      "password": "Agent8067e242!",
+      "status": "exhausted"
+    },
+    {
+      "email": "pptagent_ddbd1c79@outlook.com",
+      "password": "Agent98772d72!",
+      "status": "exhausted"
+    },
+    {
+      "email": "pptagent_ca49a493@outlook.com",
+      "password": "Agent43657a3e!",
+      "status": "active"
+    },
+    {
+      "email": "pptagent_692e4912@outlook.com",
+      "password": "Agent7fb1b8bb!",
+      "status": "active"
+    }
+  ],
+  "current_index": 5
 }

@@ -13,30 +13,63 @@ text-to-image mode with a descriptive prompt.
 from __future__ import annotations
 
 
-def slide_contents_to_batch_config(slide_contents: dict) -> dict:
+def slide_contents_to_batch_config(
+    slide_contents: dict,
+    mode: str = "none",
+) -> dict:
     """Convert slide_contents into GPTImage2 batch-generate config.
+
+    Parameters
+    ----------
+    slide_contents
+        Slide data from the outline phase.
+    mode
+        Which slides to generate AI backgrounds for:
+
+        - ``"key"`` (default) — cover + section/chapter dividers only
+        - ``"all"`` — every slide gets an AI background
+        - ``"cover-only"`` — just the first slide
+        - ``"none"`` — skip generation entirely
 
     Each slide entry in the config has:
         - index: slide number
-        - mode: "full_page" (always, for background generation)
         - prompt: text content + visual instructions
         - aspect_ratio: "16:9"
         - resolution: "1K"
         - reference_image: template slide image path (for img2img)
         - output_name: slide_XX.png
     """
-    slides = []
-    for slide in slide_contents.get("slides", []):
+    slides = slide_contents.get("slides", [])
+
+    # Determine which slides to generate
+    if mode == "none":
+        return {"slides": []}
+
+    to_generate: list[dict] = []
+    for slide in slides:
         idx = slide["slide_index"]
-        output_name = f"slide_{idx:02d}.png"
+        layout = slide.get("layout", "")
 
-        # Build prompt from slide content
+        if mode == "all":
+            pass  # include all
+        elif mode == "cover-only":
+            if idx != 0:
+                continue
+        elif mode == "key":
+            # Cover + section/chapter dividers only
+            is_cover = (idx == 0)
+            is_section = any(
+                tag in str(layout).lower()
+                for tag in ("cover", "section", "chapter", "divider", "title")
+            )
+            if not (is_cover or is_section):
+                continue
+
+        output_name = f"slide-{idx:03d}.png"
         prompt = _build_slide_prompt(slide)
-
-        # Get template image for img2img reference
         reference_image = slide.get("template_image")
 
-        slides.append({
+        to_generate.append({
             "index": idx,
             "mode": "full_page",
             "prompt": prompt,
@@ -47,7 +80,7 @@ def slide_contents_to_batch_config(slide_contents: dict) -> dict:
             "fallback": "placeholder" if not reference_image else "text2img",
         })
 
-    return {"slides": slides}
+    return {"slides": to_generate}
 
 
 def _build_slide_prompt(slide: dict) -> str:

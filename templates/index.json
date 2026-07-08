@@ -1,13 +1,58 @@
 {
   "templates": [
     {
+      "template_id": "tech.modern-blue-12",
+      "path": "tech/modern-blue-12",
+      "color_scheme": "blue",
+      "domain_tags": ["tech", "software", "ai", "startup"],
+      "tone_tags": ["modern", "professional", "bold"],
+      "slide_count": 12,
+      "retrieval_text": "modern tech blue pitch product introduction competition software AI startup"
+    },
+    {
+      "template_id": "business.professional-gray-15",
+      "path": "business/professional-gray-15",
+      "color_scheme": "gray",
+      "domain_tags": ["business", "finance", "consulting", "corporate"],
+      "tone_tags": ["professional", "formal", "conservative"],
+      "slide_count": 15,
+      "retrieval_text": "professional business gray corporate report finance consulting project pitch"
+    },
+    {
+      "template_id": "medical.clean-green-14",
+      "path": "medical/clean-green-14",
+      "color_scheme": "green",
+      "domain_tags": ["medical", "healthcare", "biotech", "pharma"],
+      "tone_tags": ["clean", "professional", "trustworthy"],
+      "slide_count": 14,
+      "retrieval_text": "clean medical green healthcare competition report biotech clinical"
+    },
+    {
+      "template_id": "education.warm-orange-12",
+      "path": "education/warm-orange-12",
+      "color_scheme": "orange",
+      "domain_tags": ["education", "academic", "training", "research"],
+      "tone_tags": ["warm", "friendly", "engaging"],
+      "slide_count": 12,
+      "retrieval_text": "warm orange education academic competition lecture training research"
+    },
+    {
+      "template_id": "general.minimal-white-10",
+      "path": "general/minimal-white-10",
+      "color_scheme": "neutral",
+      "domain_tags": ["general", "all"],
+      "tone_tags": ["minimal", "clean", "neutral"],
+      "slide_count": 10,
+      "retrieval_text": "minimal white clean general purpose neutral all-purpose default"
+    },
+    {
       "template_id": "fallback.default",
       "path": "sample/default",
       "color_scheme": "blue",
       "domain_tags": ["general", "business", "software"],
       "tone_tags": ["professional", "clear"],
-      "slide_count": 8,
-      "retrieval_text": "general professional business project report fallback template"
+      "slide_count": 1,
+      "retrieval_text": "general professional business project report fallback template minimum"
     }
   ]
 }

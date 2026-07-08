@@ -1,0 +1,6084 @@
+{
+  "template_id": "general.绿色科技感——-",
+  "domain": "general",
+  "scene": [
+    "report"
+  ],
+  "style": "professional",
+  "slide_count": 21,
+  "color_scheme": {
+    "primary": "#1F4E79",
+    "secondary": "#70AD47",
+    "accent": "#F4B183",
+    "background": "#FFFFFF"
+  },
+  "slides": [
+    {
+      "index": 0,
+      "layout": "cover",
+      "zones": [
+        {
+          "zone_id": "s0_shape0",
+          "type": "image",
+          "position": [
+            0.2587,
+            0.0,
+            0.7413,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.449,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape2",
+          "type": "title",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape3",
+          "type": "title",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape4",
+          "type": "decoration",
+          "position": [
+            0.0721,
+            0.7002,
+            0.5233,
+            0.101
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape5",
+          "type": "image",
+          "position": [
+            0.0,
+            0.8503,
+            0.4323,
+            0.0336
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape6",
+          "type": "image",
+          "position": [
+            -0.0,
+            -0.0,
+            0.4412,
+            0.3242
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape7",
+          "type": "decoration",
+          "position": [
+            0.041,
+            0.0427,
+            0.6243,
+            0.5522
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape8",
+          "type": "image",
+          "position": [
+            0.565,
+            -0.0826,
+            0.0941,
+            0.6759
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape9",
+          "type": "image",
+          "position": [
+            0.223,
+            -0.1129,
+            0.1053,
+            0.757
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape10",
+          "type": "decoration",
+          "position": [
+            0.068,
+            0.4877,
+            0.5232,
+            0.0791
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape11",
+          "type": "body",
+          "position": [
+            0.1176,
+            0.4958,
+            0.4239,
+            0.0628
+          ],
+          "text": "更适合中国土壤的有机复合肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape12",
+          "type": "decoration",
+          "position": [
+            0.8561,
+            0.0503,
+            0.1174,
+            0.0506
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s1_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            -0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape1",
+          "type": "decoration",
+          "position": [
+            0.4046,
+            -0.0142,
+            0.1909,
+            0.2981
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape2",
+          "type": "decoration",
+          "position": [
+            0.3615,
+            0.2996,
+            0.2769,
+            0.4984
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape3",
+          "type": "decoration",
+          "position": [
+            0.5871,
+            0.2933,
+            0.3089,
+            0.5021
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape4",
+          "type": "body",
+          "position": [
+            0.104,
+            0.2933,
+            0.3089,
+            0.1182
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape5",
+          "type": "body",
+          "position": [
+            0.104,
+            0.4212,
+            0.2422,
+            0.1182
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape6",
+          "type": "body",
+          "position": [
+            0.104,
+            0.5492,
+            0.2421,
+            0.1182
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape7",
+          "type": "body",
+          "position": [
+            0.104,
+            0.6771,
+            0.3088,
+            0.1182
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape8",
+          "type": "body",
+          "position": [
+            0.1777,
+            0.5724,
+            0.1346,
+            0.0718
+          ],
+          "text": "媒体报道",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape9",
+          "type": "body",
+          "position": [
+            0.1777,
+            0.3165,
+            0.1346,
+            0.0718
+          ],
+          "text": "项目背景",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape10",
+          "type": "body",
+          "position": [
+            0.1777,
+            0.4444,
+            0.1346,
+            0.0718
+          ],
+          "text": "产品介绍",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape11",
+          "type": "body",
+          "position": [
+            0.1777,
+            0.7004,
+            0.1346,
+            0.0718
+          ],
+          "text": "营销模式",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape12",
+          "type": "body",
+          "position": [
+            0.69,
+            0.5724,
+            0.1346,
+            0.0718
+          ],
+          "text": "团队介绍",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape13",
+          "type": "body",
+          "position": [
+            0.69,
+            0.3165,
+            0.1346,
+            0.0718
+          ],
+          "text": "技术支撑",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape14",
+          "type": "body",
+          "position": [
+            0.69,
+            0.4444,
+            0.1346,
+            0.0718
+          ],
+          "text": "社会贡献",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape15",
+          "type": "body",
+          "position": [
+            0.69,
+            0.7004,
+            0.1346,
+            0.0718
+          ],
+          "text": "发展规划",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape16",
+          "type": "title",
+          "position": [
+            0.0345,
+            -0.1398,
+            0.9308,
+            1.3773
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape17",
+          "type": "decoration",
+          "position": [
+            0.1297,
+            0.3165,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape18",
+          "type": "decoration",
+          "position": [
+            0.1297,
+            0.4444,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape19",
+          "type": "decoration",
+          "position": [
+            0.1297,
+            0.5724,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape20",
+          "type": "decoration",
+          "position": [
+            0.1297,
+            0.7004,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape21",
+          "type": "decoration",
+          "position": [
+            0.8302,
+            0.3165,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape22",
+          "type": "decoration",
+          "position": [
+            0.8302,
+            0.4444,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape23",
+          "type": "decoration",
+          "position": [
+            0.8302,
+            0.5724,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape24",
+          "type": "decoration",
+          "position": [
+            0.8302,
+            0.7004,
+            0.0404,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape25",
+          "type": "title",
+          "position": [
+            0.1567,
+            0.1936,
+            0.6865,
+            1.3353
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape26",
+          "type": "body",
+          "position": [
+            0.2742,
+            0.45,
+            0.4412,
+            0.7844
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape27",
+          "type": "image",
+          "position": [
+            0.4983,
+            -0.2758,
+            0.1053,
+            0.757
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s2_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            -0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape1",
+          "type": "image",
+          "position": [
+            0.221,
+            0.0471,
+            0.5579,
+            0.9919
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape2",
+          "type": "title",
+          "position": [
+            0.1729,
+            -0.0815,
+            0.6542,
+            1.163
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape3",
+          "type": "title",
+          "position": [
+            0.188,
+            -0.0547,
+            0.624,
+            1.1094
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape4",
+          "type": "body",
+          "position": [
+            0.8901,
+            0.8309,
+            0.1636,
+            0.2908
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape5",
+          "type": "body",
+          "position": [
+            -0.0537,
+            0.8309,
+            0.1636,
+            0.2908
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape6",
+          "type": "decoration",
+          "position": [
+            0.3375,
+            0.1912,
+            0.3249,
+            0.42
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape7",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5165,
+            1.0,
+            0.4835
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape8",
+          "type": "image",
+          "position": [
+            0.5072,
+            0.1671,
+            0.073,
+            0.5249
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s3_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape1",
+          "type": "title",
+          "position": [
+            0.328,
+            0.1967,
+            0.3576,
+            0.2694
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape2",
+          "type": "title",
+          "position": [
+            0.6639,
+            0.1967,
+            0.3588,
+            0.2694
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape3",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3432,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape4",
+          "type": "decoration",
+          "position": [
+            0.0564,
+            0.499,
+            0.2786,
+            0.4399
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape5",
+          "type": "decoration",
+          "position": [
+            0.0724,
+            0.6193,
+            0.2463,
+            0.2988
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape6",
+          "type": "body",
+          "position": [
+            0.0645,
+            0.5471,
+            0.2621,
+            0.0582
+          ],
+          "text": "中国复合肥行业进口贸易数量",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape7",
+          "type": "decoration",
+          "position": [
+            0.3607,
+            0.499,
+            0.2786,
+            0.4399
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape8",
+          "type": "decoration",
+          "position": [
+            0.393,
+            0.6112,
+            0.2139,
+            0.3261
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape9",
+          "type": "decoration",
+          "position": [
+            0.665,
+            0.499,
+            0.2786,
+            0.4399
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape10",
+          "type": "body",
+          "position": [
+            0.6733,
+            0.5471,
+            0.2621,
+            0.0582
+          ],
+          "text": "中国复合肥行业进口贸易金额",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape11",
+          "type": "decoration",
+          "position": [
+            0.6812,
+            0.5956,
+            0.2463,
+            0.3136
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape12",
+          "type": "title",
+          "position": [
+            -0.0001,
+            0.1967,
+            0.3552,
+            0.2694
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape13",
+          "type": "body",
+          "position": [
+            0.7354,
+            0.2559,
+            0.213,
+            0.1483
+          ],
+          "text": "国外复合肥市场价格大幅上涨，导致进口厂商成本大幅增长，企业减少进口交易，行业复合肥产品进口数量大幅下滑",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape14",
+          "type": "body",
+          "position": [
+            0.0965,
+            0.2559,
+            0.1662,
+            0.1483
+          ],
+          "text": "山东、河南等地都是我国农业大省，农业种植复合肥需求高，是行业终端消费市场集中省",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape15",
+          "type": "body",
+          "position": [
+            0.404,
+            0.2559,
+            0.2055,
+            0.1483
+          ],
+          "text": "湖北、四川等地都拥有丰富的矿产资源，拥有完善的原材料生产工业建设，能为复合肥厂商提供充足的生产原料肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape16",
+          "type": "decoration",
+          "position": [
+            0.0283,
+            0.1967,
+            0.0449,
+            0.2698
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape17",
+          "type": "body",
+          "position": [
+            0.3688,
+            0.5471,
+            0.2621,
+            0.0582
+          ],
+          "text": "中国复合肥产能分布情况",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape18",
+          "type": "image",
+          "position": [
+            0.3996,
+            0.6035,
+            0.2009,
+            0.0323
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape19",
+          "type": "image",
+          "position": [
+            0.7039,
+            0.6035,
+            0.2009,
+            0.0323
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape20",
+          "type": "image",
+          "position": [
+            0.0952,
+            0.6035,
+            0.2009,
+            0.0323
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape21",
+          "type": "decoration",
+          "position": [
+            0.3034,
+            0.1949,
+            0.0911,
+            0.2712
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape22",
+          "type": "decoration",
+          "position": [
+            0.6218,
+            0.1967,
+            0.0931,
+            0.2694
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s4_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape1",
+          "type": "decoration",
+          "position": [
+            0.1755,
+            0.2565,
+            0.649,
+            0.2029
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape2",
+          "type": "title",
+          "position": [
+            0.1813,
+            0.1994,
+            0.6374,
+            0.0571
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape3",
+          "type": "decoration",
+          "position": [
+            -0.0,
+            0.8516,
+            1.0,
+            0.1484
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape4",
+          "type": "image",
+          "position": [
+            0.2808,
+            0.9102,
+            0.4384,
+            0.0898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape5",
+          "type": "decoration",
+          "position": [
+            0.4808,
+            0.3442,
+            0.0216,
+            0.0376
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape6",
+          "type": "body",
+          "position": [
+            0.3583,
+            0.3545,
+            0.1045,
+            0.0539
+          ],
+          "text": "增加61%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape7",
+          "type": "decoration",
+          "position": [
+            0.3583,
+            0.3305,
+            0.0827,
+            0.0156
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape8",
+          "type": "body",
+          "position": [
+            0.3583,
+            0.3092,
+            0.0742,
+            0.0395
+          ],
+          "text": "化肥用量",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape9",
+          "type": "body",
+          "position": [
+            0.6247,
+            0.3545,
+            0.1298,
+            0.0539
+          ],
+          "text": "仅增加31%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape10",
+          "type": "decoration",
+          "position": [
+            0.627,
+            0.3305,
+            0.0827,
+            0.0156
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape11",
+          "type": "body",
+          "position": [
+            0.6247,
+            0.3092,
+            0.0742,
+            0.0395
+          ],
+          "text": "粮食产量",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape12",
+          "type": "title",
+          "position": [
+            0.1971,
+            0.1909,
+            0.6059,
+            0.0539
+          ],
+          "text": "恶性循环：利用率越低，使用量越大，环境危害越严重",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape13",
+          "type": "decoration",
+          "position": [
+            0.0804,
+            0.4956,
+            0.2681,
+            0.2886
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape14",
+          "type": "decoration",
+          "position": [
+            0.366,
+            0.4956,
+            0.2681,
+            0.2886
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape15",
+          "type": "decoration",
+          "position": [
+            0.6515,
+            0.4956,
+            0.2681,
+            0.2886
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape16",
+          "type": "decoration",
+          "position": [
+            0.0634,
+            0.8865,
+            0.8733,
+            0.0808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape17",
+          "type": "decoration",
+          "position": [
+            0.2549,
+            0.3007,
+            0.0878,
+            0.1247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape18",
+          "type": "body",
+          "position": [
+            0.2865,
+            0.3289,
+            0.0247,
+            0.0474
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape19",
+          "type": "decoration",
+          "position": [
+            0.5253,
+            0.3007,
+            0.0878,
+            0.1247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape20",
+          "type": "decoration",
+          "position": [
+            -0.0,
+            0.051,
+            0.3689,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s5_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape1",
+          "type": "decoration",
+          "position": [
+            0.6616,
+            0.2651,
+            0.2606,
+            0.6498
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape2",
+          "type": "title",
+          "position": [
+            0.7246,
+            0.1987,
+            0.1346,
+            0.0718
+          ],
+          "text": "土壤退化",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape3",
+          "type": "body",
+          "position": [
+            0.6633,
+            0.6544,
+            0.2393,
+            0.1578
+          ],
+          "text": "开发土壤修复技术，通过调节土壤pH值、增加有机质含量等手段，修复和改良退化的土壤\n提高其肥力和水分保持能力，恢复农田的生产力",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape4",
+          "type": "decoration",
+          "position": [
+            0.6779,
+            0.2969,
+            0.22,
+            0.2695
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape5",
+          "type": "decoration",
+          "position": [
+            0.6977,
+            0.598,
+            0.1804,
+            0.0449
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape6",
+          "type": "title",
+          "position": [
+            0.4327,
+            0.1987,
+            0.1346,
+            0.0718
+          ],
+          "text": "环境污染",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape7",
+          "type": "decoration",
+          "position": [
+            0.3697,
+            0.2651,
+            0.2606,
+            0.6498
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape8",
+          "type": "body",
+          "position": [
+            0.3784,
+            0.6544,
+            0.2264,
+            0.1282
+          ],
+          "text": "采用生物有机废弃物等原料制成的有机复合肥\n有效减少环境污染，并为土壤提供更多有机质和微生物，促进土壤健康",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape9",
+          "type": "decoration",
+          "position": [
+            0.386,
+            0.2969,
+            0.22,
+            0.2695
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape10",
+          "type": "decoration",
+          "position": [
+            0.3981,
+            0.598,
+            0.1958,
+            0.0449
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape11",
+          "type": "decoration",
+          "position": [
+            0.0778,
+            0.2651,
+            0.2606,
+            0.6498
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape12",
+          "type": "title",
+          "position": [
+            0.1239,
+            0.1987,
+            0.1683,
+            0.0718
+          ],
+          "text": "营养不平衡",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape13",
+          "type": "body",
+          "position": [
+            0.0887,
+            0.6544,
+            0.222,
+            0.0874
+          ],
+          "text": "研发全面配方肥料，合理搭配多种有机和无机养分元素，实现作物均衡的养分供给，提高产量和品质",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape14",
+          "type": "decoration",
+          "position": [
+            0.0945,
+            0.2969,
+            0.22,
+            0.2695
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape15",
+          "type": "decoration",
+          "position": [
+            0.116,
+            0.598,
+            0.1769,
+            0.0449
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape16",
+          "type": "decoration",
+          "position": [
+            -0.0,
+            0.8516,
+            1.0,
+            0.1484
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape17",
+          "type": "image",
+          "position": [
+            0.2808,
+            0.9102,
+            0.4384,
+            0.0898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape18",
+          "type": "decoration",
+          "position": [
+            0.0866,
+            0.8787,
+            0.8268,
+            0.0808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape19",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3526,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s6_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.2341,
+            1.0,
+            0.7659
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape2",
+          "type": "image",
+          "position": [
+            0.0,
+            0.2449,
+            1.0,
+            0.7659
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape3",
+          "type": "title",
+          "position": [
+            0.3499,
+            0.244,
+            0.3052,
+            0.4046
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape4",
+          "type": "body",
+          "position": [
+            0.3867,
+            0.3834,
+            0.2281,
+            0.2931
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape5",
+          "type": "decoration",
+          "position": [
+            0.3764,
+            0.3818,
+            0.0,
+            0.184
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape6",
+          "type": "decoration",
+          "position": [
+            0.5241,
+            0.5997,
+            0.0,
+            0.184
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape7",
+          "type": "decoration",
+          "position": [
+            0.5241,
+            0.2901,
+            0.0,
+            0.1179
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape8",
+          "type": "body",
+          "position": [
+            0.0262,
+            0.6438,
+            0.9378,
+            0.2966
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape9",
+          "type": "decoration",
+          "position": [
+            0.4691,
+            0.6083,
+            0.0,
+            0.1063
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape10",
+          "type": "image",
+          "position": [
+            0.3891,
+            0.3044,
+            0.22,
+            0.2283
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape11",
+          "type": "decoration",
+          "position": [
+            0.0868,
+            0.5604,
+            0.16,
+            0.3205
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape12",
+          "type": "decoration",
+          "position": [
+            0.3091,
+            0.6113,
+            0.16,
+            0.3205
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape13",
+          "type": "decoration",
+          "position": [
+            0.5311,
+            0.6113,
+            0.16,
+            0.3205
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape14",
+          "type": "decoration",
+          "position": [
+            0.7533,
+            0.5604,
+            0.16,
+            0.3205
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape15",
+          "type": "body",
+          "position": [
+            0.3959,
+            0.4972,
+            0.2132,
+            0.0455
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape16",
+          "type": "body",
+          "position": [
+            0.4309,
+            0.5616,
+            0.1432,
+            0.0293
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape17",
+          "type": "decoration",
+          "position": [
+            0.0677,
+            0.3308,
+            0.388,
+            0.1823
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape18",
+          "type": "decoration",
+          "position": [
+            0.55,
+            0.3308,
+            0.388,
+            0.1823
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape19",
+          "type": "body",
+          "position": [
+            0.0961,
+            0.4067,
+            0.2321,
+            0.0729
+          ],
+          "text": "具有多种营养成分，可以配合化肥使用，以满足作物对养分的需求",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape20",
+          "type": "body",
+          "position": [
+            0.0961,
+            0.3586,
+            0.1893,
+            0.0404
+          ],
+          "text": "合理搭配有机肥和化肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape21",
+          "type": "decoration",
+          "position": [
+            0.4991,
+            0.6171,
+            0.0,
+            0.1082
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape22",
+          "type": "body",
+          "position": [
+            0.6892,
+            0.4067,
+            0.2152,
+            0.0729
+          ],
+          "text": "复合型有机肥的质量和安全得到保障，避免使用低质量肥料",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape23",
+          "type": "body",
+          "position": [
+            0.753,
+            0.3586,
+            0.1515,
+            0.0404
+          ],
+          "text": "质量和安全有保障",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape24",
+          "type": "decoration",
+          "position": [
+            0.6347,
+            0.3633,
+            0.0,
+            0.204
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape25",
+          "type": "decoration",
+          "position": [
+            0.0804,
+            0.154,
+            0.8425,
+            0.1311
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape26",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3764,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s7_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5109,
+            0.3914,
+            0.4891
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape2",
+          "type": "image",
+          "position": [
+            0.6086,
+            0.4962,
+            0.3914,
+            0.5038
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape3",
+          "type": "decoration",
+          "position": [
+            0.3648,
+            0.212,
+            0.2394,
+            0.5408
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape4",
+          "type": "decoration",
+          "position": [
+            0.0462,
+            0.2256,
+            0.1854,
+            0.8838
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape5",
+          "type": "decoration",
+          "position": [
+            0.2134,
+            0.2256,
+            0.1854,
+            0.8838
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape6",
+          "type": "decoration",
+          "position": [
+            0.7791,
+            0.2256,
+            0.1854,
+            0.8838
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape7",
+          "type": "decoration",
+          "position": [
+            0.6119,
+            0.2256,
+            0.1854,
+            0.8838
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape8",
+          "type": "image",
+          "position": [
+            0.1648,
+            0.7636,
+            0.6747,
+            0.2364
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape9",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3764,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "layout": "content_with_image",
+      "zones": [
+        {
+          "zone_id": "s8_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape1",
+          "type": "image",
+          "position": [
+            0.6882,
+            0.0,
+            0.3116,
+            0.229
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape2",
+          "type": "decoration",
+          "position": [
+            0.1401,
+            0.3813,
+            0.7198,
+            0.0689
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape3",
+          "type": "decoration",
+          "position": [
+            0.1086,
+            0.4762,
+            0.7828,
+            0.6953
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape4",
+          "type": "body",
+          "position": [
+            0.0,
+            0.7822,
+            1.0,
+            0.2178
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape5",
+          "type": "image",
+          "position": [
+            0.0,
+            0.7257,
+            1.0,
+            0.2743
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape6",
+          "type": "decoration",
+          "position": [
+            0.1984,
+            0.2824,
+            0.6031,
+            0.1104
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape7",
+          "type": "decoration",
+          "position": [
+            0.8165,
+            0.2556,
+            0.1397,
+            0.1353
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape8",
+          "type": "decoration",
+          "position": [
+            0.0437,
+            0.2556,
+            0.1397,
+            0.1353
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape9",
+          "type": "title",
+          "position": [
+            0.2663,
+            0.1756,
+            0.4674,
+            0.1122
+          ],
+          "text": "多家主流媒体竞相报道",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape10",
+          "type": "image",
+          "position": [
+            0.0,
+            0.7257,
+            1.0,
+            0.2743
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape11",
+          "type": "image",
+          "position": [
+            0.1473,
+            0.3664,
+            0.7054,
+            0.0643
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape12",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.313,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "layout": "content",
+      "zones": [
+        {
+          "zone_id": "s9_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape1",
+          "type": "title",
+          "position": [
+            0.4815,
+            0.1718,
+            0.4764,
+            0.8559
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape2",
+          "type": "decoration",
+          "position": [
+            0.5096,
+            0.1954,
+            0.4203,
+            0.0602
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape3",
+          "type": "decoration",
+          "position": [
+            0.4991,
+            0.2769,
+            0.4414,
+            0.5438
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape4",
+          "type": "decoration",
+          "position": [
+            0.042,
+            0.242,
+            0.4283,
+            0.7718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape5",
+          "type": "decoration",
+          "position": [
+            0.4444,
+            0.8723,
+            0.5353,
+            0.0689
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape6",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3526,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s10_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5357,
+            1.0,
+            0.4643
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape2",
+          "type": "decoration",
+          "position": [
+            -0.1748,
+            0.4283,
+            1.2128,
+            0.271
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape3",
+          "type": "decoration",
+          "position": [
+            0.0734,
+            0.3758,
+            0.143,
+            0.0119
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape4",
+          "type": "body",
+          "position": [
+            0.0734,
+            0.4031,
+            0.1975,
+            0.1106
+          ],
+          "text": "利学使用化肥，推广测土配方施肥平衡施肥、缓释氮肥等适用技术；防治化肥等面源污染",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape5",
+          "type": "body",
+          "position": [
+            0.0654,
+            0.3431,
+            0.1473,
+            0.0449
+          ],
+          "text": "「十一五」时期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape6",
+          "type": "decoration",
+          "position": [
+            0.0579,
+            0.3531,
+            0.0,
+            0.2622
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape7",
+          "type": "decoration",
+          "position": [
+            0.3542,
+            0.2892,
+            0.143,
+            0.0119
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape8",
+          "type": "body",
+          "position": [
+            0.3542,
+            0.3165,
+            0.1844,
+            0.1106
+          ],
+          "text": "加快化肥原料调整，治理农药、化肥等面源污染，进一步重视化肥科学合理使用性",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape9",
+          "type": "body",
+          "position": [
+            0.3462,
+            0.2564,
+            0.1473,
+            0.0449
+          ],
+          "text": "「十二五」时期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape10",
+          "type": "decoration",
+          "position": [
+            0.3382,
+            0.2664,
+            0.0,
+            0.2336
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape11",
+          "type": "decoration",
+          "position": [
+            0.6169,
+            0.2257,
+            0.1428,
+            0.0119
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape12",
+          "type": "body",
+          "position": [
+            0.6169,
+            0.253,
+            0.1762,
+            0.1106
+          ],
+          "text": "深入实施农药化肥行动，加强产地环境保护治理，加速推进农业绿色转型",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape13",
+          "type": "title",
+          "position": [
+            0.609,
+            0.193,
+            0.1473,
+            0.0449
+          ],
+          "text": "「十四五」时期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape14",
+          "type": "decoration",
+          "position": [
+            0.5998,
+            0.2029,
+            0.0,
+            0.2693
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape15",
+          "type": "decoration",
+          "position": [
+            0.1705,
+            0.72,
+            0.1248,
+            0.0119
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape16",
+          "type": "body",
+          "position": [
+            0.1705,
+            0.7473,
+            0.1834,
+            0.1483
+          ],
+          "text": "积极发展高效化肥，满足市场需求，发展化肥成套设备，防治不合理使用化肥带来的化学污染",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape17",
+          "type": "body",
+          "position": [
+            0.1625,
+            0.6873,
+            0.1262,
+            0.0449
+          ],
+          "text": "「十五」时期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape18",
+          "type": "decoration",
+          "position": [
+            0.1543,
+            0.7096,
+            0.0,
+            0.1809
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape19",
+          "type": "decoration",
+          "position": [
+            0.0489,
+            0.6421,
+            0.0178,
+            0.0368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape20",
+          "type": "decoration",
+          "position": [
+            0.1453,
+            0.6483,
+            0.0178,
+            0.0368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape21",
+          "type": "decoration",
+          "position": [
+            0.33,
+            0.5233,
+            0.0178,
+            0.0368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape22",
+          "type": "decoration",
+          "position": [
+            0.5909,
+            0.4937,
+            0.0178,
+            0.0368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape23",
+          "type": "image",
+          "position": [
+            0.347,
+            0.2977,
+            0.4529,
+            0.5489
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape24",
+          "type": "decoration",
+          "position": [
+            0.5466,
+            0.259,
+            0.5162,
+            0.6883
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape25",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.33,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape26",
+          "type": "decoration",
+          "position": [
+            0.4439,
+            0.6892,
+            0.1402,
+            0.0119
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape27",
+          "type": "body",
+          "position": [
+            0.4439,
+            0.7165,
+            0.191,
+            0.1106
+          ],
+          "text": "实施农药化肥使用量零增长行动，全面推广测土配方施肥、农药精准高效施用",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape28",
+          "type": "body",
+          "position": [
+            0.436,
+            0.6565,
+            0.1473,
+            0.0449
+          ],
+          "text": "「十三五」时期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape29",
+          "type": "decoration",
+          "position": [
+            0.4272,
+            0.599,
+            0.0,
+            0.228
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape30",
+          "type": "decoration",
+          "position": [
+            0.4186,
+            0.5378,
+            0.0178,
+            0.0368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s11_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape1",
+          "type": "title",
+          "position": [
+            0.5,
+            0.2093,
+            0.5,
+            0.4447
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape2",
+          "type": "title",
+          "position": [
+            0.0,
+            0.2093,
+            0.5,
+            0.4447
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape3",
+          "type": "decoration",
+          "position": [
+            0.504,
+            0.2625,
+            0.4237,
+            0.2544
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape4",
+          "type": "decoration",
+          "position": [
+            0.0645,
+            0.2577,
+            0.4237,
+            0.2544
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape5",
+          "type": "title",
+          "position": [
+            0.4454,
+            0.2293,
+            0.1092,
+            0.2667
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape6",
+          "type": "image",
+          "position": [
+            0.4505,
+            0.2372,
+            0.099,
+            0.251
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape7",
+          "type": "decoration",
+          "position": [
+            0.5497,
+            0.2293,
+            0.0049,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape8",
+          "type": "decoration",
+          "position": [
+            0.4454,
+            0.2293,
+            0.0049,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape9",
+          "type": "decoration",
+          "position": [
+            0.5497,
+            0.4878,
+            0.0049,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape10",
+          "type": "decoration",
+          "position": [
+            0.4454,
+            0.4878,
+            0.0049,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape11",
+          "type": "decoration",
+          "position": [
+            0.2899,
+            0.6676,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape12",
+          "type": "body",
+          "position": [
+            0.3213,
+            0.6317,
+            0.0518,
+            0.0808
+          ],
+          "text": "9项",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape13",
+          "type": "decoration",
+          "position": [
+            0.3092,
+            0.5722,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape14",
+          "type": "decoration",
+          "position": [
+            0.3051,
+            0.6678,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape15",
+          "type": "decoration",
+          "position": [
+            0.4427,
+            0.6338,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape16",
+          "type": "body",
+          "position": [
+            0.4741,
+            0.5979,
+            0.0518,
+            0.0808
+          ],
+          "text": "5项",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape17",
+          "type": "decoration",
+          "position": [
+            0.4646,
+            0.634,
+            0.0709,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape18",
+          "type": "decoration",
+          "position": [
+            0.4514,
+            0.5384,
+            0.0972,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape19",
+          "type": "decoration",
+          "position": [
+            0.5956,
+            0.6676,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape20",
+          "type": "body",
+          "position": [
+            0.6269,
+            0.6317,
+            0.0518,
+            0.0808
+          ],
+          "text": "3篇",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape21",
+          "type": "decoration",
+          "position": [
+            0.6149,
+            0.5722,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape22",
+          "type": "decoration",
+          "position": [
+            0.6108,
+            0.6678,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape23",
+          "type": "decoration",
+          "position": [
+            0.2261,
+            0.7562,
+            0.5479,
+            0.1004
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape24",
+          "type": "decoration",
+          "position": [
+            0.0561,
+            0.7407,
+            0.8878,
+            0.1353
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape25",
+          "type": "decoration",
+          "position": [
+            0.1349,
+            0.8458,
+            0.7301,
+            0.1554
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape26",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3526,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s12_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape1",
+          "type": "title",
+          "position": [
+            0.3952,
+            0.217,
+            0.6048,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape2",
+          "type": "body",
+          "position": [
+            0.4336,
+            0.4539,
+            0.5664,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape3",
+          "type": "body",
+          "position": [
+            0.3952,
+            0.6908,
+            0.6048,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape4",
+          "type": "title",
+          "position": [
+            0.3956,
+            0.217,
+            0.4787,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape5",
+          "type": "body",
+          "position": [
+            0.434,
+            0.4539,
+            0.4403,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape6",
+          "type": "body",
+          "position": [
+            0.3956,
+            0.6908,
+            0.4787,
+            0.2167
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape7",
+          "type": "title",
+          "position": [
+            0.3911,
+            0.217,
+            0.0511,
+            0.6905
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape8",
+          "type": "image",
+          "position": [
+            0.2094,
+            0.4375,
+            0.4269,
+            0.2712
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape9",
+          "type": "title",
+          "position": [
+            0.8549,
+            0.1825,
+            0.1095,
+            0.7595
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape10",
+          "type": "title",
+          "position": [
+            0.8629,
+            0.1825,
+            0.1095,
+            0.7595
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape11",
+          "type": "decoration",
+          "position": [
+            0.06,
+            0.7607,
+            0.3069,
+            0.1468
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape12",
+          "type": "decoration",
+          "position": [
+            0.0536,
+            0.2311,
+            0.3198,
+            0.4393
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape13",
+          "type": "body",
+          "position": [
+            0.0225,
+            0.5528,
+            0.382,
+            0.2532
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape14",
+          "type": "decoration",
+          "position": [
+            0.0733,
+            0.6975,
+            0.069,
+            0.1227
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape15",
+          "type": "decoration",
+          "position": [
+            0.2847,
+            0.6975,
+            0.069,
+            0.1227
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape16",
+          "type": "decoration",
+          "position": [
+            0.179,
+            0.6804,
+            0.069,
+            0.1227
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape17",
+          "type": "body",
+          "position": [
+            0.5786,
+            0.2621,
+            0.3266,
+            0.1264
+          ],
+          "text": "合理规划研究过程，避免出现不必要的重复性工作。可以通过分析前期研究成果，确定最优方案，避免盲目地投入大量时间和经费",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape18",
+          "type": "body",
+          "position": [
+            0.5786,
+            0.499,
+            0.3266,
+            0.1264
+          ],
+          "text": "优化生产工艺和流程，采用先进的生产设备和技术，以提高生产效率。自动化生产线和流程控制，可以降低生产成本并提高产量",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape19",
+          "type": "body",
+          "position": [
+            0.5786,
+            0.7359,
+            0.3266,
+            0.1264
+          ],
+          "text": "引入自动化和智能化设备，例如传感器监控系统等，通过实时监测和控制，减少人为操作和浪费，提高生产效率",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape20",
+          "type": "decoration",
+          "position": [
+            0.4661,
+            0.2516,
+            0.098,
+            0.137
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape21",
+          "type": "decoration",
+          "position": [
+            0.4661,
+            0.4884,
+            0.098,
+            0.137
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape22",
+          "type": "decoration",
+          "position": [
+            0.4661,
+            0.7253,
+            0.098,
+            0.137
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape23",
+          "type": "image",
+          "position": [
+            0.2921,
+            0.71,
+            0.0542,
+            0.0976
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape24",
+          "type": "image",
+          "position": [
+            0.1864,
+            0.693,
+            0.0542,
+            0.0976
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape25",
+          "type": "image",
+          "position": [
+            0.0807,
+            0.71,
+            0.0542,
+            0.0976
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape26",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3526,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s13_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5111,
+            0.3451,
+            0.4889
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape2",
+          "type": "image",
+          "position": [
+            0.6538,
+            0.5111,
+            0.3462,
+            0.4889
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape3",
+          "type": "image",
+          "position": [
+            0.1717,
+            0.7777,
+            0.6747,
+            0.2223
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape4",
+          "type": "body",
+          "position": [
+            -0.0122,
+            0.459,
+            0.9699,
+            0.371
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape5",
+          "type": "decoration",
+          "position": [
+            0.7156,
+            0.1825,
+            0.2252,
+            0.268
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape6",
+          "type": "decoration",
+          "position": [
+            0.7457,
+            0.2025,
+            0.1651,
+            0.0666
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape7",
+          "type": "body",
+          "position": [
+            0.7396,
+            0.2941,
+            0.1772,
+            0.0729
+          ],
+          "text": "将有机物料和无机肥料混合均匀后制成有机复合肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape8",
+          "type": "decoration",
+          "position": [
+            0.5378,
+            0.5103,
+            0.0,
+            0.2216
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape9",
+          "type": "decoration",
+          "position": [
+            0.0916,
+            0.3481,
+            0.2422,
+            0.3157
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape10",
+          "type": "decoration",
+          "position": [
+            0.2127,
+            0.583,
+            0.0,
+            0.2135
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape11",
+          "type": "decoration",
+          "position": [
+            0.1302,
+            0.3783,
+            0.1651,
+            0.0666
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape12",
+          "type": "body",
+          "position": [
+            0.1241,
+            0.4688,
+            0.1772,
+            0.1106
+          ],
+          "text": "将经过处理的有机物料和无机肥料混合，在造粒机中制成颗粒状的有机复合肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape13",
+          "type": "decoration",
+          "position": [
+            0.793,
+            0.3759,
+            0.0705,
+            0.1939
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape14",
+          "type": "image",
+          "position": [
+            0.5026,
+            0.5302,
+            0.0705,
+            0.2391
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape15",
+          "type": "image",
+          "position": [
+            0.1775,
+            0.5883,
+            0.0705,
+            0.2391
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape16",
+          "type": "decoration",
+          "position": [
+            0.4167,
+            0.291,
+            0.2422,
+            0.3157
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape17",
+          "type": "decoration",
+          "position": [
+            0.4553,
+            0.3212,
+            0.1651,
+            0.0666
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape18",
+          "type": "body",
+          "position": [
+            0.4492,
+            0.4117,
+            0.1772,
+            0.1106
+          ],
+          "text": "使用动植物残体、排泄物等有机物料，经过堆肥发酵处理后，再添加无机化肥",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape19",
+          "type": "decoration",
+          "position": [
+            0.3253,
+            0.8021,
+            0.3495,
+            0.1665
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape20",
+          "type": "title",
+          "position": [
+            0.0612,
+            0.2044,
+            0.6101,
+            0.0449
+          ],
+          "text": "提高农作物的产量和品质，有利于保护环境和促进农业可持续发展",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape21",
+          "type": "title",
+          "position": [
+            0.0502,
+            0.2207,
+            0.6348,
+            0.0458
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape22",
+          "type": "decoration",
+          "position": [
+            0.6356,
+            0.2536,
+            0.0282,
+            0.0069
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape23",
+          "type": "decoration",
+          "position": [
+            0.1828,
+            0.2604,
+            0.4481,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape24",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3526,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s14_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5357,
+            1.0,
+            0.4643
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape2",
+          "type": "title",
+          "position": [
+            0.0414,
+            0.1882,
+            0.6028,
+            0.7537
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape3",
+          "type": "decoration",
+          "position": [
+            0.7067,
+            0.282,
+            0.2859,
+            0.2631
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape4",
+          "type": "decoration",
+          "position": [
+            0.5722,
+            0.1889,
+            0.1385,
+            0.7537
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape5",
+          "type": "decoration",
+          "position": [
+            0.0717,
+            0.4779,
+            0.5256,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape6",
+          "type": "decoration",
+          "position": [
+            0.0717,
+            0.6671,
+            0.5256,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape7",
+          "type": "decoration",
+          "position": [
+            0.5096,
+            0.3105,
+            0.0878,
+            0.1247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape8",
+          "type": "body",
+          "position": [
+            0.522,
+            0.336,
+            0.0631,
+            0.0501
+          ],
+          "text": "消费端",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape9",
+          "type": "decoration",
+          "position": [
+            0.0845,
+            0.2969,
+            0.4199,
+            0.158
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape10",
+          "type": "decoration",
+          "position": [
+            0.0965,
+            0.2212,
+            0.3961,
+            0.0725
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape11",
+          "type": "decoration",
+          "position": [
+            0.5096,
+            0.5113,
+            0.0878,
+            0.1247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape12",
+          "type": "body",
+          "position": [
+            0.5325,
+            0.5368,
+            0.0421,
+            0.0501
+          ],
+          "text": "行业",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape13",
+          "type": "decoration",
+          "position": [
+            0.0744,
+            0.515,
+            0.4223,
+            0.1182
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape14",
+          "type": "decoration",
+          "position": [
+            0.5096,
+            0.7155,
+            0.0878,
+            0.1247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape15",
+          "type": "body",
+          "position": [
+            0.522,
+            0.741,
+            0.0631,
+            0.0501
+          ],
+          "text": "原材料",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape16",
+          "type": "decoration",
+          "position": [
+            0.0736,
+            0.8111,
+            0.1132,
+            0.0637
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape17",
+          "type": "decoration",
+          "position": [
+            0.1012,
+            0.7512,
+            0.0581,
+            0.0285
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape18",
+          "type": "body",
+          "position": [
+            0.1176,
+            0.7111,
+            0.0252,
+            0.0539
+          ],
+          "text": "氮",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape19",
+          "type": "decoration",
+          "position": [
+            0.1306,
+            0.7798,
+            0.0,
+            0.031
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape20",
+          "type": "decoration",
+          "position": [
+            0.3828,
+            0.8111,
+            0.1132,
+            0.0637
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape21",
+          "type": "decoration",
+          "position": [
+            0.4103,
+            0.7512,
+            0.0581,
+            0.0285
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape22",
+          "type": "body",
+          "position": [
+            0.4268,
+            0.7111,
+            0.0252,
+            0.0539
+          ],
+          "text": "钾",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape23",
+          "type": "decoration",
+          "position": [
+            0.4398,
+            0.7798,
+            0.0,
+            0.031
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape24",
+          "type": "decoration",
+          "position": [
+            0.3261,
+            0.8274,
+            0.047,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape25",
+          "type": "decoration",
+          "position": [
+            0.2599,
+            0.8274,
+            0.047,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape26",
+          "type": "body",
+          "position": [
+            0.2832,
+            0.8111,
+            0.0663,
+            0.0189
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape27",
+          "type": "decoration",
+          "position": [
+            0.2874,
+            0.7512,
+            0.0581,
+            0.0285
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape28",
+          "type": "body",
+          "position": [
+            0.2912,
+            0.7111,
+            0.0505,
+            0.0539
+          ],
+          "text": "硫酸",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape29",
+          "type": "decoration",
+          "position": [
+            0.3169,
+            0.7798,
+            0.0,
+            0.031
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape30",
+          "type": "decoration",
+          "position": [
+            0.1871,
+            0.7512,
+            0.0701,
+            0.0285
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape31",
+          "type": "body",
+          "position": [
+            0.197,
+            0.7111,
+            0.0505,
+            0.0539
+          ],
+          "text": "磷酸",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape32",
+          "type": "decoration",
+          "position": [
+            0.1925,
+            0.8274,
+            0.0594,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape33",
+          "type": "decoration",
+          "position": [
+            0.2222,
+            0.7798,
+            0.0,
+            0.0488
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape34",
+          "type": "body",
+          "position": [
+            0.7298,
+            0.3073,
+            0.2231,
+            0.2125
+          ],
+          "text": "复合肥产业链上游是煤炭、天然气、磷矿石、钾盐矿、盐湖等天然矿产资源加工行业，复合肥配比需要氮、磷、硫、钾等化学元素材料",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape35",
+          "type": "decoration",
+          "position": [
+            0.7067,
+            0.574,
+            0.2859,
+            0.2208
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape36",
+          "type": "body",
+          "position": [
+            0.7298,
+            0.5997,
+            0.2231,
+            0.1695
+          ],
+          "text": "国内钾矿资源较少且盐湖禀赋较差，氯化钾及硫化钾市场比较依赖于海外进口，导致国内钾元素复合肥市场价格偏高",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape37",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3375,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape38",
+          "type": "decoration",
+          "position": [
+            0.6643,
+            0.3779,
+            0.0133,
+            0.08
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape39",
+          "type": "decoration",
+          "position": [
+            0.6643,
+            0.6427,
+            0.027,
+            0.0804
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape40",
+          "type": "body",
+          "position": [
+            0.6667,
+            0.6561,
+            0.0347,
+            0.0567
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape41",
+          "type": "body",
+          "position": [
+            0.6643,
+            0.3852,
+            0.0347,
+            0.0567
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s15_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape1",
+          "type": "body",
+          "position": [
+            0.0288,
+            0.6777,
+            0.9761,
+            0.321
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape2",
+          "type": "body",
+          "position": [
+            0.0361,
+            0.6883,
+            0.9655,
+            0.3117
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape3",
+          "type": "body",
+          "position": [
+            0.0361,
+            0.6883,
+            0.9655,
+            0.3117
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape4",
+          "type": "decoration",
+          "position": [
+            0.0607,
+            0.5743,
+            0.0,
+            0.4102
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape5",
+          "type": "decoration",
+          "position": [
+            0.218,
+            0.4852,
+            0.0104,
+            0.3813
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape6",
+          "type": "decoration",
+          "position": [
+            0.3751,
+            0.4616,
+            0.0104,
+            0.3446
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape7",
+          "type": "body",
+          "position": [
+            0.0566,
+            0.5602,
+            0.0083,
+            0.0147
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape8",
+          "type": "body",
+          "position": [
+            0.0662,
+            0.6097,
+            0.1506,
+            0.2368
+          ],
+          "text": "以赛促学，促创\n11项专利、论文软著\n培养本科888人\n培养硕士888人\n培养博士888人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape9",
+          "type": "decoration",
+          "position": [
+            0.5401,
+            0.4278,
+            0.0104,
+            0.3026
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape10",
+          "type": "decoration",
+          "position": [
+            0.0715,
+            0.5875,
+            0.0919,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape11",
+          "type": "body",
+          "position": [
+            0.0774,
+            0.5526,
+            0.0841,
+            0.0449
+          ],
+          "text": "培训人才",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape12",
+          "type": "body",
+          "position": [
+            0.2282,
+            0.5375,
+            0.1506,
+            0.1402
+          ],
+          "text": "乡村实地实验\n农户走访调查调研\n科技入户，农户培训",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape13",
+          "type": "decoration",
+          "position": [
+            0.2298,
+            0.5152,
+            0.0919,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape14",
+          "type": "body",
+          "position": [
+            0.2357,
+            0.4809,
+            0.0841,
+            0.0449
+          ],
+          "text": "实地实践",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape15",
+          "type": "body",
+          "position": [
+            0.3849,
+            0.5091,
+            0.1656,
+            0.1402
+          ],
+          "text": "农、理多学科融合\n累积专项经费55万元\n参加公司科技培训",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape16",
+          "type": "decoration",
+          "position": [
+            0.3911,
+            0.4869,
+            0.0919,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape17",
+          "type": "body",
+          "position": [
+            0.397,
+            0.4526,
+            0.0841,
+            0.0449
+          ],
+          "text": "科技融合",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape18",
+          "type": "body",
+          "position": [
+            0.5504,
+            0.4765,
+            0.1656,
+            0.0956
+          ],
+          "text": "带动就业人数888人\n直接带动就业888人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape19",
+          "type": "decoration",
+          "position": [
+            0.5535,
+            0.4543,
+            0.0919,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape20",
+          "type": "body",
+          "position": [
+            0.5594,
+            0.42,
+            0.0841,
+            0.0449
+          ],
+          "text": "就业创业",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape21",
+          "type": "decoration",
+          "position": [
+            0.0449,
+            0.1746,
+            0.9102,
+            0.1311
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape22",
+          "type": "image",
+          "position": [
+            0.1783,
+            0.7892,
+            0.2411,
+            0.2108
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape23",
+          "type": "image",
+          "position": [
+            0.4173,
+            0.7288,
+            0.2025,
+            0.2712
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape24",
+          "type": "image",
+          "position": [
+            0.62,
+            0.6909,
+            0.2683,
+            0.249
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape25",
+          "type": "image",
+          "position": [
+            0.0361,
+            0.9053,
+            0.1417,
+            0.0947
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape26",
+          "type": "image",
+          "position": [
+            0.6555,
+            0.2896,
+            0.443,
+            0.5701
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape27",
+          "type": "footer",
+          "position": [
+            0.0548,
+            0.9735,
+            0.0119,
+            0.0212
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape28",
+          "type": "footer",
+          "position": [
+            0.2173,
+            0.8651,
+            0.0119,
+            0.0212
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape29",
+          "type": "body",
+          "position": [
+            0.3743,
+            0.7846,
+            0.0119,
+            0.0212
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape30",
+          "type": "body",
+          "position": [
+            0.5393,
+            0.7258,
+            0.0119,
+            0.0212
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape31",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3621,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s16_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape1",
+          "type": "image",
+          "position": [
+            0.5907,
+            0.5227,
+            0.1741,
+            0.2106
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape2",
+          "type": "image",
+          "position": [
+            0.4112,
+            0.5227,
+            0.1741,
+            0.1996
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape3",
+          "type": "image",
+          "position": [
+            0.2317,
+            0.5227,
+            0.1741,
+            0.211
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape4",
+          "type": "image",
+          "position": [
+            0.0674,
+            0.5227,
+            0.159,
+            0.2349
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape5",
+          "type": "image",
+          "position": [
+            0.7702,
+            0.5227,
+            0.161,
+            0.2343
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape6",
+          "type": "image",
+          "position": [
+            0.0558,
+            0.2673,
+            0.1706,
+            0.248
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape7",
+          "type": "image",
+          "position": [
+            0.2317,
+            0.2942,
+            0.1741,
+            0.221
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape8",
+          "type": "image",
+          "position": [
+            0.4112,
+            0.3052,
+            0.1741,
+            0.2101
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape9",
+          "type": "image",
+          "position": [
+            0.5907,
+            0.2959,
+            0.1741,
+            0.2194
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape10",
+          "type": "image",
+          "position": [
+            0.7702,
+            0.271,
+            0.172,
+            0.2442
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape11",
+          "type": "body",
+          "position": [
+            0.0385,
+            0.7119,
+            0.923,
+            0.2481
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape12",
+          "type": "body",
+          "position": [
+            0.0264,
+            0.6857,
+            0.9472,
+            0.2481
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape13",
+          "type": "body",
+          "position": [
+            -0.0531,
+            0.7332,
+            1.1062,
+            0.2068
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape14",
+          "type": "title",
+          "position": [
+            0.922,
+            0.2372,
+            0.0297,
+            0.5153
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape15",
+          "type": "decoration",
+          "position": [
+            0.9369,
+            0.4677,
+            0.0121,
+            0.2859
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape16",
+          "type": "title",
+          "position": [
+            0.0466,
+            0.2372,
+            0.0297,
+            0.5153
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape17",
+          "type": "decoration",
+          "position": [
+            0.0493,
+            0.4677,
+            0.0121,
+            0.2859
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape18",
+          "type": "title",
+          "position": [
+            -0.0672,
+            0.0973,
+            1.1495,
+            0.2068
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape19",
+          "type": "title",
+          "position": [
+            -0.0646,
+            0.0437,
+            1.1495,
+            0.2068
+          ],
+          "text": "带动学生就业与社会体验助理农户增收",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape20",
+          "type": "title",
+          "position": [
+            -0.0672,
+            0.0662,
+            1.1495,
+            0.2068
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape21",
+          "type": "title",
+          "position": [
+            -0.0672,
+            -0.0076,
+            1.1495,
+            0.2068
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape22",
+          "type": "image",
+          "position": [
+            0.082,
+            0.8251,
+            0.8881,
+            0.2068
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape23",
+          "type": "decoration",
+          "position": [
+            0.1297,
+            0.8476,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape24",
+          "type": "body",
+          "position": [
+            0.1616,
+            0.8269,
+            0.0508,
+            0.0539
+          ],
+          "text": "55次",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape25",
+          "type": "decoration",
+          "position": [
+            0.149,
+            0.7687,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape26",
+          "type": "decoration",
+          "position": [
+            0.1449,
+            0.8478,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape27",
+          "type": "decoration",
+          "position": [
+            0.2826,
+            0.8388,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape28",
+          "type": "body",
+          "position": [
+            0.3114,
+            0.8131,
+            0.0569,
+            0.0539
+          ],
+          "text": "1万人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape29",
+          "type": "decoration",
+          "position": [
+            0.3019,
+            0.7599,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape30",
+          "type": "decoration",
+          "position": [
+            0.2978,
+            0.839,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape31",
+          "type": "decoration",
+          "position": [
+            0.4356,
+            0.8301,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape32",
+          "type": "body",
+          "position": [
+            0.4644,
+            0.8064,
+            0.0569,
+            0.0539
+          ],
+          "text": "9万亩",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape33",
+          "type": "decoration",
+          "position": [
+            0.4549,
+            0.7512,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape34",
+          "type": "decoration",
+          "position": [
+            0.4508,
+            0.8302,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape35",
+          "type": "decoration",
+          "position": [
+            0.5885,
+            0.8388,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape36",
+          "type": "body",
+          "position": [
+            0.6083,
+            0.8131,
+            0.0751,
+            0.0539
+          ],
+          "text": "增33%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape37",
+          "type": "decoration",
+          "position": [
+            0.6079,
+            0.7599,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape38",
+          "type": "decoration",
+          "position": [
+            0.6037,
+            0.839,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape39",
+          "type": "decoration",
+          "position": [
+            0.7415,
+            0.8476,
+            0.1145,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape40",
+          "type": "body",
+          "position": [
+            0.7734,
+            0.8269,
+            0.0508,
+            0.0539
+          ],
+          "text": "89人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape41",
+          "type": "decoration",
+          "position": [
+            0.7608,
+            0.7687,
+            0.0759,
+            0.0475
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape42",
+          "type": "decoration",
+          "position": [
+            0.7567,
+            0.8478,
+            0.0841,
+            0.0086
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape43",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3621,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s17_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0815,
+            1.0,
+            0.9185
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape2",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3522,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape3",
+          "type": "image",
+          "position": [
+            0.0956,
+            0.6759,
+            0.8089,
+            0.2546
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape4",
+          "type": "title",
+          "position": [
+            0.053,
+            0.1635,
+            0.894,
+            0.95
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape5",
+          "type": "image",
+          "position": [
+            0.0,
+            0.7134,
+            0.5816,
+            0.2866
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape6",
+          "type": "decoration",
+          "position": [
+            0.2247,
+            0.3249,
+            0.1589,
+            0.3919
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape7",
+          "type": "decoration",
+          "position": [
+            0.0586,
+            0.3921,
+            0.1589,
+            0.3919
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape8",
+          "type": "decoration",
+          "position": [
+            0.6165,
+            0.3249,
+            0.1589,
+            0.3919
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape9",
+          "type": "decoration",
+          "position": [
+            0.7826,
+            0.3921,
+            0.1589,
+            0.3919
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape10",
+          "type": "decoration",
+          "position": [
+            0.4074,
+            0.2868,
+            0.1852,
+            0.4602
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape11",
+          "type": "image",
+          "position": [
+            0.4184,
+            0.7134,
+            0.5816,
+            0.2866
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape12",
+          "type": "image",
+          "position": [
+            0.2837,
+            0.0793,
+            0.4326,
+            0.2134
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s18_shape0",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.304,
+            0.5138,
+            0.6901
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape2",
+          "type": "image",
+          "position": [
+            0.0,
+            0.3107,
+            0.5079,
+            0.6767
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.136,
+            1.0,
+            0.864
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape4",
+          "type": "image",
+          "position": [
+            0.0,
+            0.1893,
+            1.0,
+            0.8107
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape5",
+          "type": "image",
+          "position": [
+            0.4959,
+            0.7314,
+            0.2243,
+            0.1279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape6",
+          "type": "image",
+          "position": [
+            0.6734,
+            0.6558,
+            0.2243,
+            0.1279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape7",
+          "type": "body",
+          "position": [
+            0.6227,
+            0.4628,
+            0.1557,
+            0.1483
+          ],
+          "text": "邮寄复合肥推广到全国市场，打造全新复合肥市场\n在行业居龙头地位",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape8",
+          "type": "decoration",
+          "position": [
+            0.6116,
+            0.404,
+            0.0,
+            0.3937
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape9",
+          "type": "body",
+          "position": [
+            0.8007,
+            0.4045,
+            0.166,
+            0.1707
+          ],
+          "text": "加强复合肥技术研发\n保持领先地位\n持续推广升级种植养殖新模式",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape10",
+          "type": "decoration",
+          "position": [
+            0.7896,
+            0.3443,
+            0.0,
+            0.3937
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape11",
+          "type": "image",
+          "position": [
+            0.3166,
+            0.7893,
+            0.2243,
+            0.1279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape12",
+          "type": "body",
+          "position": [
+            0.4438,
+            0.5386,
+            0.1795,
+            0.1483
+          ],
+          "text": "推广有机复合肥料\n成立公司\n推广复合肥222万袋\n创造受益1000万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape13",
+          "type": "decoration",
+          "position": [
+            0.35,
+            0.8322,
+            0.1799,
+            0.0955
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape14",
+          "type": "decoration",
+          "position": [
+            0.4326,
+            0.4747,
+            0.0,
+            0.3937
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape15",
+          "type": "decoration",
+          "position": [
+            0.5279,
+            0.7863,
+            0.1799,
+            0.0955
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape16",
+          "type": "decoration",
+          "position": [
+            0.7069,
+            0.7186,
+            0.1799,
+            0.0955
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape17",
+          "type": "decoration",
+          "position": [
+            0.106,
+            0.1813,
+            0.788,
+            0.1078
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape18",
+          "type": "decoration",
+          "position": [
+            0.4431,
+            0.5056,
+            0.0904,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape19",
+          "type": "body",
+          "position": [
+            0.4438,
+            0.4714,
+            0.0841,
+            0.0449
+          ],
+          "text": "市场开拓",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape20",
+          "type": "decoration",
+          "position": [
+            0.6188,
+            0.4318,
+            0.0904,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape21",
+          "type": "body",
+          "position": [
+            0.6227,
+            0.3969,
+            0.0841,
+            0.0449
+          ],
+          "text": "模式拓展",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape22",
+          "type": "decoration",
+          "position": [
+            0.7977,
+            0.3735,
+            0.0904,
+            0.011
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape23",
+          "type": "body",
+          "position": [
+            0.8007,
+            0.3372,
+            0.0841,
+            0.0449
+          ],
+          "text": "市场巩固",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape24",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.051,
+            0.3787,
+            0.1308
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s19_shape0",
+          "type": "image",
+          "position": [
+            0.2587,
+            0.0,
+            0.7413,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape1",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.449,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape2",
+          "type": "title",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape3",
+          "type": "title",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape4",
+          "type": "image",
+          "position": [
+            0.8574,
+            -0.6924,
+            0.1053,
+            0.757
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape5",
+          "type": "image",
+          "position": [
+            0.0,
+            0.8503,
+            0.4323,
+            0.0336
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape6",
+          "type": "image",
+          "position": [
+            -0.0,
+            -0.0,
+            0.4412,
+            0.3242
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape7",
+          "type": "decoration",
+          "position": [
+            0.0479,
+            0.1295,
+            0.634,
+            0.5551
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape8",
+          "type": "decoration",
+          "position": [
+            0.0721,
+            0.7002,
+            0.5233,
+            0.101
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape9",
+          "type": "decoration",
+          "position": [
+            0.8561,
+            0.0503,
+            0.1174,
+            0.0506
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "layout": "content",
+      "zones": [
+        {
+          "zone_id": "s20_shape0",
+          "type": "decoration",
+          "position": [
+            0.1248,
+            0.181,
+            0.0377,
+            0.2372
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape1",
+          "type": "decoration",
+          "position": [
+            0.2834,
+            0.1801,
+            0.0769,
+            0.2401
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape2",
+          "type": "decoration",
+          "position": [
+            0.461,
+            0.1784,
+            0.0783,
+            0.2429
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape3",
+          "type": "decoration",
+          "position": [
+            0.6352,
+            0.181,
+            0.0858,
+            0.2372
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape4",
+          "type": "decoration",
+          "position": [
+            0.8188,
+            0.1801,
+            0.0747,
+            0.2403
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape5",
+          "type": "decoration",
+          "position": [
+            0.1063,
+            0.5801,
+            0.0744,
+            0.2401
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape6",
+          "type": "decoration",
+          "position": [
+            0.2854,
+            0.581,
+            0.0726,
+            0.2372
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape7",
+          "type": "decoration",
+          "position": [
+            0.4594,
+            0.5784,
+            0.0809,
+            0.2435
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape8",
+          "type": "decoration",
+          "position": [
+            0.6407,
+            0.5801,
+            0.0744,
+            0.2401
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape9",
+          "type": "decoration",
+          "position": [
+            0.8183,
+            0.5784,
+            0.0761,
+            0.2431
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    }
+  ]
+}

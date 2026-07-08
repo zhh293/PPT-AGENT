@@ -20,13 +20,13 @@ BASE_URL = "https://gptimage2.online"
 
 # Next.js Server Action IDs (从前端 JS 逆向获取)
 ACTION_LOGIN = "40d394005d47a94e63d9afce96aa3014325ca8b8cb"
-ACTION_SIGNUP = "600106e3c3b2e4e139cf6f45b97fd16194794326c3"
+ACTION_SIGNUP = "40824ae53380230b8cb0db15ab8a7eae2d4d96872f"
 ACTION_SIGNOUT = "0045955e4ea6c2f153c871dffeb230d51d94ac738c"
 
 # 轮询参数
 POLL_INITIAL_DELAY_MS = 2000
 POLL_MAX_INTERVAL_MS = 6000
-POLL_TIMEOUT_MS = 72000  # 72秒超时
+POLL_TIMEOUT_MS = 180000  # 3分钟超时
 
 
 class GPTImage2Client:
@@ -51,14 +51,14 @@ class GPTImage2Client:
         """从 accounts.json 加载账号列表。"""
         if not os.path.exists(self.accounts_file):
             return {"accounts": [], "current_index": 0}
-        with open(self.accounts_file, "r") as f:
+        with open(self.accounts_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def _save_accounts(self):
         """保存账号列表到 accounts.json。"""
         os.makedirs(os.path.dirname(self.accounts_file), exist_ok=True)
-        with open(self.accounts_file, "w") as f:
-            json.dump(self.accounts, f, indent=2)
+        with open(self.accounts_file, "w", encoding="utf-8") as f:
+            json.dump(self.accounts, f, indent=2, ensure_ascii=False)
 
     def _get_current_account(self):
         """获取当前活跃账号。"""
@@ -83,7 +83,9 @@ class GPTImage2Client:
         if headers is None:
             headers = {}
         if data is not None:
-            if isinstance(data, dict) and content_type == "application/json":
+            if isinstance(data, bytes):
+                pass  # already bytes (multipart etc.)
+            elif isinstance(data, dict) and content_type == "application/json":
                 data = json.dumps(data).encode("utf-8")
             elif isinstance(data, str):
                 data = data.encode("utf-8")
@@ -133,81 +135,93 @@ class GPTImage2Client:
     # ─── 认证操作 ───
 
     def login(self, email, password):
-        """登录 GPTImage2.online（Next.js Server Action）。"""
-        # Server Action 使用 text/plain 格式的表单数据
-        form_data = f"email={email}\npassword={password}\nnext=/zh"
-        status, body, headers = self._post(
+        """登录 — multipart/form-data + Origin/Referer（适配新版 Next.js）。"""
+        # Step 1: GET 页面获取 NEXT_LOCALE cookie
+        self._get(f"{BASE_URL}/zh/sign-in")
+
+        # Step 2: 构造 multipart/form-data
+        boundary = "----Boundary" + uuid.uuid4().hex[:12]
+        parts = []
+        for name, value in [
+            ("email", email), ("password", password), ("next", "/zh"),
+            (f"$ACTION_ID_{ACTION_LOGIN}", ""),
+        ]:
+            parts.append(
+                f"--{boundary}\r\n"
+                f'Content-Disposition: form-data; name="{name}"\r\n'
+                f"\r\n"
+                f"{value}"
+            )
+        body = ("\r\n".join(parts) + f"\r\n--{boundary}--\r\n").encode("utf-8")
+
+        # Step 3: POST（不传 Next-Action header！）
+        status, _, _ = self._post(
             f"{BASE_URL}/zh/sign-in",
-            data=form_data,
+            data=body,
             headers={
-                "Content-Type": "text/plain;charset=UTF-8",
-                "Accept": "text/x-component",
-                "Next-Action": ACTION_LOGIN,
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                "Origin": BASE_URL,
+                "Referer": f"{BASE_URL}/zh/sign-in",
             },
             content_type=None,
         )
-        # 登录成功返回 303 重定向，cookie 会被自动保存
-        if status in (200, 303):
+
+        # 检查 auth cookie
+        has_auth = any("sb-" in c.name for c in self.cookie_jar)
+        if has_auth:
             self.session_active = True
             print(f"[OK] 登录成功: {email}")
             return True
         else:
-            print(f"[FAIL] 登录失败 (HTTP {status}): {body[:200]}")
+            print(f"[FAIL] 登录失败 (HTTP {status}): 未获取到 auth cookie")
             return False
 
     def signup(self, email, password):
-        """注册新账号（Next.js Server Action）。"""
-        device_id = str(uuid.uuid4())
-        action_meta = json.dumps({"id": ACTION_SIGNUP, "bound": "$@1"})
-        form_data = f"email={email}\npassword={password}\nnext=/zh\nsignup_device_id={device_id}\n$ACTION_2:0:{action_meta}"
-        status, body, headers = self._post(
-            f"{BASE_URL}/zh/sign-up",
-            data=form_data,
-            headers={
-                "Content-Type": "text/plain;charset=UTF-8",
-                "Accept": "text/x-component",
-                "Next-Action": ACTION_SIGNUP,
-            },
-            content_type=None,
+        """注册：Supabase REST API（可靠），然后 Server Action 登录拿 cookie。"""
+        SUPABASE_URL = "https://vescivzvzczsjawbgjhs.supabase.co"
+        SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlc2Npdnp2emN6c2phd2JnamhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4MjIzNTksImV4cCI6MjA5MjM5ODM1OX0.MmRf3PgjnyO5_-9qZeR-AxChbTMIwQ4JDm_qaR3ZA-4"
+
+        # Step 1: register via Supabase REST API
+        status, _, _ = self._post(
+            f"{SUPABASE_URL}/auth/v1/signup",
+            data={"email": email, "password": password},
+            headers={"apikey": SUPABASE_ANON_KEY, "Content-Type": "application/json"},
         )
-        if status in (200, 303):
-            print(f"[OK] 注册成功: {email}")
-            print("[NOTE] 可能需要邮箱验证才能登录，请检查邮箱。")
-            # 记录新账号
-            self.accounts.setdefault("accounts", []).append({
-                "email": email,
-                "password": password,
-                "status": "active"
-            })
-            self._save_accounts()
-            return True
-        else:
-            print(f"[FAIL] 注册失败 (HTTP {status}): {body[:200]}")
+        if status != 200:
+            print(f"[FAIL] 注册失败 (HTTP {status})")
             return False
 
+        print(f"[OK] Supabase 注册成功: {email}")
+        self.accounts.setdefault("accounts", []).append({
+            "email": email, "password": password, "status": "active"
+        })
+        self._save_accounts()
+
+        # Step 2: login via Server Action to get gptimage2.online auth cookie
+        return self.login(email, password)
+
     def logout(self):
-        """退出登录（Next.js Server Action）。"""
-        status, body, headers = self._post(
+        """退出登录（Server Action，multipart）。"""
+        self._get(f"{BASE_URL}/zh")
+        boundary = "----Boundary" + uuid.uuid4().hex[:12]
+        parts = [f"--{boundary}\r\nContent-Disposition: form-data; name=\"$ACTION_ID_{ACTION_SIGNOUT}\"\r\n\r\n"]
+        body = ("\r\n".join(parts) + f"\r\n--{boundary}--\r\n").encode("utf-8")
+
+        self._post(
             f"{BASE_URL}/zh",
-            data="",
+            data=body,
             headers={
-                "Content-Type": "text/plain;charset=UTF-8",
-                "Accept": "text/x-component",
-                "Next-Action": ACTION_SIGNOUT,
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                "Origin": BASE_URL, "Referer": f"{BASE_URL}/zh",
             },
             content_type=None,
         )
         self.session_active = False
         self.cached_credits = None
-        # 清除 cookie
         self.cookie_jar = CookieJar()
         self.opener = build_opener(HTTPCookieProcessor(self.cookie_jar))
-        if status in (200, 303):
-            print("[OK] 已退出登录")
-            return True
-        else:
-            print(f"[WARN] 退出登录可能未成功 (HTTP {status})")
-            return False
+        print("[OK] 已退出登录")
+        return True
 
     def switch_account(self):
         """切换到下一个可用账号。"""
@@ -280,7 +294,7 @@ class GPTImage2Client:
         content_type = "image/png" if file_name.endswith(".png") else "image/jpeg"
 
         # Step 1: 获取签名 URL
-        status, body = self._post(
+        status, body, _ = self._post(
             f"{BASE_URL}/api/ai/upload-reference",
             data={"fileName": file_name, "contentType": content_type, "fileSize": file_size},
         )
@@ -343,7 +357,7 @@ class GPTImage2Client:
 
         # 提交生图任务
         print(f"[INFO] 提交生图任务: prompt='{prompt[:50]}...', ratio={aspect_ratio}, res={resolution}")
-        status, body = self._post(
+        status, body, _ = self._post(
             f"{BASE_URL}/api/ai/text-to-image",
             data={
                 "prompt": prompt,
@@ -437,18 +451,21 @@ class GPTImage2Client:
                 time.sleep(3)
 
     def _download_image(self, url, output_path):
-        """下载图片到本地。"""
+        """下载图片到本地。R2 bucket 需要 User-Agent header。"""
         os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-        status, body = self._get(url)
-        if status == 200:
-            # body 是文本解码的，需要重新以二进制方式下载
-            req = Request(url, method="GET")
+        req = Request(url, method="GET")
+        req.add_header("User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        )
+        try:
             resp = self.opener.open(req)
             with open(output_path, "wb") as f:
                 f.write(resp.read())
             print(f"[OK] 图片已保存: {output_path}")
-        else:
-            print(f"[ERROR] 下载图片失败 (HTTP {status})")
+        except Exception as e:
+            print(f"[ERROR] 下载图片失败: {e}")
 
     # ─── 批量生成 ───
 
@@ -457,12 +474,13 @@ class GPTImage2Client:
         批量生成图片（PPT 场景）。
         当遇到 402 时自动换号继续。
         """
-        with open(config_path, "r") as f:
+        with open(config_path, "r", encoding="utf-8") as f:
             config = json.load(f)
 
         slides = config.get("slides", [])
         os.makedirs(output_dir, exist_ok=True)
         results = {"success": [], "failed": []}
+        report_path = os.path.join(output_dir, "batch_report.json")
 
         for slide in slides:
             idx = slide["index"]
@@ -472,8 +490,14 @@ class GPTImage2Client:
             ref_img = slide.get("reference_image")
             output_path = os.path.join(output_dir, f"slide-{idx:03d}.png")
 
+            # Skip already-generated slides (non-zero file exists)
+            if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                print(f"[SKIP] 第 {idx} 页已存在 ({os.path.getsize(output_path):,} bytes)")
+                results["success"].append({"index": idx, "images": [output_path], "cached": True})
+                continue
+
             print(f"\n{'='*60}")
-            print(f"正在生成第 {idx} 页...")
+            print(f"正在生成第 {idx} 页（共 {len(slides)} 页）...")
 
             result = self.generate_image(
                 prompt=prompt,
@@ -501,10 +525,22 @@ class GPTImage2Client:
             else:
                 results["failed"].append({"index": idx, "reason": "生成失败或无可用账号"})
 
-        # 保存结果报告
-        report_path = os.path.join(output_dir, "batch_report.json")
-        with open(report_path, "w") as f:
-            json.dump(results, f, indent=2)
+            # Write progress after each slide (so backend SSE can read it)
+            total = len(slides)
+            done = len(results["success"]) + len(results["failed"])
+            with open(report_path, "w", encoding="utf-8") as f:
+                json.dump({
+                    "progress": f"{done}/{total}",
+                    "done": done, "total": total,
+                    "success": len(results["success"]),
+                    "failed": len(results["failed"]),
+                    "details": results,
+                }, f, indent=2, ensure_ascii=False)
+            print(f"进度: {done}/{total} (成功 {len(results['success'])}, 失败 {len(results['failed'])})")
+
+        # 保存最终结果报告
+        with open(report_path, "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
 
         print(f"\n{'='*60}")
         print(f"批量生成完成: 成功 {len(results['success'])} 页, 失败 {len(results['failed'])} 页")

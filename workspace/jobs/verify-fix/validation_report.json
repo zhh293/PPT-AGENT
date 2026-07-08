@@ -1,0 +1,202 @@
+{
+  "job_id": "verify-fix",
+  "status": "passed_with_warnings",
+  "checked_at": "2026-07-07T00:50:27.618598+00:00",
+  "summary": "Validated 8 slides.",
+  "manual_review_items": [
+    "External visual generation was not configured.",
+    "Slide 0 uses fallback visual placeholder.",
+    "Slide 1 uses fallback visual placeholder.",
+    "Slide 2 uses fallback visual placeholder.",
+    "Slide 3 uses fallback visual placeholder.",
+    "Slide 4 uses fallback visual placeholder.",
+    "Slide 5 uses fallback visual placeholder.",
+    "Slide 6 uses fallback visual placeholder.",
+    "Slide 7 uses fallback visual placeholder."
+  ],
+  "slide_results": [
+    {
+      "slide_index": 0,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 1,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 2,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 3,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 4,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 5,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 6,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    },
+    {
+      "slide_index": 7,
+      "status": "warning",
+      "checks": {
+        "content_present": true,
+        "text_preserved": true,
+        "text_editable": true,
+        "text_fit": true,
+        "image_fit": true,
+        "fallback_resolved": false
+      },
+      "issues": [
+        "Visual placeholder fallback remains unresolved."
+      ],
+      "recommended_action": "Review slide manually.",
+      "design_score": 65,
+      "design_suggestions": []
+    }
+  ],
+  "fresh_eyes_validation": {
+    "project_name": "Test Project",
+    "domain": "software/product",
+    "target_audience": "business stakeholders",
+    "tone": "professional",
+    "value_proposition": "A comprehensive solution for test scenarios.",
+    "product_capabilities": [
+      "Automated testing capability",
+      "Data analysis and reporting",
+      "User management system"
+    ],
+    "evidence_items": [
+      {
+        "evidence_id": "ev_1",
+        "summary": "Project materials describe a software system.",
+        "source_refs": [
+          "input"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "unsupported_claims": [],
+    "warnings": [],
+    "confidence": 0.85,
+    "content_completeness": {
+      "score": 70,
+      "issues": []
+    },
+    "visual_consistency": {
+      "score": 70,
+      "issues": []
+    },
+    "text_accuracy": {
+      "score": 70,
+      "issues": []
+    },
+    "overall_score": 70,
+    "summary": ""
+  }
+}

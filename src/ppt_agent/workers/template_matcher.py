@@ -49,7 +49,7 @@ def run(workspace: JobWorkspace, force: bool = False) -> list[Path]:
     ]
     query_text = " ".join(p for p in query_parts if p)
 
-    # Search templates via RAG pipeline
+    # ── Phase 5: Dual-path retrieval (BM25 + vector) with RRF fusion ──
     ranked = query(
         [
             {
@@ -61,7 +61,7 @@ def run(workspace: JobWorkspace, force: bool = False) -> list[Path]:
             for item in templates
         ],
         query_text,
-        ["bm25"],
+        ["bm25", "vector"],  # Phase 5: dual-path for better ranking
         3,
     )
 
@@ -152,7 +152,7 @@ def _build_template_zones(entry: dict, meta: dict) -> dict:
         img_path = slide_images.get(idx)
 
         # Separate text zones from decoration/image zones
-        text_zones = [z for z in slide.get("zones", []) if z.get("type") in ("title", "subtitle", "body", "footer")]
+        text_zones = [z for z in slide.get("zones", []) if z.get("type") in ("title", "subtitle", "body", "footer", "bullets", "chart")]
         image_zones = [z for z in slide.get("zones", []) if z.get("type") == "image"]
 
         slides.append({
@@ -179,7 +179,7 @@ def _build_fallback_zones(slide_count: int) -> dict:
 
     slides = []
     for i in range(slide_count):
-        text_zones = [z for z in DEFAULT_ZONES if z["type"] in ("title", "body")]
+        text_zones = [z for z in DEFAULT_ZONES if z["type"] in ("title", "body", "bullets", "chart")]
         image_zones = [z for z in DEFAULT_ZONES if z["type"] == "image"]
         slides.append({
             "index": i,

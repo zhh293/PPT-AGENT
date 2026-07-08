@@ -1,0 +1,7633 @@
+{
+  "template_id": "tech.紫色特效药-",
+  "domain": "tech",
+  "scene": [
+    "report"
+  ],
+  "style": "professional",
+  "slide_count": 30,
+  "color_scheme": {
+    "primary": "#1F4E79",
+    "secondary": "#70AD47",
+    "accent": "#F4B183",
+    "background": "#FFFFFF"
+  },
+  "slides": [
+    {
+      "index": 0,
+      "layout": "cover",
+      "zones": [
+        {
+          "zone_id": "s0_shape0",
+          "type": "image",
+          "position": [
+            0.2957,
+            0.0,
+            0.7043,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape1",
+          "type": "title",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape2",
+          "type": "decoration",
+          "position": [
+            0.651,
+            0.4188,
+            0.2912,
+            0.6238
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape3",
+          "type": "decoration",
+          "position": [
+            0.0548,
+            0.0693,
+            0.5588,
+            0.8222
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "layout": "content_with_image",
+      "zones": [
+        {
+          "zone_id": "s1_shape0",
+          "type": "image",
+          "position": [
+            0.0746,
+            0.0994,
+            0.9254,
+            0.9006
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape1",
+          "type": "title",
+          "position": [
+            0.0746,
+            0.0994,
+            0.9254,
+            0.9006
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape2",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.2123,
+            0.587,
+            0.6748
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape3",
+          "type": "body",
+          "position": [
+            0.0585,
+            0.2704,
+            0.5598,
+            0.5586
+          ],
+          "text": "药到病除是一款用于癌细胞的药物，通过自主研发的抗体癌细胞高效表达系统平台技术和癌细胞快速筛选技术来筛选出高表达的细胞株，提高筛选效率，节约制药时间，提高细胞株成活率。\n团队经历3年研发，88888多次实验数据，率先攻克了癌细胞的异质性、耐受性、治疗带来的副作用等难题。处于国内第一、国际领先地位。\n我们在研药物癌细胞和同类型药物癌细胞相比，对肿瘤细胞的控制率提升至66%-88%、成本下降66%、售价下降88%。\n目前两项技术已得到广东省肿瘤医院欧阳锋主任，省科学院青年专家上官飞燕教授等多位专家的一致认可和好评，已申请8项专利，拥有自主知识产权。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape4",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "项目概况：一款划时代意义的抗癌特效药",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s2_shape0",
+          "type": "title",
+          "position": [
+            0.0425,
+            0.1698,
+            0.4276,
+            0.7402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape1",
+          "type": "body",
+          "position": [
+            0.0501,
+            0.2629,
+            0.4125,
+            0.634
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape2",
+          "type": "decoration",
+          "position": [
+            0.054,
+            0.2942,
+            0.4046,
+            0.5801
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape3",
+          "type": "title",
+          "position": [
+            0.054,
+            0.2017,
+            0.4046,
+            0.0359
+          ],
+          "text": "2021-2024年癌细胞药物市场规模每年递增20%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape4",
+          "type": "footer",
+          "position": [
+            0.0425,
+            0.9281,
+            0.372,
+            0.0224
+          ],
+          "text": "数据来源：小目标PPT数据《2024年中国癌细胞药物行业报告》",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape5",
+          "type": "image",
+          "position": [
+            0.7737,
+            0.615,
+            0.1296,
+            0.4247
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape6",
+          "type": "image",
+          "position": [
+            0.5784,
+            0.5775,
+            0.1239,
+            0.455
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape7",
+          "type": "title",
+          "position": [
+            0.4816,
+            0.1504,
+            0.236,
+            0.3242
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape8",
+          "type": "body",
+          "position": [
+            0.5918,
+            0.4917,
+            0.0561,
+            0.047
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape9",
+          "type": "body",
+          "position": [
+            0.6165,
+            0.5467,
+            0.027,
+            0.0227
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape10",
+          "type": "title",
+          "position": [
+            0.7408,
+            0.1866,
+            0.2256,
+            0.31
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape11",
+          "type": "body",
+          "position": [
+            0.8153,
+            0.5136,
+            0.0561,
+            0.047
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape12",
+          "type": "body",
+          "position": [
+            0.8266,
+            0.577,
+            0.027,
+            0.0227
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape13",
+          "type": "body",
+          "position": [
+            0.5169,
+            0.2676,
+            0.1789,
+            0.0898
+          ],
+          "text": "这药好贵啊！感觉还没有效果。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape14",
+          "type": "body",
+          "position": [
+            0.7737,
+            0.2886,
+            0.1723,
+            0.1346
+          ],
+          "text": "吃完这个药，还经常疼痛，副作用好大啊！",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape15",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "市场分析：抗癌药物市场广阔，人民群众需求大",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s3_shape0",
+          "type": "image",
+          "position": [
+            -0.0,
+            0.099,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape1",
+          "type": "image",
+          "position": [
+            0.3333,
+            0.099,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape2",
+          "type": "image",
+          "position": [
+            0.6667,
+            0.099,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape3",
+          "type": "image",
+          "position": [
+            -0.0,
+            0.4323,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape4",
+          "type": "image",
+          "position": [
+            0.3333,
+            0.4323,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape5",
+          "type": "image",
+          "position": [
+            0.6667,
+            0.4323,
+            0.3333,
+            0.3333
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape6",
+          "type": "image",
+          "position": [
+            -0.0,
+            0.7657,
+            0.3333,
+            0.2343
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape7",
+          "type": "image",
+          "position": [
+            0.3333,
+            0.7657,
+            0.3333,
+            0.2343
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape8",
+          "type": "image",
+          "position": [
+            0.6667,
+            0.7657,
+            0.3333,
+            0.2343
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape9",
+          "type": "body",
+          "position": [
+            -0.0,
+            0.373,
+            1.0,
+            0.3604
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape10",
+          "type": "body",
+          "position": [
+            0.1065,
+            0.5705,
+            0.1882,
+            0.0898
+          ],
+          "text": "1688万人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape11",
+          "type": "body",
+          "position": [
+            0.1106,
+            0.518,
+            0.1882,
+            0.0404
+          ],
+          "text": "我国现有癌症患者超",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape12",
+          "type": "body",
+          "position": [
+            0.4039,
+            0.5705,
+            0.1882,
+            0.0898
+          ],
+          "text": "88万人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape13",
+          "type": "body",
+          "position": [
+            0.4079,
+            0.518,
+            0.1882,
+            0.0404
+          ],
+          "text": "每年新增患者",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape14",
+          "type": "body",
+          "position": [
+            0.7012,
+            0.5705,
+            0.1882,
+            0.0898
+          ],
+          "text": "98%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape15",
+          "type": "body",
+          "position": [
+            0.7052,
+            0.518,
+            0.1882,
+            0.0404
+          ],
+          "text": "因病返贫家庭高达",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape16",
+          "type": "body",
+          "position": [
+            0.2838,
+            0.3178,
+            0.4284,
+            0.123
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape17",
+          "type": "body",
+          "position": [
+            0.2838,
+            0.3433,
+            0.4324,
+            0.0628
+          ],
+          "text": "癌症每年让众多家庭支离破碎",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape18",
+          "type": "image",
+          "position": [
+            0.2838,
+            0.3178,
+            0.4284,
+            0.123
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape19",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "项目背景：人民群众迫切需要一款有效、价格实惠的特效药",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s4_shape0",
+          "type": "body",
+          "position": [
+            0.7131,
+            0.2611,
+            0.2446,
+            0.4424
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape1",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "行业现状：传统化疗放疗毒性大、易复发、骨髓移植排异强",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape2",
+          "type": "image",
+          "position": [
+            0.2513,
+            0.3263,
+            0.112,
+            0.1849
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape3",
+          "type": "image",
+          "position": [
+            0.6044,
+            0.3237,
+            0.1281,
+            0.2177
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape4",
+          "type": "image",
+          "position": [
+            0.0212,
+            0.3151,
+            0.1233,
+            0.2192
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape5",
+          "type": "image",
+          "position": [
+            0.1147,
+            0.2611,
+            0.1628,
+            0.2894
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape6",
+          "type": "image",
+          "position": [
+            0.7342,
+            0.4457,
+            0.0994,
+            0.1766
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape7",
+          "type": "image",
+          "position": [
+            0.4427,
+            0.3459,
+            0.0876,
+            0.1541
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape8",
+          "type": "image",
+          "position": [
+            0.8479,
+            0.4457,
+            0.0994,
+            0.1766
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape9",
+          "type": "body",
+          "position": [
+            0.0289,
+            0.5467,
+            0.0945,
+            0.0359
+          ],
+          "text": "正常细胞",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape10",
+          "type": "body",
+          "position": [
+            0.1489,
+            0.5467,
+            0.0945,
+            0.0359
+          ],
+          "text": "传统药物",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape11",
+          "type": "body",
+          "position": [
+            0.2643,
+            0.5467,
+            0.0945,
+            0.0359
+          ],
+          "text": "肿瘤细胞",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape12",
+          "type": "body",
+          "position": [
+            0.3481,
+            0.3637,
+            0.0945,
+            0.0359
+          ],
+          "text": "细胞休眠",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape13",
+          "type": "body",
+          "position": [
+            0.5303,
+            0.3637,
+            0.0945,
+            0.0359
+          ],
+          "text": "复发转移",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape14",
+          "type": "body",
+          "position": [
+            0.7422,
+            0.6222,
+            0.0945,
+            0.0359
+          ],
+          "text": "患者干细胞",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape15",
+          "type": "body",
+          "position": [
+            0.8527,
+            0.6222,
+            0.0945,
+            0.0359
+          ],
+          "text": "家属细胞",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape16",
+          "type": "body",
+          "position": [
+            0.3576,
+            0.4057,
+            0.0856,
+            0.0399
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape17",
+          "type": "body",
+          "position": [
+            0.5352,
+            0.4057,
+            0.0856,
+            0.0399
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape18",
+          "type": "body",
+          "position": [
+            0.7449,
+            0.3385,
+            0.181,
+            0.0359
+          ],
+          "text": "器官移植排异反应",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape19",
+          "type": "body",
+          "position": [
+            0.0817,
+            0.7297,
+            0.1778,
+            0.0359
+          ],
+          "text": "杀死人体正常细胞",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape20",
+          "type": "body",
+          "position": [
+            0.3682,
+            0.7297,
+            0.2684,
+            0.0359
+          ],
+          "text": "复发难治性比例高达66%88%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape21",
+          "type": "body",
+          "position": [
+            0.7296,
+            0.7297,
+            0.219,
+            0.0359
+          ],
+          "text": "身体排异反应强",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s5_shape0",
+          "type": "body",
+          "position": [
+            0.3742,
+            0.7253,
+            0.2535,
+            0.2279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape1",
+          "type": "body",
+          "position": [
+            0.7034,
+            0.7253,
+            0.2535,
+            0.2279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape2",
+          "type": "body",
+          "position": [
+            0.0439,
+            0.7253,
+            0.2535,
+            0.2279
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape3",
+          "type": "body",
+          "position": [
+            0.0625,
+            0.7343,
+            0.2185,
+            0.2002
+          ],
+          "text": "全球前十强药企的研发投入占销售额比例为17.8%，高达603.9亿美元。而国内前十强药企研发投入仅为销售额的1%，约为3亿美元。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape4",
+          "type": "title",
+          "position": [
+            0.0625,
+            0.1572,
+            0.2185,
+            0.0539
+          ],
+          "text": "研发能力不足",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape5",
+          "type": "title",
+          "position": [
+            0.3839,
+            0.1572,
+            0.2321,
+            0.0539
+          ],
+          "text": "过度依赖进口",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape6",
+          "type": "title",
+          "position": [
+            0.7204,
+            0.1572,
+            0.2197,
+            0.0539
+          ],
+          "text": "药物副作用大",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape7",
+          "type": "body",
+          "position": [
+            0.3839,
+            0.7343,
+            0.2341,
+            0.1185
+          ],
+          "text": "中国上市的96个生物药，大多是仿制药，而且仿的是美国两代以前的药，连生物类似药都算不上。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape8",
+          "type": "body",
+          "position": [
+            0.7137,
+            0.7343,
+            0.2358,
+            0.1594
+          ],
+          "text": "这些药物一般需要长期服用，才可有效抑制癌细胞，但如果长期服用，可能会对消化道黏膜造成损伤，引起恶心、呕吐，腹泻、便秘等症状。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape9",
+          "type": "image",
+          "position": [
+            0.3732,
+            0.2279,
+            0.2556,
+            0.4974
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape10",
+          "type": "image",
+          "position": [
+            0.0439,
+            0.2279,
+            0.2556,
+            0.4974
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape11",
+          "type": "image",
+          "position": [
+            0.7024,
+            0.2279,
+            0.2556,
+            0.4974
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape12",
+          "type": "decoration",
+          "position": [
+            0.3363,
+            0.1572,
+            0.0,
+            0.7959
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape13",
+          "type": "decoration",
+          "position": [
+            0.6656,
+            0.1572,
+            0.0,
+            0.7959
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape14",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "行业痛点1：抗癌药物研发能力不足、过度依赖进口、药物副作用大",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s6_shape0",
+          "type": "image",
+          "position": [
+            0.073,
+            0.1717,
+            0.1804,
+            0.6904
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape1",
+          "type": "image",
+          "position": [
+            0.3861,
+            0.1717,
+            0.1804,
+            0.6904
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape2",
+          "type": "image",
+          "position": [
+            0.142,
+            0.3826,
+            0.0423,
+            0.0751
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape3",
+          "type": "image",
+          "position": [
+            0.4552,
+            0.3826,
+            0.0423,
+            0.0751
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape4",
+          "type": "body",
+          "position": [
+            0.0498,
+            0.3738,
+            0.0535,
+            0.0404
+          ],
+          "text": "肿瘤",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape5",
+          "type": "decoration",
+          "position": [
+            0.0498,
+            0.4201,
+            0.0923,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape6",
+          "type": "body",
+          "position": [
+            0.2534,
+            0.451,
+            0.1458,
+            0.0276
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape7",
+          "type": "body",
+          "position": [
+            0.2534,
+            0.3999,
+            0.1388,
+            0.0404
+          ],
+          "text": "静脉注射化疗",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape8",
+          "type": "body",
+          "position": [
+            0.4685,
+            0.2656,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape9",
+          "type": "body",
+          "position": [
+            0.4733,
+            0.303,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape10",
+          "type": "body",
+          "position": [
+            0.4332,
+            0.3253,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape11",
+          "type": "body",
+          "position": [
+            0.5101,
+            0.3072,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape12",
+          "type": "body",
+          "position": [
+            0.4884,
+            0.3432,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape13",
+          "type": "body",
+          "position": [
+            0.4531,
+            0.3601,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape14",
+          "type": "body",
+          "position": [
+            0.4837,
+            0.4568,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape15",
+          "type": "body",
+          "position": [
+            0.4742,
+            0.4985,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape16",
+          "type": "body",
+          "position": [
+            0.4483,
+            0.5166,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape17",
+          "type": "body",
+          "position": [
+            0.4496,
+            0.4676,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape18",
+          "type": "body",
+          "position": [
+            0.4941,
+            0.5288,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape19",
+          "type": "body",
+          "position": [
+            0.4536,
+            0.5663,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape20",
+          "type": "body",
+          "position": [
+            0.5036,
+            0.8112,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape21",
+          "type": "body",
+          "position": [
+            0.4392,
+            0.7441,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape22",
+          "type": "body",
+          "position": [
+            0.4397,
+            0.6809,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape23",
+          "type": "body",
+          "position": [
+            0.4941,
+            0.6282,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape24",
+          "type": "body",
+          "position": [
+            0.5006,
+            0.7032,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape25",
+          "type": "body",
+          "position": [
+            0.4441,
+            0.6351,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape26",
+          "type": "body",
+          "position": [
+            0.4118,
+            0.4602,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape27",
+          "type": "body",
+          "position": [
+            0.5196,
+            0.3772,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape28",
+          "type": "body",
+          "position": [
+            0.5272,
+            0.4387,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape29",
+          "type": "image",
+          "position": [
+            0.7186,
+            0.2577,
+            0.2183,
+            0.4455
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape30",
+          "type": "body",
+          "position": [
+            0.4636,
+            0.4031,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape31",
+          "type": "body",
+          "position": [
+            0.4789,
+            0.4209,
+            0.0095,
+            0.0169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape32",
+          "type": "body",
+          "position": [
+            0.5628,
+            0.451,
+            0.1458,
+            0.0276
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape33",
+          "type": "body",
+          "position": [
+            0.5536,
+            0.3999,
+            0.1572,
+            0.0404
+          ],
+          "text": "肿瘤细胞影响小",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape34",
+          "type": "footer",
+          "position": [
+            0.3283,
+            0.8797,
+            0.3012,
+            0.0808
+          ],
+          "text": "体内循环\n95%药物分布在正常组织器官",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape35",
+          "type": "body",
+          "position": [
+            0.7245,
+            0.7205,
+            0.2065,
+            0.0808
+          ],
+          "text": "仅约5%到达肿瘤部位\n杀敌50，自损1000",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape36",
+          "type": "body",
+          "position": [
+            0.7711,
+            0.3648,
+            0.0168,
+            0.0299
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape37",
+          "type": "body",
+          "position": [
+            0.8772,
+            0.4142,
+            0.0168,
+            0.0299
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape38",
+          "type": "body",
+          "position": [
+            0.7979,
+            0.5533,
+            0.0168,
+            0.0299
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape39",
+          "type": "body",
+          "position": [
+            0.8856,
+            0.6202,
+            0.0168,
+            0.0299
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape40",
+          "type": "body",
+          "position": [
+            0.7453,
+            0.4981,
+            0.0168,
+            0.0299
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape41",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "行业痛点2：抗癌药物不能精准靶向定位，杀死正常人体组织",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s7_shape0",
+          "type": "image",
+          "position": [
+            0.7846,
+            0.683,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape1",
+          "type": "image",
+          "position": [
+            0.677,
+            0.2988,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape2",
+          "type": "image",
+          "position": [
+            0.5678,
+            0.683,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape3",
+          "type": "image",
+          "position": [
+            0.4599,
+            0.2988,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape4",
+          "type": "image",
+          "position": [
+            0.351,
+            0.683,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape5",
+          "type": "image",
+          "position": [
+            0.2428,
+            0.2988,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape6",
+          "type": "image",
+          "position": [
+            0.1342,
+            0.683,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape7",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.5959,
+            0.9651,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape8",
+          "type": "body",
+          "position": [
+            0.0878,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape9",
+          "type": "body",
+          "position": [
+            0.3046,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape10",
+          "type": "body",
+          "position": [
+            0.5214,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape11",
+          "type": "body",
+          "position": [
+            0.7382,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape12",
+          "type": "body",
+          "position": [
+            0.1962,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape13",
+          "type": "body",
+          "position": [
+            0.413,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape14",
+          "type": "body",
+          "position": [
+            0.6298,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape15",
+          "type": "body",
+          "position": [
+            0.8466,
+            0.5517,
+            0.0498,
+            0.0885
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape16",
+          "type": "body",
+          "position": [
+            0.0878,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2018",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape17",
+          "type": "body",
+          "position": [
+            0.1962,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2019",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape18",
+          "type": "body",
+          "position": [
+            0.3046,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2020",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape19",
+          "type": "body",
+          "position": [
+            0.413,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2021",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape20",
+          "type": "body",
+          "position": [
+            0.5214,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2022",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape21",
+          "type": "body",
+          "position": [
+            0.6298,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2023",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape22",
+          "type": "body",
+          "position": [
+            0.7382,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2024",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape23",
+          "type": "body",
+          "position": [
+            0.8466,
+            0.5802,
+            0.0498,
+            0.0314
+          ],
+          "text": "2025",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape24",
+          "type": "image",
+          "position": [
+            0.0258,
+            0.2988,
+            0.1739,
+            0.2062
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape25",
+          "type": "body",
+          "position": [
+            0.0623,
+            0.2546,
+            0.1009,
+            0.0359
+          ],
+          "text": "成立团队",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape26",
+          "type": "body",
+          "position": [
+            0.2631,
+            0.2546,
+            0.1386,
+            0.0404
+          ],
+          "text": "重大突破",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape27",
+          "type": "body",
+          "position": [
+            0.4828,
+            0.2546,
+            0.1386,
+            0.0359
+          ],
+          "text": "临床试验成功",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape28",
+          "type": "body",
+          "position": [
+            0.6965,
+            0.2546,
+            0.1347,
+            0.0359
+          ],
+          "text": "批量生产",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape29",
+          "type": "decoration",
+          "position": [
+            0.1127,
+            0.505,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape30",
+          "type": "decoration",
+          "position": [
+            0.3295,
+            0.505,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape31",
+          "type": "decoration",
+          "position": [
+            0.5463,
+            0.505,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape32",
+          "type": "decoration",
+          "position": [
+            0.7631,
+            0.505,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape33",
+          "type": "decoration",
+          "position": [
+            0.2211,
+            0.641,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape34",
+          "type": "decoration",
+          "position": [
+            0.4379,
+            0.641,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape35",
+          "type": "decoration",
+          "position": [
+            0.6547,
+            0.641,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape36",
+          "type": "decoration",
+          "position": [
+            0.8715,
+            0.641,
+            0.0,
+            0.0443
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape37",
+          "type": "footer",
+          "position": [
+            0.1376,
+            0.8921,
+            0.1612,
+            0.0359
+          ],
+          "text": "确定科研方向",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape38",
+          "type": "footer",
+          "position": [
+            0.3602,
+            0.8921,
+            0.1554,
+            0.0359
+          ],
+          "text": "动物试验成功",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape39",
+          "type": "footer",
+          "position": [
+            0.5945,
+            0.8921,
+            0.1262,
+            0.0359
+          ],
+          "text": "产品检查成功",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape40",
+          "type": "footer",
+          "position": [
+            0.8001,
+            0.8921,
+            0.1386,
+            0.0404
+          ],
+          "text": "产品问世",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape41",
+          "type": "title",
+          "position": [
+            0.0878,
+            0.1504,
+            0.8244,
+            0.0539
+          ],
+          "text": "为解决国内抗癌药物空白，团队攻坚克难，最终取得重大突破",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape42",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "研发之路：团队不畏艰难险阻，最终研发出药到病除",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s8_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.1353,
+            0.2957,
+            0.1971
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape1",
+          "type": "title",
+          "position": [
+            0.3522,
+            0.1353,
+            0.2957,
+            0.1971
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape2",
+          "type": "title",
+          "position": [
+            0.662,
+            0.1353,
+            0.2957,
+            0.1971
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape3",
+          "type": "body",
+          "position": [
+            0.0423,
+            0.3607,
+            0.9154,
+            0.6085
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape4",
+          "type": "image",
+          "position": [
+            0.1528,
+            0.4062,
+            0.2039,
+            0.5127
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape5",
+          "type": "image",
+          "position": [
+            0.1116,
+            0.4062,
+            0.2039,
+            0.5127
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape6",
+          "type": "image",
+          "position": [
+            0.4025,
+            0.3864,
+            0.1651,
+            0.607
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape7",
+          "type": "image",
+          "position": [
+            0.0603,
+            0.4,
+            0.2064,
+            0.5189
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape8",
+          "type": "body",
+          "position": [
+            0.6199,
+            0.5884,
+            0.1482,
+            0.0591
+          ],
+          "text": "应用场景",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape9",
+          "type": "body",
+          "position": [
+            0.7908,
+            0.5884,
+            0.1482,
+            0.0591
+          ],
+          "text": "应用场景",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape10",
+          "type": "footer",
+          "position": [
+            0.6199,
+            0.8598,
+            0.1482,
+            0.0591
+          ],
+          "text": "应用场景",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape11",
+          "type": "footer",
+          "position": [
+            0.7908,
+            0.8598,
+            0.1482,
+            0.0591
+          ],
+          "text": "应用场景",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape12",
+          "type": "body",
+          "position": [
+            0.0735,
+            0.7728,
+            0.2802,
+            0.0539
+          ],
+          "text": "国家权威机构检查报告",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape13",
+          "type": "image",
+          "position": [
+            0.6199,
+            0.4111,
+            0.1482,
+            0.1773
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape14",
+          "type": "image",
+          "position": [
+            0.7908,
+            0.4111,
+            0.1482,
+            0.1773
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape15",
+          "type": "image",
+          "position": [
+            0.6199,
+            0.6825,
+            0.1482,
+            0.1773
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape16",
+          "type": "image",
+          "position": [
+            0.7908,
+            0.6825,
+            0.1482,
+            0.1773
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape17",
+          "type": "title",
+          "position": [
+            0.0603,
+            0.1557,
+            0.2598,
+            0.0718
+          ],
+          "text": "国际首创敲除Fib-H基因合成蚕丝蛋白技术",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape18",
+          "type": "title",
+          "position": [
+            0.06,
+            0.2401,
+            0.2694,
+            0.0825
+          ],
+          "text": "效果：成功解决天然蛋白纯度低，难提取的难题",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape19",
+          "type": "title",
+          "position": [
+            0.3747,
+            0.2353,
+            0.2598,
+            0.0825
+          ],
+          "text": "效果：解决载体疗效低，副作用大的难题",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape20",
+          "type": "title",
+          "position": [
+            0.6848,
+            0.2353,
+            0.2568,
+            0.0825
+          ],
+          "text": "效果：创新性的解决现有载体普适性，兼容性差的难题",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape21",
+          "type": "title",
+          "position": [
+            0.3747,
+            0.1557,
+            0.2598,
+            0.0718
+          ],
+          "text": "国际首创蚕丝蛋白结合化疗药物合成技术",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape22",
+          "type": "title",
+          "position": [
+            0.6848,
+            0.1557,
+            0.2568,
+            0.0718
+          ],
+          "text": "国际首创蚕丝蛋白载体适用于多类化疗药物",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape23",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "产品介绍：药到病除获得多项国际第一，填补国内抗癌药物空白",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s9_shape0",
+          "type": "title",
+          "position": [
+            0.7474,
+            0.1824,
+            0.2091,
+            0.2236
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape1",
+          "type": "body",
+          "position": [
+            0.7474,
+            0.4467,
+            0.2091,
+            0.2236
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape2",
+          "type": "title",
+          "position": [
+            0.3982,
+            0.1629,
+            0.3264,
+            0.7718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape3",
+          "type": "title",
+          "position": [
+            0.404,
+            0.2391,
+            0.3149,
+            0.6843
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape4",
+          "type": "decoration",
+          "position": [
+            0.0312,
+            0.219,
+            0.171,
+            0.6545
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape5",
+          "type": "decoration",
+          "position": [
+            0.2175,
+            0.219,
+            0.171,
+            0.6545
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape6",
+          "type": "footer",
+          "position": [
+            0.1868,
+            0.8864,
+            0.2349,
+            0.0359
+          ],
+          "text": "药到病除分布",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape7",
+          "type": "footer",
+          "position": [
+            -0.0028,
+            0.8864,
+            0.2349,
+            0.0359
+          ],
+          "text": "传统抗癌药分布",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape8",
+          "type": "decoration",
+          "position": [
+            0.4125,
+            0.2669,
+            0.3019,
+            0.6386
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape9",
+          "type": "title",
+          "position": [
+            0.4072,
+            0.1824,
+            0.3085,
+            0.0404
+          ],
+          "text": "试验肿瘤大小对比（mm3）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape10",
+          "type": "title",
+          "position": [
+            0.0439,
+            0.1623,
+            0.3419,
+            0.0404
+          ],
+          "text": "传统抗癌药与药到病除肿瘤分布图",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape11",
+          "type": "title",
+          "position": [
+            0.7643,
+            0.236,
+            0.1736,
+            0.1185
+          ],
+          "text": "药到病除比传统抗癌药物，药效集中分布在肿瘤位置高达88%，精准靶向治疗。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape12",
+          "type": "body",
+          "position": [
+            0.7643,
+            0.5014,
+            0.1736,
+            0.1594
+          ],
+          "text": "与不治疗组相比，肿瘤体积缩小9.3倍。与传统抗癌药物相比，肿瘤体积缩小4.3倍",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape13",
+          "type": "body",
+          "position": [
+            0.7474,
+            0.7111,
+            0.2091,
+            0.2236
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape14",
+          "type": "body",
+          "position": [
+            0.7643,
+            0.7711,
+            0.1736,
+            0.1185
+          ],
+          "text": "与传统抗癌药物相比，用量小，医疗效果明显，有效降低患者经济负担。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape15",
+          "type": "title",
+          "position": [
+            0.7388,
+            0.1564,
+            0.2204,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape16",
+          "type": "title",
+          "position": [
+            0.7799,
+            0.1676,
+            0.1834,
+            0.0404
+          ],
+          "text": "靶向治疗优势明显",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape17",
+          "type": "decoration",
+          "position": [
+            0.7388,
+            0.1564,
+            0.0353,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape18",
+          "type": "body",
+          "position": [
+            0.7388,
+            0.4303,
+            0.2204,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape19",
+          "type": "body",
+          "position": [
+            0.7799,
+            0.4415,
+            0.1834,
+            0.0404
+          ],
+          "text": "肿瘤体积有效减小",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape20",
+          "type": "decoration",
+          "position": [
+            0.7388,
+            0.4303,
+            0.0353,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape21",
+          "type": "body",
+          "position": [
+            0.7388,
+            0.6916,
+            0.2204,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape22",
+          "type": "body",
+          "position": [
+            0.7799,
+            0.7028,
+            0.1834,
+            0.0404
+          ],
+          "text": "用量少，副作用小",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape23",
+          "type": "decoration",
+          "position": [
+            0.7388,
+            0.6916,
+            0.0353,
+            0.0627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape24",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "技术壁垒1：药物靶向治疗，副作用小",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s10_shape0",
+          "type": "image",
+          "position": [
+            0.0423,
+            0.2629,
+            0.1282,
+            0.4715
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape1",
+          "type": "title",
+          "position": [
+            0.0878,
+            0.1642,
+            0.8244,
+            0.0539
+          ],
+          "text": "适用性强，多种抗癌药物，医疗效果明显提高",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape2",
+          "type": "body",
+          "position": [
+            0.1889,
+            0.4538,
+            0.0425,
+            0.0755
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape3",
+          "type": "body",
+          "position": [
+            0.2497,
+            0.2779,
+            0.708,
+            0.4237
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape4",
+          "type": "image",
+          "position": [
+            0.784,
+            0.3211,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape5",
+          "type": "body",
+          "position": [
+            0.7987,
+            0.5826,
+            0.1206,
+            0.0808
+          ],
+          "text": "阿霉素\n（乳腺癌）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape6",
+          "type": "image",
+          "position": [
+            0.6149,
+            0.3211,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape7",
+          "type": "body",
+          "position": [
+            0.6296,
+            0.5826,
+            0.1206,
+            0.0808
+          ],
+          "text": "紫杉醇\n（宫颈癌）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape8",
+          "type": "body",
+          "position": [
+            0.4606,
+            0.5826,
+            0.1206,
+            0.0808
+          ],
+          "text": "顺铂\n（结肠癌）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape9",
+          "type": "image",
+          "position": [
+            0.4458,
+            0.3211,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape10",
+          "type": "body",
+          "position": [
+            0.2915,
+            0.5826,
+            0.1206,
+            0.0808
+          ],
+          "text": "吉西他滨\n（抗肿瘤）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape11",
+          "type": "image",
+          "position": [
+            0.2768,
+            0.3211,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape12",
+          "type": "body",
+          "position": [
+            0.0878,
+            0.7557,
+            0.8244,
+            0.0987
+          ],
+          "text": "药到病除可搭载多种抗癌药物\n通过静脉注射的方法，对肿瘤疗效提高88%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape13",
+          "type": "footer",
+          "position": [
+            0.314,
+            0.9339,
+            0.372,
+            0.0224
+          ],
+          "text": "数据来源：小目标PPT数据《2024年中国癌细胞药物行业报告》",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape14",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.9451,
+            0.3246,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape15",
+          "type": "decoration",
+          "position": [
+            0.6754,
+            0.9451,
+            0.3246,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape16",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "技术壁垒2：药效比市面上的竞品强，价格低",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s11_shape0",
+          "type": "image",
+          "position": [
+            0.8355,
+            0.3368,
+            0.1222,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape1",
+          "type": "image",
+          "position": [
+            0.7901,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape2",
+          "type": "image",
+          "position": [
+            0.7447,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape3",
+          "type": "image",
+          "position": [
+            0.6978,
+            0.3368,
+            0.1168,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape4",
+          "type": "image",
+          "position": [
+            0.6524,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape5",
+          "type": "image",
+          "position": [
+            0.6069,
+            0.3368,
+            0.1153,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape6",
+          "type": "image",
+          "position": [
+            0.5615,
+            0.3368,
+            0.1153,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape7",
+          "type": "image",
+          "position": [
+            0.5146,
+            0.3368,
+            0.1168,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape8",
+          "type": "image",
+          "position": [
+            0.4692,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape9",
+          "type": "image",
+          "position": [
+            0.4168,
+            0.3368,
+            0.1222,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape10",
+          "type": "image",
+          "position": [
+            0.3644,
+            0.3368,
+            0.1222,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape11",
+          "type": "image",
+          "position": [
+            0.319,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape12",
+          "type": "image",
+          "position": [
+            0.2736,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape13",
+          "type": "image",
+          "position": [
+            0.2267,
+            0.3368,
+            0.1168,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape14",
+          "type": "image",
+          "position": [
+            0.1813,
+            0.3368,
+            0.1152,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape15",
+          "type": "image",
+          "position": [
+            0.1358,
+            0.3368,
+            0.1153,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape16",
+          "type": "image",
+          "position": [
+            0.0904,
+            0.3368,
+            0.1153,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape17",
+          "type": "image",
+          "position": [
+            0.0435,
+            0.3368,
+            0.1168,
+            0.2898
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape18",
+          "type": "title",
+          "position": [
+            0.0774,
+            0.1707,
+            0.2218,
+            0.1077
+          ],
+          "text": "12项\nPCT国际专利",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape19",
+          "type": "title",
+          "position": [
+            0.3891,
+            0.1707,
+            0.2218,
+            0.1077
+          ],
+          "text": "28项\n国家发明专利",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape20",
+          "type": "title",
+          "position": [
+            0.7008,
+            0.1707,
+            0.2218,
+            0.1077
+          ],
+          "text": "8项\n实用新型专利",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape21",
+          "type": "decoration",
+          "position": [
+            0.3434,
+            0.1707,
+            0.0,
+            0.1077
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape22",
+          "type": "decoration",
+          "position": [
+            0.6569,
+            0.1707,
+            0.0,
+            0.1077
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape23",
+          "type": "decoration",
+          "position": [
+            0.0435,
+            0.6446,
+            0.9142,
+            0.3157
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape24",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "技术壁垒3：获得多项技术专利，科研能力强大",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s12_shape0",
+          "type": "image",
+          "position": [
+            0.0643,
+            0.2844,
+            0.262,
+            0.641
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape1",
+          "type": "image",
+          "position": [
+            0.3778,
+            0.2844,
+            0.2546,
+            0.641
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape2",
+          "type": "image",
+          "position": [
+            0.6839,
+            0.2844,
+            0.2518,
+            0.641
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape3",
+          "type": "title",
+          "position": [
+            0.0922,
+            0.1386,
+            0.7834,
+            0.113
+          ],
+          "text": "在广东省第一人民医院完成检查报告，共检查样本688例\n综合灵敏度≥98.88%，综合特异性≥99.88%，居行业领先水平",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape4",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "技术壁垒4：检测报告综合得分，远高于行业水平",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s13_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.2351,
+            0.2165,
+            0.6997
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape1",
+          "type": "image",
+          "position": [
+            0.0867,
+            0.1262,
+            0.1278,
+            0.2272
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape2",
+          "type": "body",
+          "position": [
+            0.0702,
+            0.364,
+            0.1607,
+            0.0449
+          ],
+          "text": "欧阳雪 教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape3",
+          "type": "body",
+          "position": [
+            0.0561,
+            0.4835,
+            0.1889,
+            0.4339
+          ],
+          "text": "广东省肿瘤医院院长、医学博士，中国精确放射治疗技术的主要开拓者之一\n在突破制约放疗疗效的两大瓶颈——靶区精确勾画和射线精确施照方面做出了突出贡献。\n研究成果修改了美国、欧洲、加拿大和中国等多个国家肿瘤治疗指南，造福于广大恶性肿瘤患者。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape4",
+          "type": "body",
+          "position": [
+            0.05,
+            0.4167,
+            0.2011,
+            0.0423
+          ],
+          "text": "哈尔滨工业大学教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape5",
+          "type": "image",
+          "position": [
+            0.0867,
+            0.1339,
+            0.1278,
+            0.2194
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape6",
+          "type": "title",
+          "position": [
+            0.275,
+            0.2351,
+            0.2165,
+            0.6997
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape7",
+          "type": "image",
+          "position": [
+            0.3194,
+            0.1262,
+            0.1278,
+            0.2272
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape8",
+          "type": "body",
+          "position": [
+            0.3029,
+            0.364,
+            0.1607,
+            0.0449
+          ],
+          "text": "慕容风 教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape9",
+          "type": "body",
+          "position": [
+            0.2888,
+            0.4835,
+            0.1889,
+            0.4339
+          ],
+          "text": "广东省肿瘤医院院长、医学博士，中国精确放射治疗技术的主要开拓者之一\n在突破制约放疗疗效的两大瓶颈——靶区精确勾画和射线精确施照方面做出了突出贡献。\n研究成果修改了美国、欧洲、加拿大和中国等多个国家肿瘤治疗指南，造福于广大恶性肿瘤患者。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape10",
+          "type": "body",
+          "position": [
+            0.2827,
+            0.4167,
+            0.2011,
+            0.0423
+          ],
+          "text": "国防科技大学教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape11",
+          "type": "title",
+          "position": [
+            0.5077,
+            0.2351,
+            0.2165,
+            0.6997
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape12",
+          "type": "image",
+          "position": [
+            0.5521,
+            0.1262,
+            0.1278,
+            0.2272
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape13",
+          "type": "body",
+          "position": [
+            0.5356,
+            0.364,
+            0.1607,
+            0.0449
+          ],
+          "text": "帝释天 教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape14",
+          "type": "body",
+          "position": [
+            0.5215,
+            0.4835,
+            0.1889,
+            0.4339
+          ],
+          "text": "广东省肿瘤医院院长、医学博士，中国精确放射治疗技术的主要开拓者之一\n在突破制约放疗疗效的两大瓶颈——靶区精确勾画和射线精确施照方面做出了突出贡献。\n研究成果修改了美国、欧洲、加拿大和中国等多个国家肿瘤治疗指南，造福于广大恶性肿瘤患者。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape15",
+          "type": "body",
+          "position": [
+            0.5154,
+            0.4167,
+            0.2011,
+            0.0423
+          ],
+          "text": "深圳第二人民医院主任",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape16",
+          "type": "title",
+          "position": [
+            0.7404,
+            0.2351,
+            0.2165,
+            0.6997
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape17",
+          "type": "image",
+          "position": [
+            0.7848,
+            0.1262,
+            0.1278,
+            0.2272
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape18",
+          "type": "body",
+          "position": [
+            0.7683,
+            0.364,
+            0.1607,
+            0.0449
+          ],
+          "text": "鬼见愁 教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape19",
+          "type": "body",
+          "position": [
+            0.7542,
+            0.4835,
+            0.1889,
+            0.4339
+          ],
+          "text": "广东省肿瘤医院院长、医学博士，中国精确放射治疗技术的主要开拓者之一\n在突破制约放疗疗效的两大瓶颈——靶区精确勾画和射线精确施照方面做出了突出贡献。\n研究成果修改了美国、欧洲、加拿大和中国等多个国家肿瘤治疗指南，造福于广大恶性肿瘤患者。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape20",
+          "type": "body",
+          "position": [
+            0.7481,
+            0.4167,
+            0.2011,
+            0.0423
+          ],
+          "text": "深圳生物有限公司总经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape21",
+          "type": "image",
+          "position": [
+            0.3194,
+            0.1339,
+            0.1278,
+            0.2194
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape22",
+          "type": "image",
+          "position": [
+            0.5521,
+            0.133,
+            0.1278,
+            0.2203
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape23",
+          "type": "image",
+          "position": [
+            0.7848,
+            0.1397,
+            0.1278,
+            0.2136
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape24",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "指导老师：学界、业界、政界专家鼎力支持",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s14_shape0",
+          "type": "image",
+          "position": [
+            0.1907,
+            0.1831,
+            0.2206,
+            0.3922
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape1",
+          "type": "body",
+          "position": [
+            0.1934,
+            0.5851,
+            0.2151,
+            0.0527
+          ],
+          "text": "上官婉儿 教授",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape2",
+          "type": "body",
+          "position": [
+            0.0772,
+            0.6574,
+            0.4475,
+            0.2472
+          ],
+          "text": "广东省第一人民医院主任\n中国科学院院士、国家研究员、杰出教授\n中国药明康德公司，“免疫及炎症”研发部首席科学家\n在国际顶级学术期刊发表高水平论文，引用引用总数68000+次\n在世界范围内最先开发出识别艾滋病毒共受体CCR5和CCR3的单克隆抗体\n专利授权转化中授权交易金额达8.88亿人民币",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape3",
+          "type": "image",
+          "position": [
+            0.5289,
+            0.1547,
+            0.3284,
+            0.8029
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape4",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "专家推荐：行业知名专家，鼎力推荐",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s15_shape0",
+          "type": "body",
+          "position": [
+            0.173,
+            0.326,
+            0.3575,
+            0.1865
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape1",
+          "type": "title",
+          "position": [
+            0.5754,
+            0.1323,
+            0.2795,
+            0.1865
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape2",
+          "type": "body",
+          "position": [
+            0.7365,
+            0.4048,
+            0.2604,
+            0.2929
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape3",
+          "type": "body",
+          "position": [
+            0.6224,
+            0.5356,
+            0.197,
+            0.2436
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape4",
+          "type": "body",
+          "position": [
+            0.4785,
+            0.5356,
+            0.2452,
+            0.3665
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape5",
+          "type": "body",
+          "position": [
+            0.3829,
+            0.6585,
+            0.197,
+            0.2436
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape6",
+          "type": "body",
+          "position": [
+            0.3539,
+            0.6585,
+            0.197,
+            0.2436
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape7",
+          "type": "body",
+          "position": [
+            0.519,
+            0.6736,
+            0.1705,
+            0.05
+          ],
+          "text": "2027-2030年",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape8",
+          "type": "body",
+          "position": [
+            0.8022,
+            0.5422,
+            0.1108,
+            0.05
+          ],
+          "text": "2030年",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape9",
+          "type": "body",
+          "position": [
+            0.2338,
+            0.6581,
+            0.2503,
+            0.3826
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape10",
+          "type": "body",
+          "position": [
+            0.3004,
+            0.7954,
+            0.141,
+            0.05
+          ],
+          "text": "2024-2026年",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape11",
+          "type": "body",
+          "position": [
+            0.3891,
+            0.6017,
+            0.078,
+            0.0555
+          ],
+          "text": "初创期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape12",
+          "type": "body",
+          "position": [
+            0.6338,
+            0.4818,
+            0.0814,
+            0.0555
+          ],
+          "text": "成长期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape13",
+          "type": "body",
+          "position": [
+            0.8883,
+            0.3107,
+            0.0814,
+            0.0555
+          ],
+          "text": "成熟期",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape14",
+          "type": "body",
+          "position": [
+            0.1892,
+            0.3565,
+            0.3412,
+            0.1256
+          ],
+          "text": "抗癌药物上市销售\n扩大科研团队，深入研发，保持技术领先\n外包专业公司负责生产、销售",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape15",
+          "type": "title",
+          "position": [
+            0.5978,
+            0.1603,
+            0.2571,
+            0.1305
+          ],
+          "text": "药到病除大批量生产\n带动上下游10000人就业\n公司员工数量超200+",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape16",
+          "type": "decoration",
+          "position": [
+            0.2999,
+            0.6316,
+            0.0871,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape17",
+          "type": "decoration",
+          "position": [
+            0.5304,
+            0.4179,
+            0.1441,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape18",
+          "type": "decoration",
+          "position": [
+            0.6745,
+            0.4167,
+            0.0,
+            0.0628
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape19",
+          "type": "decoration",
+          "position": [
+            0.8559,
+            0.2186,
+            0.0731,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape20",
+          "type": "decoration",
+          "position": [
+            0.929,
+            0.2186,
+            0.0,
+            0.0922
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape21",
+          "type": "title",
+          "position": [
+            0.0402,
+            0.1377,
+            0.4383,
+            0.1436
+          ],
+          "text": "立足科研创新\n坚持产学结合的发展战略",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape22",
+          "type": "body",
+          "position": [
+            0.0441,
+            0.585,
+            0.2795,
+            0.2087
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape23",
+          "type": "body",
+          "position": [
+            0.0643,
+            0.605,
+            0.2271,
+            0.1687
+          ],
+          "text": "公司成立\n专注于药到病除研究\nCFDA（中国食品药品监督管理局）审批上市",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape24",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.8263,
+            0.0539
+          ],
+          "text": "战略计划： 坚持科研为主，脚踏实地惠民生",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s16_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "企业合作1：与众多高校、医院、科研机构深入合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape1",
+          "type": "title",
+          "position": [
+            0.0741,
+            0.2211,
+            0.2116,
+            0.3762
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape2",
+          "type": "title",
+          "position": [
+            0.099,
+            0.2496,
+            0.162,
+            0.0704
+          ],
+          "text": "技术合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape3",
+          "type": "title",
+          "position": [
+            0.3945,
+            0.2211,
+            0.2116,
+            0.3762
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape4",
+          "type": "title",
+          "position": [
+            0.4193,
+            0.2496,
+            0.162,
+            0.0704
+          ],
+          "text": "医院合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape5",
+          "type": "title",
+          "position": [
+            0.7148,
+            0.2211,
+            0.2116,
+            0.3762
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape6",
+          "type": "title",
+          "position": [
+            0.7397,
+            0.2496,
+            0.162,
+            0.0704
+          ],
+          "text": "其他合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape7",
+          "type": "body",
+          "position": [
+            0.2338,
+            0.5221,
+            0.2116,
+            0.3762
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape8",
+          "type": "body",
+          "position": [
+            0.2587,
+            0.556,
+            0.162,
+            0.0704
+          ],
+          "text": "高校合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape9",
+          "type": "body",
+          "position": [
+            0.5563,
+            0.5221,
+            0.2116,
+            0.3762
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape10",
+          "type": "body",
+          "position": [
+            0.5812,
+            0.556,
+            0.162,
+            0.0704
+          ],
+          "text": "企业合作",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape11",
+          "type": "image",
+          "position": [
+            0.8432,
+            0.2848,
+            0.127,
+            0.2259
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape12",
+          "type": "image",
+          "position": [
+            0.0557,
+            0.3522,
+            0.1186,
+            0.066
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape13",
+          "type": "image",
+          "position": [
+            0.3798,
+            0.347,
+            0.1205,
+            0.0895
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape14",
+          "type": "image",
+          "position": [
+            0.4632,
+            0.4904,
+            0.0759,
+            0.135
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape15",
+          "type": "image",
+          "position": [
+            0.4029,
+            0.4131,
+            0.1071,
+            0.1113
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape16",
+          "type": "image",
+          "position": [
+            0.1763,
+            0.3701,
+            0.0964,
+            0.1714
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape17",
+          "type": "image",
+          "position": [
+            0.5146,
+            0.4208,
+            0.0896,
+            0.0958
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape18",
+          "type": "image",
+          "position": [
+            0.1316,
+            0.4735,
+            0.1009,
+            0.1266
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape19",
+          "type": "image",
+          "position": [
+            0.0762,
+            0.4122,
+            0.1022,
+            0.0861
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape20",
+          "type": "image",
+          "position": [
+            0.1884,
+            0.3432,
+            0.1061,
+            0.0641
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape21",
+          "type": "image",
+          "position": [
+            0.6808,
+            0.312,
+            0.1363,
+            0.1714
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape22",
+          "type": "image",
+          "position": [
+            0.5125,
+            0.3557,
+            0.0896,
+            0.0629
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape23",
+          "type": "image",
+          "position": [
+            0.7758,
+            0.3522,
+            0.0964,
+            0.0792
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape24",
+          "type": "image",
+          "position": [
+            0.7926,
+            0.5244,
+            0.0548,
+            0.0975
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape25",
+          "type": "image",
+          "position": [
+            0.7256,
+            0.4345,
+            0.1093,
+            0.0704
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape26",
+          "type": "image",
+          "position": [
+            0.825,
+            0.4421,
+            0.0963,
+            0.0811
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape27",
+          "type": "image",
+          "position": [
+            0.6808,
+            0.5799,
+            0.127,
+            0.2259
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape28",
+          "type": "image",
+          "position": [
+            0.5184,
+            0.6071,
+            0.1363,
+            0.1714
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape29",
+          "type": "image",
+          "position": [
+            0.6134,
+            0.6473,
+            0.0964,
+            0.0792
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape30",
+          "type": "image",
+          "position": [
+            0.6302,
+            0.8195,
+            0.0548,
+            0.0975
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape31",
+          "type": "image",
+          "position": [
+            0.5632,
+            0.7296,
+            0.1093,
+            0.0704
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape32",
+          "type": "image",
+          "position": [
+            0.6626,
+            0.7372,
+            0.0963,
+            0.0811
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape33",
+          "type": "image",
+          "position": [
+            0.2138,
+            0.6749,
+            0.1186,
+            0.066
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape34",
+          "type": "image",
+          "position": [
+            0.3344,
+            0.6928,
+            0.0964,
+            0.1714
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape35",
+          "type": "image",
+          "position": [
+            0.2897,
+            0.7962,
+            0.1009,
+            0.1266
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape36",
+          "type": "image",
+          "position": [
+            0.2343,
+            0.7349,
+            0.1022,
+            0.0861
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s16_shape37",
+          "type": "image",
+          "position": [
+            0.3465,
+            0.6659,
+            0.1061,
+            0.0641
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s17_shape0",
+          "type": "image",
+          "position": [
+            -0.0446,
+            0.241,
+            0.1773,
+            0.3542
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape1",
+          "type": "image",
+          "position": [
+            0.8596,
+            0.241,
+            0.1866,
+            0.3542
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape2",
+          "type": "title",
+          "position": [
+            0.8596,
+            0.241,
+            0.1866,
+            0.3542
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape3",
+          "type": "title",
+          "position": [
+            -0.0446,
+            0.241,
+            0.1773,
+            0.3542
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape4",
+          "type": "title",
+          "position": [
+            0.1001,
+            0.241,
+            0.7997,
+            0.3542
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape5",
+          "type": "image",
+          "position": [
+            0.8503,
+            0.636,
+            0.1497,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape6",
+          "type": "image",
+          "position": [
+            0.772,
+            0.636,
+            0.1482,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape7",
+          "type": "image",
+          "position": [
+            0.6966,
+            0.636,
+            0.1454,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape8",
+          "type": "image",
+          "position": [
+            0.6198,
+            0.636,
+            0.1468,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape9",
+          "type": "image",
+          "position": [
+            0.54,
+            0.636,
+            0.1497,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape10",
+          "type": "image",
+          "position": [
+            0.4618,
+            0.636,
+            0.1482,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape11",
+          "type": "image",
+          "position": [
+            0.3864,
+            0.636,
+            0.1454,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape12",
+          "type": "image",
+          "position": [
+            0.3096,
+            0.636,
+            0.1468,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape13",
+          "type": "image",
+          "position": [
+            0.2298,
+            0.636,
+            0.1497,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape14",
+          "type": "image",
+          "position": [
+            0.1515,
+            0.636,
+            0.1482,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape15",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "企业合作2：成立一年，项目合作金额高达1688万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape16",
+          "type": "image",
+          "position": [
+            0.0761,
+            0.636,
+            0.1454,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape17",
+          "type": "image",
+          "position": [
+            -0.0007,
+            0.636,
+            0.1468,
+            0.3657
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape18",
+          "type": "body",
+          "position": [
+            0.1852,
+            0.2795,
+            0.3285,
+            0.2629
+          ],
+          "text": "广州区第八人民医院 58W 已签合同\n中山大学附属医院 39w 采购中\n深圳第一人民医院 48W 测试中\n佛山养老年病医院 19w 采购中\n中山市儿童医院 28W 测试中",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape19",
+          "type": "body",
+          "position": [
+            0.532,
+            0.2795,
+            0.3285,
+            0.2629
+          ],
+          "text": "广州区第八人民医院 58W 已签合同\n中山大学附属医院 39w 采购中\n深圳第一人民医院 48W 测试中\n佛山养老年病医院 19w 采购中\n中山市儿童医院 28W 测试中",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s17_shape20",
+          "type": "title",
+          "position": [
+            0.0317,
+            0.1483,
+            0.9365,
+            0.0539
+          ],
+          "text": "已与下游厂商达成长期供货意向协议，共计68万份药到病除，总金额达1680万",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s18_shape0",
+          "type": "body",
+          "position": [
+            0.5959,
+            0.6673,
+            0.3618,
+            0.2509
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape1",
+          "type": "body",
+          "position": [
+            0.0423,
+            0.6673,
+            0.5337,
+            0.2509
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape2",
+          "type": "body",
+          "position": [
+            0.0423,
+            0.5955,
+            0.5346,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape3",
+          "type": "body",
+          "position": [
+            0.5866,
+            0.5955,
+            0.3711,
+            0.0718
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape4",
+          "type": "body",
+          "position": [
+            0.2954,
+            0.7393,
+            0.1371,
+            0.0247
+          ],
+          "text": "公司2022年营业额",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape5",
+          "type": "body",
+          "position": [
+            0.2939,
+            0.7664,
+            0.1371,
+            0.0449
+          ],
+          "text": "6688万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape6",
+          "type": "body",
+          "position": [
+            0.2429,
+            0.7316,
+            0.0481,
+            0.0856
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape7",
+          "type": "body",
+          "position": [
+            0.2534,
+            0.7439,
+            0.0259,
+            0.0533
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape8",
+          "type": "body",
+          "position": [
+            0.6796,
+            0.7399,
+            0.1469,
+            0.0247
+          ],
+          "text": "截至23年1月共缴纳税收",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape9",
+          "type": "body",
+          "position": [
+            0.6781,
+            0.767,
+            0.1469,
+            0.0449
+          ],
+          "text": "688万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape10",
+          "type": "body",
+          "position": [
+            0.6271,
+            0.7316,
+            0.0481,
+            0.0856
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape11",
+          "type": "body",
+          "position": [
+            0.6382,
+            0.7465,
+            0.0251,
+            0.0518
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape12",
+          "type": "body",
+          "position": [
+            0.8775,
+            0.7393,
+            0.1016,
+            0.0247
+          ],
+          "text": "22年缴纳税收",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape13",
+          "type": "body",
+          "position": [
+            0.876,
+            0.7664,
+            0.1016,
+            0.0449
+          ],
+          "text": "168万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape14",
+          "type": "body",
+          "position": [
+            0.825,
+            0.7316,
+            0.0481,
+            0.0856
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape15",
+          "type": "body",
+          "position": [
+            0.838,
+            0.75,
+            0.0236,
+            0.0473
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape16",
+          "type": "body",
+          "position": [
+            0.104,
+            0.7399,
+            0.1371,
+            0.0247
+          ],
+          "text": "公司成立已确认营业额",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape17",
+          "type": "body",
+          "position": [
+            0.1024,
+            0.767,
+            0.1371,
+            0.0449
+          ],
+          "text": "8888万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape18",
+          "type": "body",
+          "position": [
+            0.0514,
+            0.7316,
+            0.0481,
+            0.0856
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape19",
+          "type": "body",
+          "position": [
+            0.0626,
+            0.748,
+            0.0259,
+            0.046
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape20",
+          "type": "title",
+          "position": [
+            0.1876,
+            0.1997,
+            0.1945,
+            0.0404
+          ],
+          "text": "审计报告",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape21",
+          "type": "title",
+          "position": [
+            0.6574,
+            0.1997,
+            0.1945,
+            0.0404
+          ],
+          "text": "税收完税证明",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape22",
+          "type": "body",
+          "position": [
+            0.4721,
+            0.7393,
+            0.1194,
+            0.0247
+          ],
+          "text": "已签合同总额",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape23",
+          "type": "body",
+          "position": [
+            0.4706,
+            0.7664,
+            0.1194,
+            0.0449
+          ],
+          "text": "6888万元",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape24",
+          "type": "body",
+          "position": [
+            0.4196,
+            0.7316,
+            0.0481,
+            0.0856
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape25",
+          "type": "body",
+          "position": [
+            0.4319,
+            0.7487,
+            0.0267,
+            0.0513
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape26",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "成立以来营收状况：累计营收888万、纳税88万",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape27",
+          "type": "image",
+          "position": [
+            0.6201,
+            0.4671,
+            0.1482,
+            0.1808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape28",
+          "type": "image",
+          "position": [
+            0.7773,
+            0.4671,
+            0.1482,
+            0.1808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape29",
+          "type": "image",
+          "position": [
+            0.3977,
+            0.2753,
+            0.1482,
+            0.3726
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape30",
+          "type": "image",
+          "position": [
+            0.2923,
+            0.2753,
+            0.1464,
+            0.3726
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape31",
+          "type": "image",
+          "position": [
+            0.1825,
+            0.2753,
+            0.151,
+            0.3726
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape32",
+          "type": "image",
+          "position": [
+            0.0753,
+            0.2753,
+            0.1482,
+            0.3726
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape33",
+          "type": "image",
+          "position": [
+            0.6201,
+            0.2744,
+            0.1482,
+            0.1808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s18_shape34",
+          "type": "image",
+          "position": [
+            0.7773,
+            0.2744,
+            0.1482,
+            0.1808
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s19_shape0",
+          "type": "decoration",
+          "position": [
+            0.5136,
+            0.8727,
+            0.4864,
+            0.1273
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape1",
+          "type": "decoration",
+          "position": [
+            -0.0,
+            0.8727,
+            0.4864,
+            0.1273
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape2",
+          "type": "image",
+          "position": [
+            0.4401,
+            0.1747,
+            0.2383,
+            0.8253
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape3",
+          "type": "image",
+          "position": [
+            0.2915,
+            0.1516,
+            0.2383,
+            0.8484
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape4",
+          "type": "body",
+          "position": [
+            0.0429,
+            0.2617,
+            0.2881,
+            0.0898
+          ],
+          "text": "帝释天",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape5",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "创业团队：创始人专业互补、目标明确",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape6",
+          "type": "body",
+          "position": [
+            0.1728,
+            0.3051,
+            0.1582,
+            0.0404
+          ],
+          "text": "CEO & 创始人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape7",
+          "type": "body",
+          "position": [
+            0.0447,
+            0.3856,
+            0.2562,
+            0.4119
+          ],
+          "text": "发酵工程硕士研究生\n研究方向为生物检测\n已在《自然》《科学》等国际高水平期刊发表论文8篇\n申请中国专利16项\n曾在广州药明康德科技有限公司总经理助理岗位实习",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape8",
+          "type": "body",
+          "position": [
+            0.6714,
+            0.2617,
+            0.2881,
+            0.0898
+          ],
+          "text": "欧阳修",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape9",
+          "type": "body",
+          "position": [
+            0.6446,
+            0.3051,
+            0.1796,
+            0.0404
+          ],
+          "text": "GM & 联合创始人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape10",
+          "type": "body",
+          "position": [
+            0.6876,
+            0.3856,
+            0.255,
+            0.3428
+          ],
+          "text": "生物工程硕士研究生\n研究方向为生物科学\n曾在药明康德生物科技有限公司担任市场总监助理\n曾在迈瑞医疗科技有限公司担任总经理助理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape11",
+          "type": "body",
+          "position": [
+            0.9549,
+            0.4082,
+            0.0037,
+            0.0067
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape12",
+          "type": "body",
+          "position": [
+            0.9549,
+            0.4716,
+            0.0037,
+            0.0067
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape13",
+          "type": "body",
+          "position": [
+            0.9549,
+            0.5371,
+            0.0037,
+            0.0067
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s19_shape14",
+          "type": "body",
+          "position": [
+            0.9549,
+            0.6582,
+            0.0037,
+            0.0067
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s20_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "组织架构：团队成员专业互补，携手共进",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape1",
+          "type": "title",
+          "position": [
+            0.2444,
+            0.1384,
+            0.5112,
+            0.1772
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape2",
+          "type": "title",
+          "position": [
+            0.4545,
+            0.1577,
+            0.3011,
+            0.1387
+          ],
+          "text": "生物科学专业\n领导公司的方向与决策\n已在《自然》《科学》等国际高水平期刊发表论文8篇\n申请中国专利16项",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape3",
+          "type": "title",
+          "position": [
+            0.3657,
+            0.171,
+            0.0835,
+            0.0404
+          ],
+          "text": "帝释天",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape4",
+          "type": "title",
+          "position": [
+            0.3665,
+            0.2127,
+            0.0966,
+            0.0611
+          ],
+          "text": "法定代表人\n董事长",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape5",
+          "type": "body",
+          "position": [
+            0.2444,
+            0.3594,
+            0.5112,
+            0.1772
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape6",
+          "type": "body",
+          "position": [
+            0.4545,
+            0.3786,
+            0.3011,
+            0.1387
+          ],
+          "text": "生物科学专业\n领导公司的方向与决策\n已在《自然》《科学》等国际高水平期刊发表论文8篇\n申请中国专利16项",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape7",
+          "type": "body",
+          "position": [
+            0.3657,
+            0.3919,
+            0.0835,
+            0.0404
+          ],
+          "text": "欧阳修",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape8",
+          "type": "body",
+          "position": [
+            0.3665,
+            0.4337,
+            0.0966,
+            0.029
+          ],
+          "text": "总经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape9",
+          "type": "body",
+          "position": [
+            0.0423,
+            0.6064,
+            0.2136,
+            0.2295
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape10",
+          "type": "body",
+          "position": [
+            0.0479,
+            0.7557,
+            0.0741,
+            0.0314
+          ],
+          "text": "欧阳明月",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape11",
+          "type": "body",
+          "position": [
+            0.122,
+            0.621,
+            0.1339,
+            0.2055
+          ],
+          "text": "工商管理类专业\n熟悉各项合规制度\n生物检测普在深圳药明康德生物科技有限公司从事销售工作—年。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape12",
+          "type": "body",
+          "position": [
+            0.0479,
+            0.7871,
+            0.0741,
+            0.029
+          ],
+          "text": "综合部经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape13",
+          "type": "body",
+          "position": [
+            0.2762,
+            0.6064,
+            0.2136,
+            0.2295
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape14",
+          "type": "body",
+          "position": [
+            0.2819,
+            0.7557,
+            0.0741,
+            0.0314
+          ],
+          "text": "上官婉儿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape15",
+          "type": "body",
+          "position": [
+            0.2819,
+            0.7871,
+            0.0741,
+            0.029
+          ],
+          "text": "市场部经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape16",
+          "type": "body",
+          "position": [
+            0.5102,
+            0.6064,
+            0.2136,
+            0.2295
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape17",
+          "type": "body",
+          "position": [
+            0.5158,
+            0.7557,
+            0.0741,
+            0.0314
+          ],
+          "text": "叶凡",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape18",
+          "type": "body",
+          "position": [
+            0.5158,
+            0.7871,
+            0.0741,
+            0.029
+          ],
+          "text": "技术部经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape19",
+          "type": "body",
+          "position": [
+            0.7441,
+            0.6064,
+            0.2136,
+            0.2295
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape20",
+          "type": "body",
+          "position": [
+            0.7497,
+            0.7557,
+            0.0741,
+            0.0314
+          ],
+          "text": "雄霸",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape21",
+          "type": "body",
+          "position": [
+            0.7497,
+            0.7871,
+            0.0741,
+            0.029
+          ],
+          "text": "宣传部经理",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape22",
+          "type": "footer",
+          "position": [
+            0.1082,
+            0.8617,
+            0.0919,
+            0.0322
+          ],
+          "text": "蒙娜丽莎",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape23",
+          "type": "decoration",
+          "position": [
+            0.5,
+            0.3156,
+            0.0,
+            0.0387
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape24",
+          "type": "decoration",
+          "position": [
+            0.1491,
+            0.5663,
+            0.7018,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape25",
+          "type": "decoration",
+          "position": [
+            0.8509,
+            0.5663,
+            0.0,
+            0.0402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape26",
+          "type": "decoration",
+          "position": [
+            0.1491,
+            0.5663,
+            0.0,
+            0.0402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape27",
+          "type": "decoration",
+          "position": [
+            0.617,
+            0.5663,
+            0.0,
+            0.0402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape28",
+          "type": "decoration",
+          "position": [
+            0.383,
+            0.5663,
+            0.0,
+            0.0402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape29",
+          "type": "decoration",
+          "position": [
+            0.5,
+            0.5366,
+            0.0,
+            0.0297
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape30",
+          "type": "decoration",
+          "position": [
+            0.082,
+            0.8359,
+            0.0,
+            0.1049
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape31",
+          "type": "decoration",
+          "position": [
+            0.082,
+            0.8778,
+            0.0262,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape32",
+          "type": "decoration",
+          "position": [
+            0.082,
+            0.9408,
+            0.0262,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape33",
+          "type": "footer",
+          "position": [
+            0.1082,
+            0.9247,
+            0.0916,
+            0.0322
+          ],
+          "text": "迪莉娅",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape34",
+          "type": "footer",
+          "position": [
+            0.3441,
+            0.8617,
+            0.0919,
+            0.0322
+          ],
+          "text": "卡卡罗特",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape35",
+          "type": "decoration",
+          "position": [
+            0.3179,
+            0.8359,
+            0.0,
+            0.1049
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape36",
+          "type": "decoration",
+          "position": [
+            0.3179,
+            0.8778,
+            0.0262,
+            0.063
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape37",
+          "type": "footer",
+          "position": [
+            0.3441,
+            0.9247,
+            0.0916,
+            0.0322
+          ],
+          "text": "贝吉塔",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape38",
+          "type": "footer",
+          "position": [
+            0.5756,
+            0.8617,
+            0.0919,
+            0.0322
+          ],
+          "text": "特兰克斯",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape39",
+          "type": "decoration",
+          "position": [
+            0.5494,
+            0.8359,
+            0.0,
+            0.1049
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape40",
+          "type": "decoration",
+          "position": [
+            0.5494,
+            0.8778,
+            0.0262,
+            0.063
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape41",
+          "type": "footer",
+          "position": [
+            0.5756,
+            0.9247,
+            0.0916,
+            0.0322
+          ],
+          "text": "孙悟天",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape42",
+          "type": "footer",
+          "position": [
+            0.8071,
+            0.8617,
+            0.0919,
+            0.0322
+          ],
+          "text": "上官飞燕",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape43",
+          "type": "decoration",
+          "position": [
+            0.7809,
+            0.8359,
+            0.0,
+            0.1049
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape44",
+          "type": "decoration",
+          "position": [
+            0.7809,
+            0.8778,
+            0.0262,
+            0.063
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape45",
+          "type": "footer",
+          "position": [
+            0.8071,
+            0.9247,
+            0.0916,
+            0.0322
+          ],
+          "text": "申屠云",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape46",
+          "type": "body",
+          "position": [
+            0.356,
+            0.621,
+            0.1339,
+            0.2055
+          ],
+          "text": "工商管理类专业\n熟悉各项合规制度\n生物检测普在深圳药明康德生物科技有限公司从事销售工作—年。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape47",
+          "type": "body",
+          "position": [
+            0.5865,
+            0.621,
+            0.1339,
+            0.2055
+          ],
+          "text": "工商管理类专业\n熟悉各项合规制度\n生物检测普在深圳药明康德生物科技有限公司从事销售工作—年。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape48",
+          "type": "body",
+          "position": [
+            0.8171,
+            0.621,
+            0.1339,
+            0.2055
+          ],
+          "text": "工商管理类专业\n熟悉各项合规制度\n生物检测普在深圳药明康德生物科技有限公司从事销售工作—年。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape49",
+          "type": "image",
+          "position": [
+            0.7556,
+            0.6262,
+            0.0623,
+            0.1103
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape50",
+          "type": "image",
+          "position": [
+            0.27,
+            0.1584,
+            0.0773,
+            0.1368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape51",
+          "type": "image",
+          "position": [
+            0.27,
+            0.3793,
+            0.0773,
+            0.1368
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape52",
+          "type": "image",
+          "position": [
+            0.0538,
+            0.6262,
+            0.0623,
+            0.1103
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape53",
+          "type": "image",
+          "position": [
+            0.5217,
+            0.6262,
+            0.0623,
+            0.1103
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s20_shape54",
+          "type": "image",
+          "position": [
+            0.2878,
+            0.6262,
+            0.0623,
+            0.1103
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s21_shape0",
+          "type": "image",
+          "position": [
+            0.2167,
+            0.1643,
+            0.0807,
+            0.2966
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s21_shape1",
+          "type": "image",
+          "position": [
+            0.7809,
+            0.1856,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s21_shape2",
+          "type": "image",
+          "position": [
+            0.5842,
+            0.1856,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s21_shape3",
+          "type": "image",
+          "position": [
+            0.3875,
+            0.1856,
+            0.15,
+            0.2415
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s21_shape4",
+          "type": "decoration",
+          "position": [
+            0.0422,
+            0.438,
+            0.9154,
+            0.4602
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s21_shape5",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "产品对比：产品性价比高，成本低，有绝对优势",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s22_shape0",
+          "type": "body",
+          "position": [
+            0.1015,
+            0.3748,
+            0.2368,
+            0.0718
+          ],
+          "text": "股权激励15%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape1",
+          "type": "decoration",
+          "position": [
+            0.2352,
+            0.2802,
+            0.5558,
+            0.6588
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape2",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "股权架构：完成天使轮融资，接洽A轮资本",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape3",
+          "type": "body",
+          "position": [
+            0.4088,
+            0.5561,
+            0.2086,
+            0.1436
+          ],
+          "text": "公司注册资金\n600万",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape4",
+          "type": "decoration",
+          "position": [
+            0.6821,
+            0.5258,
+            0.2622,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape5",
+          "type": "body",
+          "position": [
+            0.8132,
+            0.4466,
+            0.1794,
+            0.0718
+          ],
+          "text": "帝释天60%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape6",
+          "type": "body",
+          "position": [
+            0.1015,
+            0.7593,
+            0.1794,
+            0.0718
+          ],
+          "text": "欧阳锋15%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape7",
+          "type": "decoration",
+          "position": [
+            0.0973,
+            0.454,
+            0.2631,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape8",
+          "type": "decoration",
+          "position": [
+            0.0973,
+            0.8385,
+            0.2631,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape9",
+          "type": "decoration",
+          "position": [
+            0.2243,
+            0.3051,
+            0.2631,
+            0.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape10",
+          "type": "title",
+          "position": [
+            0.2272,
+            0.2259,
+            0.2368,
+            0.0718
+          ],
+          "text": "其他用途10%",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape11",
+          "type": "body",
+          "position": [
+            0.3885,
+            0.388,
+            0.2493,
+            0.4431
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s22_shape12",
+          "type": "image",
+          "position": [
+            1.0077,
+            0.5336,
+            0.3058,
+            0.3048
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s23_shape0",
+          "type": "body",
+          "position": [
+            -0.0179,
+            0.3797,
+            0.5766,
+            0.7402
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape1",
+          "type": "title",
+          "position": [
+            0.6064,
+            0.1486,
+            0.3514,
+            0.7429
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape2",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "市场分析：市场前景广阔，公司3年预计盈利66亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape3",
+          "type": "decoration",
+          "position": [
+            0.6257,
+            0.2706,
+            0.3246,
+            0.5918
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape4",
+          "type": "title",
+          "position": [
+            0.6353,
+            0.1805,
+            0.3065,
+            0.0539
+          ],
+          "text": "目标市场规模（亿元）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape5",
+          "type": "footer",
+          "position": [
+            0.6682,
+            0.9234,
+            0.372,
+            0.0224
+          ],
+          "text": "数据来源：小目标PPT数据《2024年中国癌细胞药物行业报告》",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape6",
+          "type": "body",
+          "position": [
+            0.0379,
+            0.5909,
+            0.1785,
+            0.3173
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape7",
+          "type": "title",
+          "position": [
+            0.2378,
+            0.1675,
+            0.2622,
+            0.4661
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape8",
+          "type": "body",
+          "position": [
+            0.0778,
+            0.7265,
+            0.0986,
+            0.1754
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape9",
+          "type": "body",
+          "position": [
+            0.3069,
+            0.3897,
+            0.1241,
+            0.2205
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape10",
+          "type": "body",
+          "position": [
+            0.0678,
+            0.6443,
+            0.1188,
+            0.0763
+          ],
+          "text": "抗癌药物市场\n1688亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape11",
+          "type": "body",
+          "position": [
+            0.0778,
+            0.7935,
+            0.0986,
+            0.0763
+          ],
+          "text": "药到病除市场\n88亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape12",
+          "type": "body",
+          "position": [
+            0.298,
+            0.2783,
+            0.1452,
+            0.0763
+          ],
+          "text": "抗癌药物市场\n6688亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape13",
+          "type": "body",
+          "position": [
+            0.3236,
+            0.4655,
+            0.0939,
+            0.0763
+          ],
+          "text": "药到病除市场\n888亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape14",
+          "type": "body",
+          "position": [
+            0.0536,
+            0.5497,
+            0.1471,
+            0.0314
+          ],
+          "text": "2024年中国市场",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s23_shape15",
+          "type": "title",
+          "position": [
+            0.2953,
+            0.126,
+            0.1471,
+            0.0314
+          ],
+          "text": "2030年中国市场",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "layout": "content",
+      "zones": [
+        {
+          "zone_id": "s24_shape0",
+          "type": "body",
+          "position": [
+            0.5177,
+            0.2819,
+            0.4401,
+            0.6318
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s24_shape1",
+          "type": "decoration",
+          "position": [
+            0.5267,
+            0.3077,
+            0.4221,
+            0.6074
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s24_shape2",
+          "type": "title",
+          "position": [
+            0.5901,
+            0.1991,
+            0.3065,
+            0.0539
+          ],
+          "text": "未来4年计划营收（亿元）",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s24_shape3",
+          "type": "decoration",
+          "position": [
+            0.0422,
+            0.2819,
+            0.4431,
+            0.6318
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s24_shape4",
+          "type": "title",
+          "position": [
+            0.1097,
+            0.1991,
+            0.308,
+            0.0539
+          ],
+          "text": "2024年销售数据",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s24_shape5",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "营收预期：24年营收80亿，未来4年营收预计888亿",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s25_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "社会价值：帮助数百万患者回归正常生活，极大的降低患者家庭负担",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape1",
+          "type": "title",
+          "position": [
+            0.0,
+            0.2043,
+            1.0,
+            0.7984
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape2",
+          "type": "image",
+          "position": [
+            0.0128,
+            0.232,
+            0.2343,
+            0.3616
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape3",
+          "type": "image",
+          "position": [
+            0.2595,
+            0.6134,
+            0.2343,
+            0.3094
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape4",
+          "type": "image",
+          "position": [
+            0.0128,
+            0.6134,
+            0.2343,
+            0.3616
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape5",
+          "type": "image",
+          "position": [
+            0.5062,
+            0.6134,
+            0.2343,
+            0.3094
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape6",
+          "type": "image",
+          "position": [
+            0.5062,
+            0.2837,
+            0.2343,
+            0.31
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape7",
+          "type": "image",
+          "position": [
+            0.2595,
+            0.2837,
+            0.2343,
+            0.31
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape8",
+          "type": "image",
+          "position": [
+            0.7528,
+            0.232,
+            0.2343,
+            0.3616
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape9",
+          "type": "image",
+          "position": [
+            0.7528,
+            0.6134,
+            0.2343,
+            0.3616
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s25_shape10",
+          "type": "title",
+          "position": [
+            0.1656,
+            0.1579,
+            0.6688,
+            0.0539
+          ],
+          "text": "帮助100万人顺利康复，帮助患者家庭降低90%经济负担",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s26_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "带动就业：带动就业，促进医疗科研发展",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape1",
+          "type": "image",
+          "position": [
+            0.697,
+            0.5203,
+            0.2877,
+            0.3128
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape2",
+          "type": "image",
+          "position": [
+            0.5466,
+            0.4829,
+            0.3201,
+            0.3794
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape3",
+          "type": "image",
+          "position": [
+            0.0155,
+            0.5295,
+            0.2559,
+            0.3036
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape4",
+          "type": "image",
+          "position": [
+            0.1114,
+            0.4865,
+            0.3172,
+            0.3758
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape5",
+          "type": "image",
+          "position": [
+            0.2856,
+            0.4305,
+            0.3883,
+            0.4608
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape6",
+          "type": "title",
+          "position": [
+            0.222,
+            0.1977,
+            0.2066,
+            0.1346
+          ],
+          "text": "直接带动就业\n180人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s26_shape7",
+          "type": "title",
+          "position": [
+            0.5179,
+            0.1977,
+            0.2066,
+            0.1346
+          ],
+          "text": "间接带动就业\n10000人",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "layout": "content",
+      "zones": [
+        {
+          "zone_id": "s27_shape0",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.0222,
+            0.7827,
+            0.0539
+          ],
+          "text": "教育引领：提高同学对医疗科学兴趣，促进医疗科学发展",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape1",
+          "type": "decoration",
+          "position": [
+            0.4949,
+            0.1777,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape2",
+          "type": "decoration",
+          "position": [
+            0.7182,
+            0.1777,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape3",
+          "type": "title",
+          "position": [
+            0.0423,
+            0.2054,
+            0.2284,
+            0.2629
+          ],
+          "text": "哈尔滨工业大学是教育部直属的全国重点高校，国家“211工程”“985优势学科创新平台项目”，国家“双一流”建设高校。",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape4",
+          "type": "decoration",
+          "position": [
+            0.2725,
+            0.1777,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape5",
+          "type": "decoration",
+          "position": [
+            0.4949,
+            0.621,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape6",
+          "type": "decoration",
+          "position": [
+            0.7182,
+            0.621,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape7",
+          "type": "body",
+          "position": [
+            0.0423,
+            0.6486,
+            0.2284,
+            0.2629
+          ],
+          "text": "开展企业合规人才培训班、沙龙分享会等活动，已经培养医疗科研人才约140名，三年内预计培养医疗科研人才约1050名",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s27_shape8",
+          "type": "decoration",
+          "position": [
+            0.2725,
+            0.621,
+            0.2466,
+            0.3088
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s28_shape0",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s28_shape1",
+          "type": "decoration",
+          "position": [
+            0.0552,
+            0.1466,
+            0.9392,
+            0.7387
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s28_shape2",
+          "type": "image",
+          "position": [
+            -0.0,
+            0.3988,
+            0.2608,
+            0.6012
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s28_shape3",
+          "type": "decoration",
+          "position": [
+            0.0442,
+            0.0484,
+            0.5588,
+            0.0664
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s28_shape4",
+          "type": "decoration",
+          "position": [
+            0.8616,
+            0.0636,
+            0.1031,
+            0.0535
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s28_shape5",
+          "type": "image",
+          "position": [
+            0.3227,
+            0.3268,
+            0.634,
+            0.6732
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s29_shape0",
+          "type": "image",
+          "position": [
+            0.0308,
+            0.0682,
+            0.1029,
+            0.2047
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape1",
+          "type": "image",
+          "position": [
+            0.1514,
+            0.0971,
+            0.0846,
+            0.147
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape2",
+          "type": "image",
+          "position": [
+            0.2538,
+            0.0621,
+            0.0937,
+            0.2169
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape3",
+          "type": "image",
+          "position": [
+            0.5834,
+            0.1104,
+            0.0872,
+            0.144
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape4",
+          "type": "image",
+          "position": [
+            0.7744,
+            0.0977,
+            0.0998,
+            0.1695
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape5",
+          "type": "image",
+          "position": [
+            0.3653,
+            0.0971,
+            0.096,
+            0.1707
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape6",
+          "type": "image",
+          "position": [
+            0.4791,
+            0.1056,
+            0.0865,
+            0.1537
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape7",
+          "type": "image",
+          "position": [
+            0.6884,
+            0.1224,
+            0.0682,
+            0.12
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape8",
+          "type": "image",
+          "position": [
+            0.8919,
+            0.1136,
+            0.0774,
+            0.1375
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape9",
+          "type": "image",
+          "position": [
+            0.0365,
+            0.3335,
+            0.1396,
+            0.5582
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape10",
+          "type": "image",
+          "position": [
+            0.1853,
+            0.3307,
+            0.147,
+            0.5627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape11",
+          "type": "image",
+          "position": [
+            0.4977,
+            0.3307,
+            0.1495,
+            0.5627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape12",
+          "type": "image",
+          "position": [
+            0.3415,
+            0.3307,
+            0.147,
+            0.5627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape13",
+          "type": "image",
+          "position": [
+            0.8115,
+            0.3225,
+            0.152,
+            0.5759
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s29_shape14",
+          "type": "image",
+          "position": [
+            0.6564,
+            0.3307,
+            0.1459,
+            0.5627
+          ],
+          "text": "",
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    }
+  ]
+}

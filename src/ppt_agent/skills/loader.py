@@ -85,6 +85,10 @@ class SkillLoader:
                 continue
         return results
 
+    def is_loaded(self, skill_name: str) -> bool:
+        """Check if a skill has already been loaded in this session."""
+        return skill_name in self._loaded
+
     @property
     def loaded_skills(self) -> set[str]:
         return self._loaded.copy()

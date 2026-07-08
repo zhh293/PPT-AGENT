@@ -7,7 +7,7 @@ from xml.etree import ElementTree as ET
 
 def extract_text(path: Path) -> str:
     suffix = path.suffix.lower()
-    if suffix in {".txt", ".md", ".csv"}:
+    if suffix in {".txt", ".md", ".csv", ".json", ".yaml", ".yml"}:
         return path.read_text(encoding="utf-8", errors="ignore")
     if suffix == ".docx":
         return _docx_text(path)

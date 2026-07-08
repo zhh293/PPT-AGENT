@@ -1,0 +1,84 @@
+{
+  "slides": [
+    {
+      "index": 0,
+      "mode": "full_page",
+      "prompt": "Title: Test Project | Content: Point 1 for Test Project; Point 2 for Test Project; Point 3 for Test Project | Generate a professional presentation slide background with low visual density. Style: clean, modern, corporate. Layout type: cover.hero. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_00.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 1,
+      "mode": "full_page",
+      "prompt": "Title: 背景与机会 | Content: Point 1 for 背景与机会; Point 2 for 背景与机会; Point 3 for 背景与机会 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_01.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 2,
+      "mode": "full_page",
+      "prompt": "Title: 核心问题 | Content: Point 1 for 核心问题; Point 2 for 核心问题; Point 3 for 核心问题 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_02.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 3,
+      "mode": "full_page",
+      "prompt": "Title: 解决方案 | Content: Point 1 for 解决方案; Point 2 for 解决方案; Point 3 for 解决方案 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_03.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 4,
+      "mode": "full_page",
+      "prompt": "Title: 产品能力 | Content: Point 1 for 产品能力; Point 2 for 产品能力; Point 3 for 产品能力 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_04.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 5,
+      "mode": "full_page",
+      "prompt": "Title: 支撑材料 | Content: Point 1 for 支撑材料; Point 2 for 支撑材料; Point 3 for 支撑材料 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_05.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 6,
+      "mode": "full_page",
+      "prompt": "Title: 推进计划 | Content: Point 1 for 推进计划; Point 2 for 推进计划; Point 3 for 推进计划 | Generate a professional presentation slide background with medium visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_06.png",
+      "fallback": "placeholder"
+    },
+    {
+      "index": 7,
+      "mode": "full_page",
+      "prompt": "Title: 总结与期待 | Content: Point 1 for 总结与期待; Point 2 for 总结与期待; Point 3 for 总结与期待 | Generate a professional presentation slide background with low visual density. Style: clean, modern, corporate. Layout type: fallback.basic. The image should be a full 16:9 slide with appropriate visual elements but clear areas for text overlay. Do NOT render actual text in the image — text will be added separately.",
+      "aspect_ratio": "16:9",
+      "resolution": "1K",
+      "reference_image": null,
+      "output_name": "slide_07.png",
+      "fallback": "placeholder"
+    }
+  ]
+}

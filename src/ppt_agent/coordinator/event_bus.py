@@ -100,6 +100,50 @@ class CallbackConsumer(EventConsumer):
         self._callback(event)
 
 
+class SSEConsumer(EventConsumer):
+    """Consumer for Server-Sent Events (SSE) streaming to frontends.
+
+    Pushes events onto an asyncio Queue for consumption by a FastAPI
+    ``StreamingResponse`` endpoint.  When the queue is full the oldest
+    events are dropped (bounded backpressure).
+    """
+
+    def __init__(self, max_queue_size: int = 500) -> None:
+        import asyncio
+        self._queue: asyncio.Queue[dict] = asyncio.Queue(maxsize=max_queue_size)
+
+    def handle(self, event: dict) -> None:
+        """Push *event* onto the asyncio queue (non-blocking).
+
+        If the queue is full the event is silently dropped to avoid
+        blocking the agent loop.
+        """
+        import asyncio
+        try:
+            self._queue.put_nowait(event)
+        except asyncio.QueueFull:
+            pass  # backpressure — drop event silently
+
+    async def event_generator(self):
+        """Async generator yielding events for SSE streaming.
+
+        Usage (FastAPI)::
+
+            consumer = SSEConsumer()
+            bus.subscribe(consumer)
+
+            @app.get("/events")
+            async def sse_endpoint():
+                return StreamingResponse(
+                    consumer.event_generator(),
+                    media_type="text/event-stream",
+                )
+        """
+        while True:
+            event = await self._queue.get()
+            yield event
+
+
 # ─── Event Bus ──────────────────────────────────────────────────────────
 class EventBus:
     """Pub/sub event bus with pluggable consumers.

@@ -1,26 +1,10 @@
-"""WorkerAgent — independent agent loop for pipeline phases.
+"""WorkerAgent — independent agent loop for PPT pipeline capabilities.
 
-Each WorkerAgent runs its own think→act→observe cycle with DOMAIN-SPECIFIC
-tools tailored to its phase. The LLM is the decision maker — it reads context,
-reasons about what to do, uses tools to gather data and produce output, then
-validates its own work.
-
-Three categories of phases, each with different tool sets:
-
-1. CONTENT REASONING phases (doc_analysis, outline, design, content_mapping,
-   verification): the LLM reads input files and prior artifacts, reasons about
-   the content, composes a structured JSON artifact, writes it, and validates.
-
-2. OPERATION phases (template_matching, ppt_assembly): the LLM invokes
-   domain-specific operations (template search, PPTX assembly) with parameters
-   it decides, checks results, and handles errors.
-
-3. SKILL-AUTONOMOUS phases (visual_generation): the LLM reads the Skill's
-   SKILL.md documentation, reasons about which commands to run, executes them
-   via shell, and checks outputs — exactly like CatPaw's host agent.
-
-All phases share a deterministic fallback: if LLM fails, the original
-worker module's run() function is called directly.
+Phase 6 upgrade:
+    - Receives AgentCapability instead of phase string.
+    - Uses ToolFactory + ToolRegistry for tool execution (RBAC enforced).
+    - Removed compose_artifact — uses write_artifact tool instead.
+    - Fallback delegates to capability.fallback_module.
 """
 
 from __future__ import annotations
@@ -83,6 +67,27 @@ _OPERATION_PHASES = {
 _SKILL_AUTONOMOUS_PHASES = {
     "visual_generation",
 }
+
+# ── Phase 4.4: Sandbox security — blocked shell patterns ────────────
+# IMPORTANT: This string-match blacklist is a BEST-EFFORT defence-in-depth
+# layer.  It is NOT a security boundary — shell=True with user-supplied
+# arguments is fundamentally unsafe.  Use SafeFilesystem for path
+# containment and consider OS-level sandboxing (containers, seccomp) for
+# production deployments.
+_BLOCKED_PATTERNS = (
+    # Block only root-targeting rm variants (not /tmp or workspace paths)
+    "rm -rf / ",
+    "rm -rf /* ",
+    "rm -r -f / ",
+    "rm -r -f /* ",
+    # Block filesystem creation commands
+    "mkfs",
+    "mke2fs",
+    # Block raw device writes
+    "dd if=",
+    # Block fork bombs
+    ":(){ :|:& };:",
+)
 
 # Allowlist of legitimate worker tool names (AGENT_ARCHITECTURE.md §5.1, §5.3)
 _WORKER_ALLOWLIST: set[str] = {
@@ -207,28 +212,40 @@ class WorkerAgent(AgentLoop):
     def __init__(
         self,
         workspace: JobWorkspace,
-        phase: str,
+        phase_or_capability,
         llm_client,
         *,
         force: bool = False,
         skill_content: str | None = None,
         instructions: str = "",
-        max_turns: int = 10,
+        max_turns: int | None = None,
+        registry=None,
     ) -> None:
-        # Skill-autonomous phases need more turns for multi-step operations
-        if phase in _SKILL_AUTONOMOUS_PHASES:
-            max_turns = max(max_turns, 15)
+        # Support both AgentCapability and legacy string phase
+        from ppt_agent.coordinator.capabilities import AgentCapability, get_capability
+        if isinstance(phase_or_capability, str):
+            try:
+                self.capability = get_capability(phase_or_capability)
+            except KeyError:
+                self.capability = AgentCapability(capability_id=phase_or_capability, description=phase_or_capability,
+                                                   input_artifacts=[], output_artifacts=[], tools=[], max_turns=10)
+        else:
+            self.capability = phase_or_capability
+
+        max_turns = max_turns or self.capability.max_turns
+        self.phase = self.capability.capability_id  # backward compat
         super().__init__(
-            agent_id=f"worker-{phase}",
+            agent_id=f"worker-{self.phase}",
             llm_client=llm_client,
             max_turns=max_turns,
             max_consecutive_errors=3,
+            job_root=workspace.root,
         )
         self.workspace = workspace
-        self.phase = phase
         self.force = force
         self.skill_content = skill_content
         self.instructions = instructions
+        self._registry = registry
 
     @property
     def _phase_category(self) -> str:
@@ -292,6 +309,7 @@ class WorkerAgent(AgentLoop):
     # ── Fallback ──
 
     def _fallback_execution(self, agent_result: AgentLoopResult) -> AgentLoopResult:
+        """Fall back to deterministic worker via capability.fallback_module (Phase 6)."""
         try:
             output = self._run_deterministic_worker()
             agent_result.stop_reason = StopReason.COMPLETED
@@ -306,9 +324,10 @@ class WorkerAgent(AgentLoop):
 
     def _run_deterministic_worker(self) -> Any:
         import importlib
-        module_path = _PHASE_WORKERS.get(self.phase)
+        # Phase 6: use capability.fallback_module or fall back to legacy _PHASE_WORKERS
+        module_path = self.capability.fallback_module or _PHASE_WORKERS.get(self.phase)
         if not module_path:
-            raise ValueError(f"No worker module for phase: {self.phase}")
+            raise ValueError(f"No fallback module for: {self.phase}")
         module = importlib.import_module(module_path)
         if self.phase in _LLM_PHASES and self.llm_client is not None:
             return module.run(self.workspace, force=self.force, llm_client=self.llm_client)
@@ -487,6 +506,10 @@ You operate EXACTLY like CatPaw's host agent:
     # ── Tool definitions ──
 
     def get_available_tools(self) -> list[dict]:
+        # Phase 6: use ToolRegistry if available
+        if self._registry is not None:
+            return self._registry.get_tools_for_role_as_dicts("worker")
+        # Legacy fallback
         cat = self._phase_category
         if cat == "skill_autonomous":
             return self._get_skill_autonomous_tools()
@@ -663,14 +686,17 @@ You operate EXACTLY like CatPaw's host agent:
         name = tool_call.tool_name
         args = tool_call.arguments
 
-        # RBAC: reject any tool not in the worker allowlist
+        # Phase 6: use ToolRegistry (RBAC enforced by registry)
+        if self._registry is not None:
+            try:
+                return self._registry.execute(tool_call, role="worker")
+            except Exception as e:
+                return ToolResult(call_id=tool_call.call_id, output=None, success=False, error=str(e))
+
+        # Legacy: RBAC via allowlist
         if name not in _WORKER_ALLOWLIST:
-            return ToolResult(
-                call_id=tool_call.call_id,
-                output=None,
-                success=False,
-                error=f"Tool not in worker allowlist: {name}",
-            )
+            return ToolResult(call_id=tool_call.call_id, output=None, success=False,
+                              error=f"Tool not in worker allowlist: {name}")
 
         dispatch = {
             "read_input_files": lambda: self._read_input_files(int(args.get("max_chars", 10000))),
@@ -982,13 +1008,48 @@ You operate EXACTLY like CatPaw's host agent:
     def _run_shell_command(self, command: str, timeout: int = 120, cwd: str | None = None) -> ToolResult:
         if not command.strip():
             return ToolResult(call_id="", output=None, success=False, error="Empty command")
-        work_dir = cwd or str(self.workspace.root)
+
+        # ── Phase 4.4: Sandbox security checks ─────────────────
+        _BLOCKED = _BLOCKED_PATTERNS
+        cmd_lower = command.lower()
+        for pattern in _BLOCKED:
+            if pattern in cmd_lower:
+                return ToolResult(
+                    call_id="", output=None, success=False,
+                    error=f"Blocked dangerous command pattern: {pattern}",
+                )
+
+        # Enforce working directory within workspace
+        work_dir = Path(cwd or str(self.workspace.root)).resolve()
+        ws_root = self.workspace.root.resolve()
+        if ws_root not in work_dir.parents and work_dir != ws_root:
+            return ToolResult(
+                call_id="", output=None, success=False,
+                error=f"Working directory outside workspace: {work_dir}",
+            )
+
+        # Environment variable whitelist — pass through commonly needed vars
+        _API_KEY_VARS = {
+            k: v for k, v in os.environ.items()
+            if k.endswith("_API_KEY") or k.endswith("_API_TOKEN")
+        }
+        safe_env = {
+            "PATH": os.environ.get("PATH", ""),
+            "HOME": os.environ.get("HOME", ""),
+            "LANG": os.environ.get("LANG", "en_US.UTF-8"),
+            "PYTHONUNBUFFERED": "1",
+            "WORKSPACE_ROOT": str(ws_root),
+            "TMPDIR": os.environ.get("TMPDIR", os.environ.get("TEMP", os.environ.get("TMP", ""))),
+            "PYTHONPATH": os.environ.get("PYTHONPATH", ""),
+            **_API_KEY_VARS,
+        }
+        # ───────────────────────────────────────────────────────
+
         logger.info("Worker %s shell: %s", self.phase, command[:200])
         try:
             result = subprocess.run(
                 command, shell=True, capture_output=True, text=True,
-                timeout=timeout, cwd=work_dir,
-                env={**os.environ, "PYTHONUNBUFFERED": "1"},
+                timeout=timeout, cwd=str(work_dir), env=safe_env,
             )
             output = {
                 "exit_code": result.returncode,

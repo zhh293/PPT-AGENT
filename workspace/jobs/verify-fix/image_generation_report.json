@@ -1,0 +1,72 @@
+{
+  "job_id": "verify-fix",
+  "status": "succeeded_with_fallbacks",
+  "summary": "Visual generation skipped; fallback placeholders used.",
+  "provider": "fallback",
+  "slide_results": [
+    {
+      "slide_index": 0,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 1,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 2,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 3,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 4,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 5,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 6,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    },
+    {
+      "slide_index": 7,
+      "mode": "region",
+      "status": "fallback_used",
+      "fallback": "placeholder",
+      "manual_review": true
+    }
+  ],
+  "warnings": [
+    "External visual generation was not configured."
+  ],
+  "execution": {
+    "method": "deterministic_fallback",
+    "skill_context_path": "D:\\vs\\ppt-agent\\PPT-AGENT\\workspace\\jobs\\verify-fix\\skill_instructions.json",
+    "error": "Auto-registration failed: [FAIL] 注册失败 (HTTP 404): Server action not found.\n "
+  }
+}

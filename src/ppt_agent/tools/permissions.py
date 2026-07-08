@@ -53,7 +53,7 @@ def check_phase_permissions(
     denied = []
     for name in tool_names:
         try:
-            descriptor = registry.get(name)
+            descriptor = registry.get_descriptor(name)
             assert_tool_allowed(descriptor, role, allowlist=allowlist)
         except (PermissionError, KeyError):
             denied.append(name)

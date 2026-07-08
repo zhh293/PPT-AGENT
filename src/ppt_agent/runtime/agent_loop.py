@@ -14,6 +14,11 @@ Design principles (from AGENT_ARCHITECTURE.md §9):
     - Workers use domain tools (FileSystem, JsonArtifact, etc.)
     - Each agent has its own context, memory, and tool set
     - The loop self-terminates on DONE signal, max turns, or error budget exceeded
+
+Phase 2 (2026-07): added ConversationStore, Mailbox, ToolRegistry,
+SkillLoader integration, L0-L4 message compression, and skill loading
+as a built-in tool.  All new parameters default to None for backward
+compatibility.
 """
 
 from __future__ import annotations
@@ -24,14 +29,24 @@ import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from pathlib import Path
+from typing import Any, TYPE_CHECKING
 
-from ppt_agent.context.compression import compress_context
+from ppt_agent.context.compression import _llm_summarize
 from ppt_agent.coordinator.event_bus import EventBus, EventType
 from ppt_agent.llm.messages import LLMMessage, LLMResult
 from ppt_agent.runtime.agent_context import agent_attribution
 
+if TYPE_CHECKING:
+    from ppt_agent.runtime.conversation_store import ConversationStore
+    from ppt_agent.runtime.mailbox import Mailbox
+    from ppt_agent.skills.loader import SkillLoader
+    from ppt_agent.tools.registry import ToolRegistry
+
 logger = logging.getLogger(__name__)
+
+# ── Token estimation constant ──────────────────────────────────────────
+_CHARS_PER_TOKEN = 4
 
 
 class AgentState(str, Enum):
@@ -49,8 +64,8 @@ class StopReason(str, Enum):
     COMPLETED = "completed"           # Agent signaled DONE
     MAX_TURNS = "max_turns"           # Hit turn limit
     ERROR_BUDGET = "error_budget"     # Too many consecutive errors
-    ABORTED = "aborted"              # External abort signal
-    NO_ACTION = "no_action"          # LLM returned text without tool call
+    ABORTED = "aborted"               # External abort signal
+    NO_ACTION = "no_action"           # LLM returned text without tool call
 
 
 @dataclass
@@ -101,6 +116,16 @@ class AgentLoop(ABC):
         - execute_tool(tool_call) → actually run the tool
         - parse_llm_response(result) → extract tool calls or DONE signal
         - on_turn_complete(turn) → hook for logging, events, etc.
+
+    Phase 2 additions (all optional, default None):
+        - conversation_store — JSONL conversation persistence
+        - mailbox — inter-agent message passing
+        - tool_registry — centralised tool RBAC + execution
+        - skill_loader — progressive skill loading
+        - context_window_limit — used by _compress_messages()
+
+    Phase 3 additions:
+        - job_root — when set, every LLM call is audited to model_calls.jsonl
     """
 
     def __init__(
@@ -112,6 +137,14 @@ class AgentLoop(ABC):
         max_consecutive_errors: int = 3,
         compression_level: int = 0,
         event_bus: EventBus | None = None,
+        # ── Phase 2 additions ──
+        conversation_store: ConversationStore | None = None,
+        mailbox: Mailbox | None = None,
+        tool_registry: ToolRegistry | None = None,
+        skill_loader: SkillLoader | None = None,
+        context_window_limit: int = 128_000,
+        # ── Phase 3 additions ──
+        job_root: Path | None = None,
     ) -> None:
         self.agent_id = agent_id
         self.llm_client = llm_client
@@ -120,11 +153,22 @@ class AgentLoop(ABC):
         self.compression_level = compression_level
         self.event_bus = event_bus
 
+        # Phase 2
+        self.conversation_store = conversation_store
+        self.mailbox = mailbox
+        self.tool_registry = tool_registry
+        self.skill_loader = skill_loader
+        self.context_window_limit = context_window_limit
+
+        # Phase 3
+        self.job_root = job_root
+
         self.state = AgentState.IDLE
         self.messages: list[LLMMessage] = []
         self.turns: list[AgentTurn] = []
         self._consecutive_errors = 0
         self._aborted = False
+        self._loaded_skills: set[str] = set()
 
     def abort(self) -> None:
         """Signal the agent to stop at the next opportunity."""
@@ -142,15 +186,29 @@ class AgentLoop(ABC):
         """
         start_time = time.monotonic()
 
+        # ── Reset per-run state (re-entrant safety) ────────────
+        self.turns = []
+        self._consecutive_errors = 0
+
         with agent_attribution(self.agent_id):
             # Initialize messages
             system_prompt = self.build_system_prompt()
             self.messages = [LLMMessage.system(system_prompt)]
 
+            # ── Phase 2: Restore conversation history ──────────────
+            if self.conversation_store is not None:
+                prior = self.conversation_store.load_messages()
+                if prior:
+                    # Filter out system-role messages to avoid duplicate
+                    # system prompts from prior runs corrupting context.
+                    non_system = [m for m in prior if m.role != "system"]
+                    if non_system:
+                        self.messages.extend(non_system)
+
             # Build the initial user message with context
             user_text = task_prompt
             if context:
-                compressed = compress_context(context, self.compression_level)
+                compressed = self._compress_context_dict(context)
                 context_str = json.dumps(compressed, ensure_ascii=False, indent=2)
                 user_text = f"{task_prompt}\n\n## Context\n\n{context_str}"
             self.messages.append(LLMMessage.user(user_text))
@@ -158,6 +216,7 @@ class AgentLoop(ABC):
             # Main loop
             final_output = None
             stop_reason = StopReason.MAX_TURNS
+            _last_count = len(self.messages)
 
             for turn_num in range(1, self.max_turns + 1):
                 if self._aborted:
@@ -166,6 +225,16 @@ class AgentLoop(ABC):
 
                 turn = self._execute_turn(turn_num)
                 self.turns.append(turn)
+
+                # ── Phase 2: Persist new messages ────────────────
+                if self.conversation_store is not None:
+                    for msg in self.messages[_last_count:]:
+                        self.conversation_store.append(
+                            msg,
+                            node_id=f"n{turn_num}",
+                            agent_id=self.agent_id,
+                        )
+                    _last_count = len(self.messages)
 
                 # Check for DONE signal
                 if turn.stop_signal:
@@ -216,6 +285,14 @@ class AgentLoop(ABC):
         turn_start = time.monotonic()
         turn = AgentTurn(turn_number=turn_num)
 
+        # ── Phase 2: Check mailbox before thinking ───────────────
+        self._check_mailbox()
+        if self._aborted:
+            turn.thought = "[Aborted by SHUTDOWN]"
+            turn.stop_signal = True
+            turn.duration_ms = int((time.monotonic() - turn_start) * 1000)
+            return turn
+
         # ── THINK ──
         self.state = AgentState.THINKING
         self._emit(
@@ -240,7 +317,21 @@ class AgentLoop(ABC):
             return turn
 
         # Parse the LLM response
-        thought, tool_calls, done = self.parse_llm_response(llm_result)
+        try:
+            thought, tool_calls, done = self.parse_llm_response(llm_result)
+        except Exception as e:
+            logger.error("Agent %s parse_llm_response failed on turn %d: %s", self.agent_id, turn_num, e)
+            self._consecutive_errors += 1
+            self._emit(EventType.ERROR, message=f"Parse failed: {e}", turn=turn_num)
+            thought = f"[PARSE ERROR] {e}"
+            tool_calls = []
+            done = False
+            self.messages.append(LLMMessage.assistant(f"[Internal parse error: {e}. I will retry.]"))
+            turn.thought = thought
+            turn.tool_calls = tool_calls
+            turn.stop_signal = done
+            turn.duration_ms = int((time.monotonic() - turn_start) * 1000)
+            return turn
         turn.thought = thought
         turn.tool_calls = tool_calls
         turn.stop_signal = done
@@ -265,6 +356,20 @@ class AgentLoop(ABC):
         # ── ACT + OBSERVE ──
         self.state = AgentState.ACTING
         for tc in tool_calls:
+            # ── Phase 2: Handle skill loading as a built-in ─────
+            if tc.tool_name == "load_skill":
+                result = self._load_skill_tool(tc.arguments.get("skill_name", ""))
+                result.call_id = tc.call_id
+                turn.tool_results.append(result)
+                if result.success:
+                    self._consecutive_errors = 0
+                else:
+                    self._consecutive_errors += 1
+                self.messages.append(LLMMessage.user(
+                    f"[Tool Result: load_skill]\n{json.dumps(result.output, ensure_ascii=False)}"
+                ))
+                continue
+
             # Emit tool call start
             self._emit(
                 EventType.TOOL_CALL_START,
@@ -327,17 +432,17 @@ class AgentLoop(ABC):
 
     def _call_llm(self) -> LLMResult:
         """Call the LLM with current messages and available tools."""
+        # ── Phase 2: Compress messages before LLM call ───────────
+        self._compress_messages()
+
         tools = self.get_available_tools()
 
         # Build the tool descriptions into the system prompt context
         if tools:
             tool_desc = self._format_tools_for_prompt(tools)
-            # Inject tool descriptions as the last user-visible context
-            # The LLM sees: system prompt + conversation + tool descriptions
             augmented_messages = list(self.messages)
-            # Add tool awareness to the last user message or as a new one
+            # Add tool awareness to the system prompt
             if not any("Available tools:" in (m.content[0].text or "") for m in augmented_messages if m.role == "system"):
-                # Augment system prompt with tools
                 sys_msg = augmented_messages[0]
                 augmented_text = (sys_msg.content[0].text or "") + "\n\n" + tool_desc
                 augmented_messages[0] = LLMMessage.system(augmented_text)
@@ -350,10 +455,287 @@ class AgentLoop(ABC):
             max_tokens=4096,
         )
 
+        # ── Phase 3: Audit ALL calls before raising on failure ───
+        self._log_model_call(result)
+
         if not result.success:
             raise RuntimeError(f"LLM returned error: {result.error}")
 
         return result
+
+    def _log_model_call(self, result: LLMResult) -> None:
+        """Append a record to model_calls.jsonl (Phase 3 audit trail).
+
+        Delegates to the existing ``llm/audit.py`` module to avoid
+        duplicating audit logic.  Failures here MUST NOT crash the
+        agent loop — a warning is logged and execution continues.
+        """
+        if self.job_root is None:
+            return
+
+        try:
+            from ppt_agent.llm.audit import log_model_call
+
+            # Extract a short prompt summary for the hash
+            prompt_summary = ""
+            if self.messages:
+                last = self.messages[-1]
+                prompt_summary = (last.content[0].text or "")[:200]
+
+            log_model_call(
+                job_root=Path(self.job_root),
+                phase=self.agent_id,
+                result=result,
+                prompt_summary=prompt_summary,
+            )
+        except Exception:
+            logger.warning(
+                "Agent %s failed to write audit log (provider=%s, model=%s)",
+                self.agent_id, result.provider, result.model, exc_info=True,
+            )
+
+    # ── Phase 2: New methods ────────────────────────────────────────
+
+    def _check_mailbox(self) -> None:
+        """Check for incoming inter-agent messages and inject into context.
+
+        Called at the start of every turn (before THINK).
+        Reads unread messages, sorts by priority, and injects them as
+        ``[Message from <sender>]`` user messages.
+
+        If a SHUTDOWN message (priority 1) is found, sets
+        ``self._aborted = True``.
+        """
+        if self.mailbox is None:
+            return
+
+        try:
+            unread = self.mailbox.read_unread()
+        except Exception:
+            logger.debug("Mailbox read failed for agent %s", self.agent_id, exc_info=True)
+            return
+
+        if not unread:
+            return
+
+        for msg in unread:
+            priority = msg.get("priority", 3)
+            sender = msg.get("sender", "unknown")
+            text = msg.get("message", "")
+
+            if priority == 1:  # SHUTDOWN
+                logger.info("Agent %s received SHUTDOWN via mailbox", self.agent_id)
+                self._aborted = True
+                self.messages.append(LLMMessage.user(
+                    f"[Message from {sender} — SHUTDOWN]\n{text}"
+                ))
+            else:
+                artifact_refs = msg.get("artifact_refs", [])
+                refs_str = f"\nArtifacts: {', '.join(artifact_refs)}" if artifact_refs else ""
+                self.messages.append(LLMMessage.user(
+                    f"[Message from {sender}]\n{text}{refs_str}"
+                ))
+
+        # Mark as read
+        try:
+            self.mailbox.mark_read()
+        except Exception:
+            logger.debug("Mailbox mark_read failed", exc_info=True)
+
+    def _compress_messages(self) -> None:
+        """L0-L4 graduated message compression (§3 Context Window Management).
+
+        Applied before every LLM call.  Compresses ``self.messages``
+        in-place when estimated token utilisation exceeds thresholds.
+
+        Invariants (NEVER removed):
+            - messages[0] (system prompt — agent.md + memory.md + session.md)
+            - Last 2 messages
+            - Messages whose content contains ``[Error`` or ``[Tool Error``
+        """
+        if not self.messages:
+            return  # nothing to compress
+
+        total = self._estimate_tokens(self.messages)
+        utilization = total / max(self.context_window_limit, 1)
+
+        if utilization < 0.6:
+            return  # L0: no compression needed
+
+        # Determine level
+        if utilization >= 0.95:
+            level = 4
+        elif utilization >= 0.85:
+            level = 3
+        elif utilization >= 0.75:
+            level = 2
+        else:
+            level = 1
+
+        system_msg = self.messages[0]
+
+        # Helper: check all content blocks for error markers (not just block[0])
+        def _has_error(msg: LLMMessage) -> bool:
+            for block in msg.content:
+                t = block.text or ""
+                if "[Error" in t or "[Tool Error" in t:
+                    return True
+            return False
+
+        error_msgs = [m for m in self.messages[1:-2] if _has_error(m)]
+        # Build an id-based exclusion set for robust dedup (identity-based
+        # ``not in`` is fragile when lists are independently constructed).
+        error_ids = {id(m) for m in error_msgs}
+        compressible = [m for m in self.messages[1:-2] if id(m) not in error_ids]
+
+        # Save original positions so we can preserve interleaved order in L2
+        _orig_pos = {id(m): i for i, m in enumerate(self.messages)}
+
+        if level == 1:
+            # L1: truncate large tool outputs
+            for msg in compressible:
+                text = msg.content[0].text or ""
+                if "[Tool Result:" in text and len(text) > 2000:
+                    truncated = text[:500] + f"\n... [truncated, original: {len(text)} chars]"
+                    msg.content[0].text = truncated
+
+        elif level == 2:
+            # L2: LLM-summarise first half, keep second half verbatim
+            midpoint = len(compressible) // 2
+            old_msgs = compressible[:midpoint]
+            keep_msgs = compressible[midpoint:]
+            if old_msgs:
+                summary = self._summarize_messages(old_msgs)
+                summary_msg = LLMMessage.user(f"[Conversation Summary]\n{summary}")
+                # Preserve original interleaved order of error + keep msgs
+                merged = error_msgs + keep_msgs
+                merged.sort(key=lambda m: _orig_pos.get(id(m), 0))
+                recent = self.messages[-2:] if len(self.messages) >= 2 else self.messages[-1:]
+                self.messages = [system_msg, summary_msg] + merged + recent
+
+        elif level == 3:
+            # L3: system + errors + last 4
+            recent_n = self.messages[-4:] if len(self.messages) >= 4 else self.messages[1:]
+            self.messages = [system_msg] + error_msgs + recent_n
+
+        elif level == 4:
+            # L4: emergency — system + last 2 only
+            recent = self.messages[-2:] if len(self.messages) >= 2 else self.messages[-1:]
+            # Avoid duplicating system prompt when it is already in recent
+            if recent and recent[0] is system_msg:
+                self.messages = recent
+            else:
+                self.messages = [system_msg] + recent
+
+        self._emit(
+            EventType.COMPRESSION_EVENT,
+            message=f"Compressed messages to L{level}, utilization={utilization:.1%}",
+        )
+
+    def _load_skill_tool(self, skill_name: str) -> ToolResult:
+        """Built-in tool: load a skill's full SKILL.md into the agent's context.
+
+        On first load the SKILL.md content is appended to the system prompt.
+        Subsequent calls return ``status: "already_loaded"``.
+
+        Returns:
+            ToolResult with success=True and status field.
+        """
+        if not skill_name:
+            return ToolResult(
+                call_id="", output=None, success=False,
+                error="skill_name is required",
+            )
+        if self.skill_loader is None:
+            return ToolResult(
+                call_id="", output=None, success=False,
+                error="No skill loader configured for this agent",
+            )
+
+        # Check local cache first, then query SkillLoader (which may be
+        # shared across agents — is_loaded disambiguates "already seen"
+        # from "not found").
+        if skill_name in self._loaded_skills or (
+            hasattr(self.skill_loader, "is_loaded") and self.skill_loader.is_loaded(skill_name)
+        ):
+            return ToolResult(
+                call_id="", output={"status": "already_loaded", "skill": skill_name},
+                success=True,
+            )
+
+        content = self.skill_loader.load_skill(skill_name)
+        if content is None:
+            # Ambiguous: could be "already loaded by another agent sharing
+            # this loader" or "truly not found".  Report with context.
+            return ToolResult(
+                call_id="", output=None, success=False,
+                error=f"Skill '{skill_name}' not found or already loaded by another agent",
+            )
+
+        # Append skill content to system prompt
+        self.messages[0].content[0].text += f"\n\n## Loaded Skill: {skill_name}\n\n{content}"
+        self._loaded_skills.add(skill_name)
+
+        self._emit(
+            EventType.SKILL_LOADED,
+            message=f"Loaded skill: {skill_name}",
+        )
+
+        return ToolResult(
+            call_id="",
+            output={
+                "status": "loaded",
+                "skill": skill_name,
+                "content_length": len(content),
+            },
+            success=True,
+        )
+
+    def _estimate_tokens(self, messages: list[LLMMessage]) -> int:
+        """Heuristic token count: total characters / 4.
+
+        Uses the same constant as the existing context compression layer.
+        Future: replace with tiktoken for exact counts when needed.
+        """
+        total = 0
+        for m in messages:
+            for block in m.content:
+                if block.text:
+                    total += len(block.text)
+        return max(total // _CHARS_PER_TOKEN, 0)
+
+    @staticmethod
+    def _compress_context_dict(context: dict) -> dict:
+        """Lightweight compression for structured context dicts.
+
+        Delegates to the existing context compressor when available,
+        otherwise returns the dict unchanged.
+        """
+        try:
+            from ppt_agent.context.compression import compress_context
+            return compress_context(context, level=0)
+        except Exception:
+            return context
+
+    def _summarize_messages(self, messages: list[LLMMessage]) -> str:
+        """Summarize a list of messages using the LLM.
+
+        Falls back to concatenated truncation if LLM is unavailable or fails.
+        """
+        combined = "\n".join(
+            f"[{m.role}] {(m.content[0].text or '')[:500]}" for m in messages
+        )
+        try:
+            summary = _llm_summarize(self.llm_client, combined, max_tokens=500)
+            if summary:
+                return summary
+        except Exception:
+            logger.debug("LLM summarization failed, falling back to truncation", exc_info=True)
+
+        # Fallback: truncated concatenation
+        return combined[:2000] + "\n... [truncated summary]"
+
+    # ── Tool formatting (unchanged from original) ──────────────────
 
     def _format_tools_for_prompt(self, tools: list[dict]) -> str:
         """Format tool descriptors for injection into the system prompt."""
@@ -386,7 +768,6 @@ class AgentLoop(ABC):
 
     def _extract_final_output(self, turn: AgentTurn) -> Any:
         """Extract the final output from the last turn."""
-        # Try to parse JSON from the thought
         text = turn.thought
         try:
             from ppt_agent.llm.json_repair import repair_json

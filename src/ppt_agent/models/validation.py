@@ -8,8 +8,10 @@ def validation_report(job_id: str, slide_contents: dict, warnings: list[str] | N
     slide_results = []
     for slide in slide_contents.get("slides", []):
         issues = []
-        has_content = any(zone.get("content") for zone in slide.get("zones", []) if zone.get("type") in {"title", "subtitle", "bullets"})
-        editable = all(zone.get("editable", False) for zone in slide.get("zones", []) if zone.get("type") in {"title", "subtitle", "bullets"})
+        text_zone_types = {"title", "subtitle", "bullets", "body", "footer"}
+        text_zones = [z for z in slide.get("zones", []) if z.get("type") in text_zone_types]
+        has_content = any(z.get("content") for z in text_zones)
+        editable = all(z.get("editable", False) for z in text_zones) if text_zones else True
         text_fit = True
         fallback_resolved = "visual_placeholder" not in slide.get("fallback_flags", [])
         for zone in slide.get("zones", []):

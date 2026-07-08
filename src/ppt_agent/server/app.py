@@ -237,10 +237,13 @@ async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTask
                 until=req.until,
                 start_from=req.start_from,
                 force=req.force,
-                model_profile=req.model_profile or "deepseek",
+                model_profile=req.model_profile if req.model_profile is not None else "deepseek",
             )
+            job_json = job_path / "job.json"
+            meta = json.loads(job_json.read_text()) if job_json.exists() else {}
+            meta["status"] = "completed"
+            job_json.write_text(json.dumps(meta, indent=2))
         except Exception as e:
-            # Write error to job.json
             job_json = job_path / "job.json"
             meta = json.loads(job_json.read_text()) if job_json.exists() else {}
             meta["status"] = "failed"
@@ -348,6 +351,27 @@ def get_events(job_id: str, limit: int = 100) -> list[dict]:
 
     # Return most recent events
     return events[-limit:]
+
+
+@app.get("/api/jobs/{job_id}/generation-progress")
+def get_generation_progress(job_id: str) -> dict:
+    """Get real-time image generation progress from batch_report.json."""
+    job_path = _get_job_path(job_id)
+    report_path = job_path / "background_images" / "batch_report.json"
+    if not report_path.exists():
+        return {"progress": "idle", "done": 0, "total": 0, "success": 0, "failed": 0}
+    try:
+        data = json.loads(report_path.read_text(encoding="utf-8"))
+        return {
+            "progress": data.get("progress", "?"),
+            "done": data.get("done", 0),
+            "total": data.get("total", 0),
+            "success": data.get("success", 0),
+            "failed": data.get("failed", 0),
+            "details": data.get("details", {"success": [], "failed": []}),
+        }
+    except Exception:
+        return {"progress": "loading", "done": 0, "total": 0, "success": 0, "failed": 0}
 
 
 @app.get("/api/jobs/{job_id}/stream")
