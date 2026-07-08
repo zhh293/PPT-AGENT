@@ -21,6 +21,8 @@ class SlideZoneContent:
     image_ref: str | None = None
     image_prompt: str | None = None
     fit_status: str = "unknown"
+    semantic_label: str = ""            # AI-assigned content label (e.g. "数据引用", "核心论点")
+    formatting: dict | None = None     # template formatting: {font_name, font_size_pt, font_color, alignment, ...}
 
     # Convenience alias
     @property
@@ -28,7 +30,9 @@ class SlideZoneContent:
         return self.type
 
     def to_dict(self) -> dict:
-        return {k: v for k, v in asdict(self).items() if v is not None}
+        d = {k: v for k, v in asdict(self).items() if v is not None}
+        # Never drop empty string for semantic_label — downstream code needs the key
+        return d
 
 
 @dataclass

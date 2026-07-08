@@ -102,10 +102,20 @@ export default function Dashboard({ jobId }) {
   }
 
   // Approve
+  const [approving, setApproving] = useState(false)
   const handleApprove = async () => {
-    await fetch(`/api/jobs/${jobId}/approve`, { method: 'POST' })
-    fetchArtifacts()
-    fetchJob()
+    setApproving(true)
+    try {
+      const res = await fetch(`/api/jobs/${jobId}/approve`, { method: 'POST' })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      fetchArtifacts()
+      fetchJob()
+    } catch (e) {
+      console.error('Approve failed:', e)
+      alert('审核失败: ' + e.message)
+    } finally {
+      setApproving(false)
+    }
   }
 
   if (!job) return <div className="text-gray-500">加载中...</div>
@@ -135,9 +145,10 @@ export default function Dashboard({ jobId }) {
             {artifacts.some(a => a.name === 'slide_contents') && job.status !== 'completed' && (
               <button
                 onClick={handleApprove}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium rounded-lg transition-colors"
+                disabled={approving}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors"
               >
-                ✓ 审核通过
+                {approving ? '审核中...' : '✓ 审核通过'}
               </button>
             )}
             {artifacts.some(a => a.name === 'final_pptx') && (

@@ -194,6 +194,14 @@ def ingest_template(
     return index_entry
 
 
+def _find_tool(path: str) -> str | None:
+    """Check if a tool exists at the given path."""
+    p = Path(path)
+    if p.exists():
+        return str(p)
+    return None
+
+
 def _export_slides_to_images(
     pptx_path: Path,
     output_dir: Path,
@@ -204,10 +212,16 @@ def _export_slides_to_images(
     Tries LibreOffice (high fidelity) first, falls back to user-provided
     images or empty dict.
     """
-    soffice = shutil.which("libreoffice") or shutil.which("soffice")
+    soffice = (
+        shutil.which("libreoffice")
+        or shutil.which("soffice")
+        # Windows default installation paths
+        or _find_tool("C:\\Program Files\\LibreOffice\\program\\soffice.exe")
+        or _find_tool("soffice.exe")  # Try PATH variants
+    )
 
     if soffice:
-        return _export_via_libreoffice(pptx_path, output_dir, soffice)
+        return _export_via_libreoffice(pptx_path, output_dir, soffice, slide_count)
 
     # No LibreOffice — check if user pre-exported images
     existing = _find_existing_slide_images(output_dir, slide_count)
@@ -228,42 +242,62 @@ def _export_via_libreoffice(
     pptx_path: Path,
     output_dir: Path,
     soffice_bin: str,
+    slide_count: int,
 ) -> dict[int, Path]:
-    """pptx → pdf → per-slide PNG via LibreOffice + pdf2image."""
+    """Export PPTX slides to per-slide PNG.
+
+    Pipeline: PPTX → PDF (LibreOffice) → per-slide PNG (PyMuPDF).
+    """
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
-        # Convert PPTX to PDF
+        pdf_path = tmp_path / f"{pptx_path.stem}.pdf"
+
+        # Step 1: PPTX → PDF via LibreOffice.
+        # Use shell mode on Windows — LibreOffice often needs the full
+        # environment context (HOME, USERPROFILE, etc.) to render fonts.
+        soffice_cmd = (
+            f'"{soffice_bin}" --headless --convert-to pdf'
+            f' --outdir "{tmp_path}" "{pptx_path}"'
+        )
         try:
             subprocess.run(
-                [soffice_bin, "--headless", "--convert-to", "pdf",
-                 "--outdir", str(tmp_path), str(pptx_path)],
-                capture_output=True, text=True, timeout=120,
+                soffice_cmd, shell=True,
+                capture_output=True, text=True, timeout=600,
                 check=True,
             )
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError) as e:
-            logger.warning("LibreOffice conversion failed: %s", e)
+            logger.warning("LibreOffice PDF conversion failed: %s", e)
             return {}
 
-        pdf_files = list(tmp_path.glob("*.pdf"))
-        if not pdf_files:
-            logger.warning("LibreOffice produced no PDF output")
+        if not pdf_path.exists():
+            logger.warning("LibreOffice produced no PDF output at %s", pdf_path)
             return {}
 
-        # PDF → images via pdf2image
+        # Step 2: PDF → per-slide PNG via PyMuPDF
         try:
-            from pdf2image import convert_from_path
-            images = convert_from_path(str(pdf_files[0]), dpi=150)
-        except Exception as e:
-            logger.warning("pdf2image conversion failed: %s", e)
+            import fitz  # PyMuPDF
+            doc = fitz.open(str(pdf_path))
+            result: dict[int, Path] = {}
+
+            for idx in range(len(doc)):
+                page = doc[idx]
+                # Render at 150 DPI (1920px wide for 16:9)
+                mat = fitz.Matrix(150 / 72, 150 / 72)
+                pix = page.get_pixmap(matrix=mat)
+                out_path = output_dir / f"slide_{idx:02d}.png"
+                pix.save(str(out_path))
+                result[idx] = out_path
+
+            doc.close()
+            logger.info("Exported %d slide images to %s", len(result), output_dir)
+            return result
+
+        except ImportError:
+            logger.warning("PyMuPDF (fitz) not installed — cannot convert PDF to PNG")
             return {}
-
-        result: dict[int, Path] = {}
-        for idx, img in enumerate(images):
-            out_path = output_dir / f"slide_{idx:02d}.png"
-            img.save(str(out_path), "PNG")
-            result[idx] = out_path
-
-        return result
+        except Exception as e:
+            logger.warning("PDF→PNG conversion failed: %s", e, exc_info=True)
+            return {}
 
 
 def _find_existing_slide_images(
@@ -334,6 +368,67 @@ def _extract_theme_colors(prs: Presentation) -> dict:
     return defaults
 
 
+def _is_template_noise(text: str, x: float, y: float, w: float, h: float) -> bool:
+    """Return True if the shape text looks like template documentation, not a content slot.
+
+    Filters out: designer credits, font samples, color labels, template instructions,
+    short labels in footer areas, and shapes that are too tiny to hold real content.
+    """
+    if not text:
+        return False
+
+    # ── Size-based: too small to hold readable content ──
+    if w < 0.02 or h < 0.01:
+        return True
+
+    # ── Footer / corner credits ──
+    # "PPT设计|刘万钊" pattern (designer credit, usually at bottom-right or top-right)
+    credit_keywords = ["PPT设计", "PPT制作", "作者", "设计师", "版权所有", "模板来源"]
+    for kw in credit_keywords:
+        if kw in text:
+            return True
+
+    # ── Font / typography samples ──
+    # "OPPOSans R", "思源黑体 Bold", etc. — short, often ALL_CAPS or font names
+    font_keywords = ["OPPOSans", "Sans", "Bold", "Regular", "Medium", "Light"]
+    # Check if text is purely a font name (short, pattern like "XXX Sans X")
+    if len(text) < 20:
+        for kw in font_keywords:
+            if kw.lower() in text.lower():
+                return True
+
+    # ── Color labels ──
+    # Single color names that are too short to be real content
+    color_names = {"红", "橙", "黄", "绿", "蓝", "紫", "黑", "白", "灰", "棕",
+                   "强调色", "主色", "辅色", "暗红色", "深蓝色", "浅灰色", "中性色",
+                   "标题", "正文", "副标题", "页面标题"}
+    stripped = text.strip()
+    if stripped in color_names:
+        return True
+
+    # ── Template instructions ──
+    # Templates often contain usage notes
+    instruction_patterns = [
+        "注意：", "注意:", "请不要", "不要直接", "需要加粗", "建议使用",
+        "点击此处", "单击此处", "请输入", "在此输入",
+        "选取了", "该模板", "本模板", "使用方法", "使用说明",
+        "可替换", "可直接", "可自行", "可更改",
+    ]
+    for pat in instruction_patterns:
+        if pat in text:
+            return True
+
+    # ── Short text in footer zone (>80% down) ──
+    if y > 0.80 and len(text) < 30:
+        return True
+
+    # ── Single short word repeated (like section numbers) ──
+    if len(text) <= 3 and text.isdigit():
+        return True
+
+    return False
+
+
 def _zones_from_pptx_shapes(slide, slide_index: int,
                              slide_w: int | None = None,
                              slide_h: int | None = None) -> list[dict]:
@@ -361,6 +456,20 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
         w = shape.width / slide_w if shape.width else 0.0
         h = shape.height / slide_h if shape.height else 0.0
 
+        # ── Clamp to valid slide bounds ──
+        x = max(0.0, min(1.0, x))
+        y = max(0.0, min(1.0, y))
+        w = max(0.0, min(1.0 - x, w))
+        h = max(0.0, min(1.0 - y, h))
+
+        # ── Skip full-slide shapes (backgrounds, overlays) ──
+        if w > 0.95 and h > 0.95:
+            continue
+
+        # ── Skip tiny shapes (decorative dots, invisible elements) ──
+        if w < 0.01 and h < 0.01:
+            continue
+
         # Determine zone type
         zone_type = "decoration"
         text_content = ""
@@ -368,6 +477,11 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
         if shape.has_text_frame:
             texts = [p.text for p in shape.text_frame.paragraphs if p.text.strip()]
             text_content = "\n".join(texts)
+
+            # ── Skip obvious template noise ──
+            if _is_template_noise(text_content, x, y, w, h):
+                continue  # Don't add this shape as a zone
+
             try:
                 ph_format = shape.placeholder_format
             except ValueError:
@@ -385,12 +499,16 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
                     zone_type = "body"
             else:
                 # Non-placeholder text box
-                if y < 0.25 and h > 0.03:
+                # Only classify as content zone if it's in the main content area
+                if y < 0.25 and w > 0.15 and h > 0.03:
                     zone_type = "title"
+                elif 0.20 < y < 0.80 and w > 0.15:
+                    zone_type = "body"
                 elif y > 0.85:
                     zone_type = "footer"
                 else:
-                    zone_type = "body"
+                    # Narrow or edge text — skip as decoration
+                    continue
 
         elif hasattr(shape, "image"):
             try:
@@ -399,16 +517,164 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
             except Exception:
                 zone_type = "decoration"
 
+        # ── Extract formatting (font, size, color) from the shape ──
+        formatting = _extract_shape_formatting(shape) if shape.has_text_frame else {}
+
+        # ── Refine zone type using font size ──
+        zone_type = _refine_zone_type(zone_type, formatting, y, w, h)
+
         zones.append({
             "zone_id": f"s{slide_index}_shape{i}",
             "type": zone_type,
             "position": [round(x, 4), round(y, 4), round(w, 4), round(h, 4)],
             "text": text_content,
-            "confidence": 100.0,  # Shape-based extraction is exact
+            "formatting": formatting,
+            "confidence": 100.0,
             "source": "pptx_shape",
         })
 
     return zones
+
+
+def _refine_zone_type(zone_type: str, fmt: dict,
+                      y: float, w: float, h: float) -> str:
+    """Improve zone type classification using font size and position.
+
+    Uses actual typography data to correct heuristic misclassifications:
+    - 20pt+ font with large width → almost certainly a title
+    - 10pt- font → likely body text, not a title
+    - Narrow shapes with small font → decoration, not content
+    """
+    font_pt = fmt.get("font_size_pt")
+    font_name = fmt.get("font_name", "")
+
+    if font_pt is None:
+        # No font data + no text = decorative, not a content slot
+        if zone_type in ("title", "subtitle", "body") and w < 0.15:
+            return "decoration"
+        return zone_type
+
+    # ── Strong title signals ──
+    if font_pt >= 20 and w > 0.10 and zone_type != "image":
+        return "title"
+
+    # ── Subtitle signals: medium font, below typical title area ──
+    if font_pt >= 16 and y > 0.15 and zone_type == "title":
+        return "subtitle"
+
+    # ── Body signals: small font ──
+    if font_pt <= 12 and zone_type == "title":
+        return "body"
+
+    # ── Decoration / label: very small font, narrow shape ──
+    if font_pt < 10 and w < 0.10:
+        return "decoration"
+
+    # ── Footer: small font at bottom ──
+    if font_pt < 12 and y > 0.85:
+        return "footer"
+
+    return zone_type
+
+
+def _extract_shape_formatting(shape) -> dict:
+    """Extract font, size, color, and alignment from a shape's first paragraph.
+
+    Returns a dict with keys: font_name, font_size_pt, font_color, fill_color,
+    bold, italic, alignment.  Values may be None if inherited from master/layout.
+    """
+    fmt: dict = {
+        "font_name": None,
+        "font_size_pt": None,
+        "font_color": None,
+        "fill_color": None,
+        "bold": None,
+        "italic": None,
+        "alignment": None,
+        "line_spacing": None,
+    }
+
+    # ── Fill color (shape background) ──
+    try:
+        fill = shape.fill
+        if fill.type is not None and hasattr(fill, 'fore_color'):
+            if fill.fore_color.type is not None:
+                fmt["fill_color"] = str(fill.fore_color.rgb)
+    except Exception:
+        pass
+
+    if not shape.has_text_frame:
+        return fmt
+
+    tf = shape.text_frame
+
+    # ── Paragraph-level formatting (first paragraph) ──
+    if tf.paragraphs:
+        p = tf.paragraphs[0]
+
+        # Alignment
+        if p.alignment is not None:
+            align_map = {0: "LEFT", 1: "CENTER", 2: "RIGHT", 3: "JUSTIFY"}
+            fmt["alignment"] = align_map.get(p.alignment, "LEFT")
+
+        # Line spacing
+        if p.line_spacing is not None:
+            fmt["line_spacing"] = p.line_spacing / 12700  # EMU → pt
+
+        # Run-level formatting (first run)
+        if p.runs:
+            r = p.runs[0]
+
+            if r.font.name:
+                fmt["font_name"] = r.font.name
+            if r.font.size:
+                fmt["font_size_pt"] = round(r.font.size / 12700, 1)
+            if r.font.bold is not None:
+                fmt["bold"] = r.font.bold
+            if r.font.italic is not None:
+                fmt["italic"] = r.font.italic
+            try:
+                if r.font.color and r.font.color.type is not None:
+                    fmt["font_color"] = str(r.font.color.rgb)
+            except Exception:
+                pass
+
+        # Fallback: if run-level font size is None, try paragraph-level
+        if fmt["font_size_pt"] is None and p.font.size:
+            fmt["font_size_pt"] = round(p.font.size / 12700, 1)
+
+    # ── Fallback: try other runs if first didn't have font data ──
+    if fmt["font_name"] is None:
+        for p in tf.paragraphs:
+            for r in p.runs:
+                if r.font.name:
+                    fmt["font_name"] = r.font.name
+                    break
+            if fmt["font_name"]:
+                break
+
+    if fmt["font_size_pt"] is None:
+        for p in tf.paragraphs:
+            for r in p.runs:
+                if r.font.size:
+                    fmt["font_size_pt"] = round(r.font.size / 12700, 1)
+                    break
+            if fmt["font_size_pt"]:
+                break
+
+    if fmt["font_color"] is None:
+        for p in tf.paragraphs:
+            for r in p.runs:
+                try:
+                    if r.font.color and r.font.color.type is not None:
+                        fmt["font_color"] = str(r.font.color.rgb)
+                        break
+                except Exception:
+                    pass
+            if fmt["font_color"]:
+                break
+
+    return fmt
 
 
 def _merge_zone_sources(
@@ -634,6 +900,17 @@ def auto_ingest(
         else:
             merged_zones = shape_zones
 
+        # ── Visual refinement: use pixel data to correct zone types ──
+        try:
+            from ppt_agent.vision.zone_refiner import refine_zones_with_vision
+            merged_zones = refine_zones_with_vision(
+                merged_zones,
+                image_path if image_path and image_path.exists() else None,
+                slide_index=idx,
+            )
+        except Exception:
+            pass  # Visual refinement is best-effort
+
         # Infer layout from zone pattern
         layout = _infer_layout(merged_zones, idx)
 
@@ -653,6 +930,21 @@ def auto_ingest(
         "color_scheme": theme_colors,
         "slides": slides_meta,
     }
+
+    # ── Run visual audit on the template PPTX (structural, no images needed) ──
+    try:
+        from ppt_agent.vision.pptx_audit import audit_pptx as _visual_audit
+        audit_report = _visual_audit(pptx_path)
+        meta["design_audit"] = {
+            "aggregate_score": round(audit_report.aggregate_score, 1),
+            "font_issues": audit_report.total_font_issues,
+            "overflow_issues": audit_report.total_overflow_issues,
+            "contrast_issues": audit_report.total_contrast_issues,
+            "recommendations": audit_report.recommendations,
+        }
+        logger.info("Visual audit score: %.1f", audit_report.aggregate_score)
+    except Exception as exc:
+        logger.debug("Visual audit skipped during ingest: %s", exc)
 
     meta_path = template_dir / "meta.json"
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

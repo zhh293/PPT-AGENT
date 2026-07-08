@@ -56,6 +56,7 @@ PHASE_TO_WORKER = {
 _LLM_PHASES = {
     "document_analysis",
     "outline_generation",
+    "template_matching",
     "design_planning",
     "content_mapping",
     "verification",

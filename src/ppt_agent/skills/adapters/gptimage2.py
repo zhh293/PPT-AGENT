@@ -119,22 +119,30 @@ def _build_slide_prompt(slide: dict) -> str:
     density = slide.get("visual_density", "medium")
 
     if slide.get("template_image"):
-        # img2img mode: preserve template visual style
+        # img2img mode: preserve template visual style, NO text
         parts.append(
-            "Generate a professional presentation slide background. "
-            "Maintain the visual style, color scheme, and layout structure "
-            "of the reference image. Replace text content with the provided "
-            "title and content. The result should be a polished, full-page "
-            "16:9 slide image suitable as a presentation background."
+            "Generate a professional presentation slide BACKGROUND. "
+            "Maintain the visual style, color scheme, and decorative elements "
+            "(shapes, lines, gradients, icons) of the reference image. "
+            "IMPORTANT: Do NOT include ANY text, letters, words, numbers "
+            "or typography in the image. Text will be overlaid separately "
+            "as editable PPT text boxes. Focus purely on the visual "
+            "atmosphere — textures, geometric patterns, subtle gradients, "
+            "and abstract decorative shapes. The result should be a polished "
+            "16:9 slide background ready for text overlay."
         )
     else:
-        # text2img mode: generate from scratch
+        # text2img mode: generate from scratch, NO text
         parts.append(
-            f"Generate a professional presentation slide background with "
+            f"Generate a professional presentation slide BACKGROUND with "
             f"{density} visual density. Style: clean, modern, corporate. "
-            f"Layout type: {layout}. The image should be a full 16:9 slide "
-            f"with appropriate visual elements but clear areas for text overlay. "
-            f"Do NOT render actual text in the image — text will be added separately."
+            f"Layout type: {layout}. "
+            f"IMPORTANT: Do NOT include ANY text, letters, words, numbers "
+            f"or typography. Text will be added separately as editable "
+            f"PPT text boxes. Focus purely on visual atmosphere — gradients, "
+            f"geometric shapes, subtle patterns, and decorative elements. "
+            f"The image should be a full 16:9 slide background with clear "
+            f"areas for text overlay."
         )
 
     return " | ".join(parts)

@@ -10,6 +10,13 @@ from ppt_agent.models.validation import validation_report
 
 logger = logging.getLogger(__name__)
 
+# ── Visual audit integration ──
+try:
+    from ppt_agent.vision.pptx_audit import audit_pptx as visual_audit_pptx
+except ImportError:
+    visual_audit_pptx = None
+    logger.info("Vision module not available — visual audit skipped")
+
 _FRESH_EYES_SYSTEM = (
     "You are an independent PPT quality reviewer. You have NOT seen any prior "
     "conversation or phase context — you are reviewing the final output with "
@@ -110,6 +117,27 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
         warnings.append("final.pptx is missing")
 
     report = validation_report(workspace.root.name, slide_contents, warnings)
+
+    # ── Visual audit (PPTX structural check, no image rendering needed) ──
+    final_pptx = workspace.root / "final.pptx"
+    if final_pptx.exists() and visual_audit_pptx is not None:
+        try:
+            visual_report = visual_audit_pptx(final_pptx)
+            report["visual_audit"] = visual_report.to_dict()
+            # Promote visual issues to main warnings
+            for rec in visual_report.recommendations:
+                warnings.append(f"[视觉检查] {rec}")
+            logger.info(
+                "Visual audit: score=%.1f, font_issues=%d, contrast_issues=%d, overflow_issues=%d",
+                visual_report.aggregate_score,
+                visual_report.total_font_issues,
+                visual_report.total_contrast_issues,
+                visual_report.total_overflow_issues,
+            )
+        except Exception as exc:
+            logger.warning("Visual audit failed: %s", exc)
+    elif visual_audit_pptx is None:
+        logger.debug("Visual audit skipped — vision module not available")
 
     # If an LLM is available, augment with fresh-eyes validation
     if llm_client is not None:

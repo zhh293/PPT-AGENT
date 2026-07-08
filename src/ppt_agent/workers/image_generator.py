@@ -272,7 +272,7 @@ def _invoke_gptimage2_skill(workspace: JobWorkspace, config: dict) -> None:
     logger.info("gptimage2 skill output:\n%s", "\n".join(stdout_tail))
 
 
-def run(workspace: JobWorkspace, force: bool = False, mode: str = "none") -> Path:
+def run(workspace: JobWorkspace, force: bool = False, mode: str = "all") -> Path:
     """Deterministic fallback for the visual_generation phase.
 
     Parameters
