@@ -9,6 +9,7 @@ export default function Dashboard({ jobId }) {
   const [events, setEvents] = useState([])
   const [activeTab, setActiveTab] = useState('progress')
   const [running, setRunning] = useState(false)
+  const [genProgress, setGenProgress] = useState(null)
   const eventSourceRef = useRef(null)
 
   // Fetch job info
@@ -61,6 +62,21 @@ export default function Dashboard({ jobId }) {
     return () => es.close()
   }, [jobId])
 
+  // Poll for image generation progress during visual_generation phase
+  useEffect(() => {
+    if (job?.current_phase !== 'visual_generation' && job?.status !== 'running') return
+    const fetchGenProgress = async () => {
+      try {
+        const res = await fetch(`/api/jobs/${jobId}/generation-progress`)
+        const data = await res.json()
+        setGenProgress(data)
+      } catch {}
+    }
+    fetchGenProgress()
+    const interval = setInterval(fetchGenProgress, 3000)
+    return () => clearInterval(interval)
+  }, [jobId, job?.current_phase, job?.status])
+
   useEffect(() => {
     fetchJob()
     fetchArtifacts()
@@ -74,7 +90,7 @@ export default function Dashboard({ jobId }) {
       await fetch(`/api/jobs/${jobId}/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model_profile: 'deepseek', force: false }),
+        body: JSON.stringify({ force: false }),
       })
       // Job started, SSE will push updates
       setTimeout(fetchJob, 1000)
@@ -86,10 +102,20 @@ export default function Dashboard({ jobId }) {
   }
 
   // Approve
+  const [approving, setApproving] = useState(false)
   const handleApprove = async () => {
-    await fetch(`/api/jobs/${jobId}/approve`, { method: 'POST' })
-    fetchArtifacts()
-    fetchJob()
+    setApproving(true)
+    try {
+      const res = await fetch(`/api/jobs/${jobId}/approve`, { method: 'POST' })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      fetchArtifacts()
+      fetchJob()
+    } catch (e) {
+      console.error('Approve failed:', e)
+      alert('审核失败: ' + e.message)
+    } finally {
+      setApproving(false)
+    }
   }
 
   if (!job) return <div className="text-gray-500">加载中...</div>
@@ -119,9 +145,10 @@ export default function Dashboard({ jobId }) {
             {artifacts.some(a => a.name === 'slide_contents') && job.status !== 'completed' && (
               <button
                 onClick={handleApprove}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium rounded-lg transition-colors"
+                disabled={approving}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors"
               >
-                ✓ 审核通过
+                {approving ? '审核中...' : '✓ 审核通过'}
               </button>
             )}
             {artifacts.some(a => a.name === 'final_pptx') && (
@@ -135,6 +162,27 @@ export default function Dashboard({ jobId }) {
           </div>
         </div>
       </div>
+
+      {/* Image Generation Progress Bar */}
+      {genProgress && genProgress.total > 0 && (
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold text-white">图片生成进度</span>
+            <span className="text-xs text-gray-500">{genProgress.progress} (成功{genProgress.success}/失败{genProgress.failed})</span>
+          </div>
+          <div className="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+            <div className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-green-500" style={{width:`${genProgress.total>0?(genProgress.done/genProgress.total)*100:0}%`}}/>
+          </div>
+          {genProgress.failed > 0 && (
+            <details className="mt-2">
+              <summary className="text-xs text-red-400 cursor-pointer">失败详情 ({genProgress.failed})</summary>
+              <div className="mt-1 max-h-28 overflow-y-auto text-xs text-gray-400 space-y-0.5">
+                {(genProgress.details?.failed||[]).map((f,i)=><div key={i}><span className="text-red-400">slide {f.index}:</span> {f.reason}</div>)}
+              </div>
+            </details>
+          )}
+        </div>
+      )}
 
       {/* Phase Progress */}
       <PhaseProgress phases={job.phases_completed} currentPhase={job.current_phase} />

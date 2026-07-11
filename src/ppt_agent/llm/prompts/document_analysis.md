@@ -20,6 +20,11 @@ Read all provided materials carefully and produce a JSON summary with these fiel
   - source_refs: which input file(s) this came from
   - confidence: 0.0-1.0 how confident you are this is accurate
 - **core_pain_points**: A list of 2-5 problems the project addresses.
+- **image_inventory**: A list of image files found in the input materials, each with:
+  - filename: the image file name
+  - detected_usage: "screenshot" | "certificate" | "logo" | "photo" | "diagram" | "unknown"
+  - summary: what the image likely shows based on filename and surrounding context (max 100 chars)
+  - relevance: "primary" (directly shows the product/team/evidence) or "supplementary"
 - **warnings**: Any uncertainties, missing info, or things that need user review.
 - **confidence**: Overall confidence in the analysis (0.0-1.0).
 
@@ -32,3 +37,6 @@ Read all provided materials carefully and produce a JSON summary with these fiel
 5. If the materials contain certificates or awards, note them in evidence_items.
 6. If materials are in Chinese, keep the output in Chinese where it makes sense for the PPT audience.
 7. Do NOT include any explanatory text outside the JSON object.
+8. For image files: do NOT attempt to describe visual content unless filenames or surrounding text provide clear context. List them in image_inventory with the metadata that IS available. Never guess what an image shows.
+9. All evidence_items MUST have source_refs pointing to actual input file names.
+10. If the input contains no images, image_inventory should be an empty list (not omitted).

@@ -19,6 +19,20 @@ Create a presentation outline that tells a compelling story. The outline must be
 
 ## Scene-Based Structure Guidelines
 
+Select the appropriate structure by examining the `target_audience` and `domain` fields
+from the source_summary. Match using these heuristics:
+
+| target_audience contains | Recommended structure |
+|--------------------------|----------------------|
+| "judges", "competition", "答辩" | Competition / Defense |
+| "investors", "VC", "投资人"     | Pitch / Roadshow |
+| "stakeholders", "management", "汇报" | Project Report |
+| "customers", "users", "客户"     | Product Introduction |
+
+If no clear match, default to "Project Report". You may blend structures when the
+materials suggest a hybrid scenario (e.g., a product pitch to investors → blend
+Pitch with Product Introduction).
+
 Choose structure based on the audience and purpose:
 
 ### Competition / Defense (比赛答辩)

@@ -35,6 +35,7 @@ _DEFAULT_RESPONSES: dict[str, dict] = {
                 "confidence": 0.8,
             }
         ],
+        "unsupported_claims": [],
         "warnings": [],
         "confidence": 0.85,
     },

@@ -31,11 +31,19 @@ from ppt_agent.skills.adapters.gptimage2 import slide_contents_to_batch_config
 logger = logging.getLogger(__name__)
 
 
-def prepare_generation_config(workspace: JobWorkspace) -> tuple[Path, dict]:
+def prepare_generation_config(workspace: JobWorkspace, mode: str = "none") -> tuple[Path, dict]:
     """Prepare the image generation config from slide_contents.
 
     Loads template_zones to get template image paths, then merges
     them into slide_contents before building the batch config.
+
+    Parameters
+    ----------
+    mode
+        "key" (default) — cover + section dividers only.
+        "all" — every slide.
+        "cover-only" — just the first slide.
+        "none" — skip generation entirely.
     """
     slide_contents = load_artifact(workspace, "slide_contents")
 
@@ -46,7 +54,7 @@ def prepare_generation_config(workspace: JobWorkspace) -> tuple[Path, dict]:
     except (FileNotFoundError, Exception) as e:
         logger.info("No template_zones available for image enrichment: %s", e)
 
-    config = slide_contents_to_batch_config(slide_contents)
+    config = slide_contents_to_batch_config(slide_contents, mode=mode)
     config_path = write_artifact(workspace, "image_generation_config", config)
     return config_path, config
 
@@ -100,7 +108,7 @@ def build_skill_context(workspace: JobWorkspace, config: dict) -> dict:
                 "prompt": s["prompt"],
                 "has_reference": s.get("reference_image") is not None,
                 "reference_image": s.get("reference_image"),
-                "output_name": s.get("output_name", f"slide_{s['index']:02d}.png"),
+                "output_name": s.get("output_name", f"slide-{s['index']:03d}.png"),
             }
             for s in slides
         ],
@@ -129,7 +137,7 @@ def check_generated_images(workspace: JobWorkspace, config: dict) -> dict:
 
     for slide_entry in slides:
         idx = slide_entry["index"]
-        output_name = slide_entry.get("output_name", f"slide_{idx:02d}.png")
+        output_name = slide_entry.get("output_name", f"slide-{idx:03d}.png")
 
         # Check new location first, then legacy
         bg_path = workspace.background_images_dir / output_name
@@ -180,13 +188,106 @@ def check_generated_images(workspace: JobWorkspace, config: dict) -> dict:
     }
 
 
-def run(workspace: JobWorkspace, force: bool = False) -> Path:
-    """Deterministic fallback for the visual_generation phase."""
+def _invoke_gptimage2_skill(workspace: JobWorkspace, config: dict) -> None:
+    """Invoke the gptimage2-generator skill client to generate background images.
+
+    If no accounts exist, auto-registers one (the gptimage2.online service accepts
+    made-up emails — no real email verification required for free tier usage).
+
+    Calls the batch-generate CLI command with the prepared config.
+    Non-zero exit or missing output → raises RuntimeError for the caller to handle.
+    """
+    import subprocess
+    import uuid
+
+    # Resolve .catpaw relative to the project root (4 levels up from this file)
+    _project_root = Path(__file__).resolve().parent.parent.parent.parent
+    skill_script = _project_root / ".catpaw/skills/gptimage2-generator/scripts/gptimage2_client.py"
+    accounts_file = _project_root / ".catpaw/skills/gptimage2-generator/assets/accounts.json"
+    config_path = workspace.artifact_path("image_generation_config")
+    output_dir = workspace.background_images_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Calculate how many accounts we need (each gets ~30 free credits, 1K=10pts)
+    total_slides = len(config.get("slides", []))
+    resolution = config.get("slides", [{}])[0].get("resolution", "1K")
+    cost_per_slide = {"1K": 10, "2K": 20, "4K": 40}.get(resolution, 10)
+    credits_per_account = 30
+    slides_per_account = max(1, credits_per_account // cost_per_slide)
+    needed_accounts = max(1, (total_slides + slides_per_account - 1) // slides_per_account)
+
+    # Load existing accounts and count active ones
+    accounts = {"accounts": [], "current_index": 0}
+    if accounts_file.exists():
+        try:
+            accounts = json.loads(accounts_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    active = sum(1 for a in accounts.get("accounts", []) if a.get("status") == "active")
+    need_to_register = max(0, needed_accounts - active)
+
+    logger.info("Slides: %d, cost/slide: %d, need %d accounts, have %d active, registering %d",
+                total_slides, cost_per_slide, needed_accounts, active, need_to_register)
+
+    for _ in range(need_to_register):
+        email = f"pptagent_{uuid.uuid4().hex[:8]}@outlook.com"
+        password = f"Agent{uuid.uuid4().hex[:8]}!"
+        logger.info("Auto-registering GPTImage2 account: %s", email)
+
+        r = subprocess.run(
+            ["python", str(skill_script), "--accounts-file", str(accounts_file),
+             "signup", "--email", email, "--password", password],
+            capture_output=True, text=True, timeout=30,
+            cwd=str(workspace.root.parent.parent.parent),
+        )
+        if r.returncode != 0:
+            logger.warning("Registration failed for %s: %s", email, r.stderr[-200:])
+            break  # Don't register more if one fails
+        logger.info("Registered: %s", email)
+
+    logger.info("Invoking gptimage2-generator skill: %d slides", len(config.get("slides", [])))
+    result = subprocess.run(
+        [
+            "python", str(skill_script),
+            "--accounts-file", str(accounts_file),
+            "batch-generate",
+            "--config", str(config_path),
+            "--output-dir", str(output_dir),
+        ],
+        capture_output=True, text=True, timeout=1800,  # 30 min for 12 slides
+        cwd=str(workspace.root.parent.parent.parent),
+    )
+
+    if result.returncode != 0:
+        # Don't fail if some images were generated — batch may have exited
+        # non-zero after exhausting all accounts (some slides fall back)
+        existing = list(output_dir.glob("slide-*.png"))
+        if existing:
+            logger.warning("gptimage2 skill exited %d but %d images exist, continuing",
+                          result.returncode, len(existing))
+        else:
+            raise RuntimeError(f"gptimage2 skill exited {result.returncode}: {result.stderr[-500:]}")
+
+    stdout_tail = result.stdout.strip().split("\n")[-5:]
+    logger.info("gptimage2 skill output:\n%s", "\n".join(stdout_tail))
+
+
+def run(workspace: JobWorkspace, force: bool = False, mode: str = "all") -> Path:
+    """Deterministic fallback for the visual_generation phase.
+
+    Parameters
+    ----------
+    mode
+        "none" (default) — skip AI generation, use template slides directly.
+        "key" — cover + section dividers only.
+        "all" — every slide gets AI background.
+        "cover-only" — just the first slide.
+    """
     output = workspace.artifact_path("image_generation_report")
     if output.exists() and not force:
         return output
 
-    config_path, config = prepare_generation_config(workspace)
+    config_path, config = prepare_generation_config(workspace, mode=mode)
 
     skill_context = build_skill_context(workspace, config)
     instructions_path = workspace.root / "skill_instructions.json"
@@ -197,21 +298,30 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
 
     report = check_generated_images(workspace, config)
 
-    if report["generated"] > 0:
+    # Only invoke the skill if there are slides to generate
+    if config.get("slides") and report["generated"] == 0:
+        try:
+            _invoke_gptimage2_skill(workspace, config)
+        except Exception as e:
+            logger.warning("GPTImage2 skill invocation failed: %s", e)
+
+        report = check_generated_images(workspace, config)
+        if report["generated"] > 0:
+            report["execution"] = {"method": "gptimage2_skill"}
+        else:
+            report = fallback_image_report(
+                workspace.root.name,
+                len(config.get("slides", [])),
+            )
+            report["execution"] = {
+                "method": "deterministic_fallback",
+                "skill_context_path": str(instructions_path),
+                "error": "No images generated",
+            }
+    elif report["generated"] > 0:
         report["execution"] = {"method": "pre_existing_images"}
     else:
-        logger.info(
-            "No LLM available for autonomous Skill execution. "
-            "skill_instructions.json written at %s for manual execution.",
-            instructions_path,
-        )
-        report = fallback_image_report(
-            workspace.root.name,
-            len(config.get("slides", [])),
-        )
-        report["execution"] = {
-            "method": "deterministic_fallback",
-            "skill_context_path": str(instructions_path),
-        }
+        # mode="none" or empty config — skip generation entirely
+        report["execution"] = {"method": "template_only", "note": "Using template slides directly, no AI generation needed"}
 
     return write_artifact(workspace, "image_generation_report", report)

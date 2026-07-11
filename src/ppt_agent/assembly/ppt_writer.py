@@ -16,6 +16,7 @@ This produces PPTs where:
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from pathlib import Path
 
 from pptx import Presentation
@@ -102,10 +103,14 @@ def _add_text_overlay(slide, zone: dict) -> None:
         p.text = text
         p.alignment = PP_ALIGN.LEFT
         font = p.font
-        font.size = Pt(title_font_size(text))
+        # Template formatting with size fallback
+        _apply_zone_formatting(p, zone, default_size_pt=title_font_size(text), default_color_hex="FFFFFF")
+        if not (zone.get("formatting", {}) or {}).get("font_size_pt"):
+            font.size = Pt(title_font_size(text))
         font.bold = True
-        # White text for readability on image backgrounds
-        font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        # White text for readability on image backgrounds (unless template says otherwise)
+        if not (zone.get("formatting", {}) or {}).get("font_color"):
+            font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         # Add shadow effect for legibility
         _add_text_shadow(p)
 
@@ -133,8 +138,11 @@ def _add_text_overlay(slide, zone: dict) -> None:
             pPr.append(buChar)
 
             font = p.font
-            font.size = Pt(font_sz)
-            font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+            _apply_zone_formatting(p, zone, default_size_pt=font_sz, default_color_hex="FFFFFF")
+            if not (zone.get("formatting", {}) or {}).get("font_size_pt"):
+                font.size = Pt(font_sz)
+            if not (zone.get("formatting", {}) or {}).get("font_color"):
+                font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
             _add_text_shadow(p)
 
     elif zone_type == "footer":
@@ -142,18 +150,14 @@ def _add_text_overlay(slide, zone: dict) -> None:
         p = tf.paragraphs[0]
         p.text = text
         p.alignment = PP_ALIGN.RIGHT
-        font = p.font
-        font.size = Pt(12)
-        font.color.rgb = RGBColor(0xCC, 0xCC, 0xCC)
+        _apply_zone_formatting(p, zone, default_size_pt=12, default_color_hex="CCCCCC")
 
     elif zone_type == "subtitle":
         text = str(content)
         p = tf.paragraphs[0]
         p.text = text
         p.alignment = PP_ALIGN.LEFT
-        font = p.font
-        font.size = Pt(20)
-        font.color.rgb = RGBColor(0xEE, 0xEE, 0xEE)
+        _apply_zone_formatting(p, zone, default_size_pt=20, default_color_hex="EEEEEE")
         _add_text_shadow(p)
 
 
@@ -195,8 +199,47 @@ def _set_white_background(slide) -> None:
     fill.fore_color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
 
+def _apply_zone_formatting(paragraph, zone: dict, *, default_size_pt: int = 20, default_color_hex: str = "333333") -> None:
+    """Apply template formatting to a paragraph, falling back to defaults.
+
+    Reads the zone's ``formatting`` dict (from template meta.json) and applies
+    font_name, font_size_pt, font_color, alignment.  If any value is missing
+    or null, uses the provided defaults.
+    """
+    fmt = zone.get("formatting", {}) or {}
+    font = paragraph.font
+
+    # Font size — template value first, then default
+    size_pt = fmt.get("font_size_pt")
+    if size_pt is not None and size_pt > 0:
+        font.size = Pt(size_pt)
+    else:
+        font.size = Pt(default_size_pt)
+
+    # Font name — only set if template provides a non-null value
+    font_name = fmt.get("font_name")
+    if font_name:
+        font.name = font_name
+
+    # Font color — template value first, then default
+    font_color = fmt.get("font_color")
+    if font_color:
+        try:
+            font.color.rgb = RGBColor.from_string(font_color)
+        except Exception:
+            font.color.rgb = RGBColor.from_string(default_color_hex)
+    else:
+        font.color.rgb = RGBColor.from_string(default_color_hex)
+
+    # Alignment
+    alignment = fmt.get("alignment")
+    if alignment:
+        _ALIGN_MAP = {"CENTER": PP_ALIGN.CENTER, "LEFT": PP_ALIGN.LEFT, "RIGHT": PP_ALIGN.RIGHT, "JUSTIFY": PP_ALIGN.JUSTIFY}
+        paragraph.alignment = _ALIGN_MAP.get(str(alignment).upper(), PP_ALIGN.LEFT)
+
+
 def _add_title_zone(slide, zone: dict) -> None:
-    """Add a title text box (solid background mode)."""
+    """Add a title text box (solid background mode). Uses template formatting when available."""
     text = str(zone.get("content") or "")
     left, top, width, height = _emu_rect(zone["position"])
     txbox = slide.shapes.add_textbox(Emu(left), Emu(top), Emu(width), Emu(height))
@@ -205,10 +248,8 @@ def _add_title_zone(slide, zone: dict) -> None:
     p = tf.paragraphs[0]
     p.text = text
     p.alignment = PP_ALIGN.LEFT
-    font = p.font
-    font.size = Pt(title_font_size(text))
-    font.bold = True
-    font.color.rgb = RGBColor(0x33, 0x33, 0x33)
+    _apply_zone_formatting(p, zone, default_size_pt=title_font_size(text), default_color_hex="333333")
+    p.font.bold = True
 
 
 def _add_bullets_zone(slide, zone: dict) -> None:
@@ -242,7 +283,11 @@ def _add_bullets_zone(slide, zone: dict) -> None:
 
         font = p.font
         font.size = Pt(font_sz)
-        font.color.rgb = RGBColor(0x44, 0x44, 0x44)
+        # Use template font_name/color if available
+        _apply_zone_formatting(p, zone, default_size_pt=font_sz, default_color_hex="444444")
+        # Restore size — _apply_zone_formatting may have overridden it
+        if not (zone.get("formatting", {}) or {}).get("font_size_pt"):
+            font.size = Pt(font_sz)
 
 
 def _add_image_zone(slide, zone: dict, workspace_root: Path | None) -> None:
@@ -393,8 +438,9 @@ def _build_slide_with_background(
                     _add_title_zone(slide, zone)
                 elif zone_type in ("bullets", "body"):
                     _add_bullets_zone(slide, zone)
-        elif zone_type == "image" and not bg_path:
-            # Only add separate images in solid-background mode
+        elif zone_type == "image":
+            # Add separate images in ALL modes — independently editable layer
+            # on top of the background image (or solid-color fallback)
             _add_image_zone(slide, zone, workspace_root)
         elif zone_type == "chart":
             _add_chart_zone(slide, zone)
@@ -444,7 +490,7 @@ def _resolve_background_image(
     if workspace_root:
         idx = slide_data.get("slide_index", 0)
         for subdir in ("background_images", "generated_slides"):
-            for pattern in [f"slide_{idx:02d}.png", f"slide_{idx}.png"]:
+            for pattern in [f"slide-{idx:03d}.png", f"slide_{idx:02d}.png", f"slide_{idx}.png"]:
                 candidate = workspace_root / subdir / pattern
                 if candidate.exists():
                     return candidate
@@ -502,26 +548,318 @@ def _build_slide_legacy(
 
 def write_pptx(
     slide_contents: dict,
-    output_path: Path,
+    output_path: Path | str,
     workspace_root: Path | None = None,
-) -> None:
+    template_path: Path | None = None,
+) -> Path:
     """Write a PPTX file from *slide_contents*.
 
-    Automatically chooses between:
-    - Background-image mode (when background images are available)
-    - Legacy solid-background mode (when no background images exist)
+    When *template_path* is provided, the template's slides are KEPT as
+    visual backgrounds — text zones from the outline are overlaid on top
+    of the existing template slides.  If the outline has more slides than
+    the template, template slides are cycled.
 
-    Each slide can independently use either mode.
+    Without a template, blank 16:9 slides are created with AI-generated
+    backgrounds or solid-color fallbacks.
     """
     slides = slide_contents.get("slides", [])
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    prs = Presentation()
-    prs.slide_width = Emu(SLIDE_W)
-    prs.slide_height = Emu(SLIDE_H)
+    if template_path and Path(template_path).exists():
+        prs = Presentation(str(template_path))
+        # Template mode: keep template slides, overlay text
+        return _write_with_template(prs, slides, output_path, workspace_root)
+    else:
+        prs = Presentation()
+        prs.slide_width = Emu(SLIDE_W)
+        prs.slide_height = Emu(SLIDE_H)
+        for index, slide_data in enumerate(slides, start=1):
+            _build_slide_with_background(prs, slide_data, index, workspace_root)
+        prs.save(str(output_path))
+        return output_path
 
-    for index, slide_data in enumerate(slides, start=1):
-        _build_slide_with_background(prs, slide_data, index, workspace_root)
+
+def _write_with_template(
+    prs: Presentation,
+    slides: list[dict],
+    output_path: Path,
+    workspace_root: Path | None,
+) -> Path:
+    """Build PPT using template slides as visual base, overlaying text.
+
+    Strategy:
+    1. Keep all template slides as-is (preserve visual design).
+    2. For each outline slide, clone a matching template slide.
+    3. Overlay text zones from the outline on the cloned slide.
+    4. If outline has more slides than template, cycle: use template[idx % N].
+    5. Delete unused template slides at the end.
+    """
+    n_template = len(prs.slides)
+    n_outline = len(slides)
+    logger.info("Template-based assembly: %d template slides, %d outline slides",
+                n_template, n_outline)
+
+    # Collect template slide IDs before cloning (to delete later)
+    original_slide_ids = [slide.slide_id for slide in prs.slides]
+
+    # For each outline slide, clone a template slide and overlay text
+    for idx, slide_data in enumerate(slides):
+        tpl_idx = idx % n_template
+        template_slide = prs.slides[tpl_idx]
+
+        # Clone the template slide
+        _clone_slide(prs, template_slide)
+
+        # The cloned slide is now the LAST slide
+        new_slide = prs.slides[-1]
+
+        # Overlay text zones on the cloned slide
+        _overlay_text_on_slide(new_slide, slide_data, workspace_root)
+
+    # Delete original template slides (keep only cloned + overlaid ones)
+    _delete_slides_by_id(prs, original_slide_ids)
 
     prs.save(str(output_path))
+    return output_path
+
+
+def _clone_slide(prs: Presentation, source_slide) -> None:
+    """Clone a slide by copying its XML and adding it to the presentation."""
+    from lxml import etree
+    from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+
+    # Get the slide layout used by the source
+    slide_layout = source_slide.slide_layout
+
+    # Add a new slide with the same layout
+    new_slide = prs.slides.add_slide(slide_layout)
+
+    # Copy all shapes from source to new slide
+    # Remove default shapes on the new slide
+    for shape in list(new_slide.shapes):
+        sp = shape._element
+        sp.getparent().remove(sp)
+
+    # Copy shapes from source
+    for shape in source_slide.shapes:
+        el = _copy_element(shape._element)
+        new_slide.shapes._spTree.append(el)
+
+    # Copy slide background
+    _copy_slide_background(source_slide, new_slide)
+
+
+def _copy_element(el):
+    """Deep-copy an XML element."""
+    from copy import deepcopy
+    return deepcopy(el)
+
+
+def _copy_slide_background(source, target) -> None:
+    """Copy background from source slide to target slide."""
+    from lxml import etree
+    ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main"}
+    src_bg = source._element.find(".//p:cSld/p:bg", ns)
+    if src_bg is not None:
+        tgt_csld = target._element.find(".//p:cSld", ns)
+        if tgt_csld is not None:
+            # Remove existing bg if any
+            existing = tgt_csld.find("p:bg", ns)
+            if existing is not None:
+                tgt_csld.remove(existing)
+            tgt_csld.insert(0, deepcopy(src_bg))
+
+
+def _delete_slides_by_id(prs: Presentation, slide_ids: list[int]) -> None:
+    """Delete slides by their slide_id."""
+    NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    sld_id_lst = prs.slides._sldIdLst
+    for slide_id in slide_ids:
+        for elem in sld_id_lst:
+            if elem.get("id") == str(slide_id):
+                rId = elem.get(f"{{{NS}}}id")
+                if rId is None:
+                    # Try unprefixed attribute (some PPTX variants)
+                    rId = elem.get("id")
+                if rId is not None:
+                    prs.part.drop_rel(rId)
+                sld_id_lst.remove(elem)
+                break
+
+
+def _overlay_text_on_slide(slide, slide_data: dict, workspace_root: Path | None) -> None:
+    """Replace text in template shapes with user content.
+
+    Strategy (type-priority + reading-order matching, NO position dependency):
+    1. Sort template text shapes by placeholder type priority, then reading order.
+    2. Sort content zones by type priority (title > subtitle > bullets > body).
+    3. Match by index within each type group — one zone to one shape.
+    4. Replace text in matched shapes (preserving template formatting).
+    5. Clear ALL unmatched shapes (remove old template text).
+    6. NEVER add new text boxes (user said: use template positions only).
+    """
+    zones = slide_data.get("zones", [])
+    content_zones = [
+        z for z in zones
+        if z.get("content") and z.get("type") in ("title", "subtitle", "bullets", "body")
+    ]
+    if not content_zones:
+        # No content to place — still clear template placeholder text
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                _clear_shape_text(shape)
+        return
+
+    # Collect text shapes and classify by visual role (font-based)
+    text_shapes = [s for s in slide.shapes if s.has_text_frame]
+
+    # Group shapes by inferred type role
+    shape_groups: dict[str, list[int]] = {"title": [], "subtitle": [], "bullets": [], "body": [], "other": []}
+    for si, shape in enumerate(text_shapes):
+        role = _infer_shape_role(shape)
+        shape_groups[role].append(si)
+
+    # Group content zones by type
+    zone_groups: dict[str, list[int]] = {"title": [], "subtitle": [], "bullets": [], "body": []}
+    for zi, zone in enumerate(content_zones):
+        ztype = zone.get("type", "body")
+        if ztype not in zone_groups:
+            ztype = "body"
+        zone_groups[ztype].append(zi)
+
+    matched_shape_ids: set[int] = set()
+
+    # Match within each type group: zones → shapes (one-to-one, by reading order)
+    # Sort helper: shapes higher on slide first, then wider ones
+    def _sort_key(si):
+        s = text_shapes[si]
+        top = s.top if s.top else 0
+        width = s.width if s.width else 0
+        # Prefer shapes that are wider (title shapes are typically wide)
+        return (top, -width)
+
+    for ztype in ("title", "subtitle", "bullets", "body"):
+        zlist = zone_groups.get(ztype, [])
+        slist = sorted(shape_groups.get(ztype, []), key=_sort_key)
+
+        for i, zi in enumerate(zlist):
+            if i < len(slist):
+                _apply_text_to_shape(text_shapes[slist[i]], content_zones[zi])
+                matched_shape_ids.add(slist[i])
+            else:
+                # Fall back: pick the best available unmatched shape.
+                # Prefer wider shapes in the upper portion, avoid narrow footers.
+                candidates = [
+                    si for si in range(len(text_shapes))
+                    if si not in matched_shape_ids
+                ]
+                # Sort by: width DESC (prefer wide), then top ASC (prefer higher)
+                candidates.sort(key=lambda si: (
+                    0 if (text_shapes[si].width or 0) > 1000000 else 1,  # wide enough?
+                    -(text_shapes[si].width or 0),  # wider = better
+                    text_shapes[si].top if text_shapes[si].top else 0,  # higher = better
+                ))
+                if candidates:
+                    _apply_text_to_shape(text_shapes[candidates[0]], content_zones[zi])
+                    matched_shape_ids.add(candidates[0])
+
+    # Clear ALL unmatched shapes
+    for si, shape in enumerate(text_shapes):
+        if si not in matched_shape_ids:
+            _clear_shape_text(shape)
+
+
+def _infer_shape_role(shape) -> str:
+    """Infer the visual role of a shape based on position, size, and text.
+
+    Returns one of: 'title', 'subtitle', 'bullets', 'body', 'other'.
+    """
+    # 1. Placeholder type from PPTX template (most reliable)
+    try:
+        ph = shape._element.find(
+            ".//{http://schemas.openxmlformats.org/presentationml/2006/main}ph"
+        )
+        if ph is not None:
+            ph_type = ph.get("type", "")
+            if ph_type in ("title", "ctrTitle"):
+                return "title"
+            if ph_type == "subTitle":
+                return "subtitle"
+            if ph_type == "body":
+                return "body"
+    except Exception:
+        pass
+
+    if not shape.has_text_frame:
+        return "other"
+
+    txt = shape.text_frame.text.strip()
+    if not txt:
+        return "other"
+
+    top = shape.top / SLIDE_H if shape.top else 0
+    left = shape.left / SLIDE_W if shape.left else 0
+    width = shape.width / SLIDE_W if shape.width else 0
+
+    # ── Heuristics ──
+    para_count = len(shape.text_frame.paragraphs)
+    total_chars = sum(len(p.text or "") for p in shape.text_frame.paragraphs)
+
+    # Title: near top (y<28%), width >15% (excludes narrow footers), short text (<80 chars)
+    if top < 0.28 and width > 0.15 and total_chars < 80:
+        return "title"
+
+    # Subtitle: below title area (10%<y<45%), moderate width, moderate text
+    if top < 0.45 and width > 0.15 and total_chars < 150 and para_count <= 2:
+        return "subtitle"
+
+    # Bullets: multiple paragraphs with short lines per paragraph
+    if para_count >= 2 and total_chars > 20:
+        return "bullets"
+
+    # Body: substantial text or wide text area with content
+    if total_chars >= 40 or (width > 0.15 and total_chars > 20):
+        return "body"
+
+    # Everything else: labels, page numbers, footers, template designer credits
+    return "other"
+
+
+def _apply_text_to_shape(shape, zone: dict) -> None:
+    """Replace text in an existing template shape with new content.
+
+    Preserves the shape's original font, color, and formatting.
+    Only changes the text content.
+    """
+    tf = shape.text_frame
+    zone_type = zone.get("type", "body")
+    content = zone.get("content", "")
+
+    # Normalize content to list
+    if isinstance(content, list):
+        items = [str(c) for c in content]
+    else:
+        items = [str(content)]
+
+    para_count = len(tf.paragraphs)
+
+    # Write content to existing paragraphs
+    for i, item in enumerate(items):
+        if i < para_count:
+            p = tf.paragraphs[i]
+        else:
+            p = tf.add_paragraph()
+        p.text = str(item)
+
+    # Clear leftover paragraphs (remove old template text)
+    for i in range(len(items), para_count):
+        tf.paragraphs[i].text = ""
+
+
+def _clear_shape_text(shape) -> None:
+    """Clear all text from a shape (removes template placeholder text)."""
+    if not shape.has_text_frame:
+        return
+    for p in shape.text_frame.paragraphs:
+        p.text = ""

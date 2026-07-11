@@ -12,12 +12,18 @@ Features:
 
 from __future__ import annotations
 
-import fcntl
 import json
 import logging
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from enum import IntEnum
+
+# fcntl is Unix-only; on Windows we fall back to no locking
+try:
+    import fcntl
+    _HAS_FCNTL = True
+except ImportError:
+    _HAS_FCNTL = False
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -45,17 +51,23 @@ class Mailbox:
 
     @contextmanager
     def _file_lock(self, mode: str = "r+"):
-        """Acquire an exclusive file lock for atomic read-modify-write."""
-        # Ensure file exists
+        """Acquire an exclusive file lock for atomic read-modify-write.
+
+        On Unix this uses fcntl.flock.  On Windows locking is skipped
+        (best-effort; the append-only write pattern is safe for small
+        concurrent writes in most cases).
+        """
         if not self.path.exists():
             self.path.touch()
 
         fh = self.path.open(mode, encoding="utf-8")
         try:
-            fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
+            if _HAS_FCNTL:
+                fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
             yield fh
         finally:
-            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+            if _HAS_FCNTL:
+                fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
             fh.close()
 
     def append(

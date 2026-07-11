@@ -96,6 +96,7 @@ def _llm_analysis(llm_client, full_text: str, files: list[Path], images: list[Im
     result.setdefault("value_proposition", "")
     result.setdefault("product_capabilities", [])
     result.setdefault("evidence_items", [])
+    result.setdefault("unsupported_claims", [])
     result.setdefault("warnings", warnings)
     result.setdefault("confidence", 0.8)
 
