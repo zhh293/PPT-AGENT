@@ -3,7 +3,7 @@ default_provider: deepseek
 providers:
   deepseek:
     protocol: openai_chat_completions
-    api_key: sk-2caec77dcab94ddab3c48a7424264e61
+    api_key_env: DEEPSEEK_API_KEY
     endpoint: https://api.deepseek.com/v1
     beta_endpoint: https://api.deepseek.com/beta
     text_model: deepseek-v4-pro

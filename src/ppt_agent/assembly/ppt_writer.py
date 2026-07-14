@@ -620,8 +620,9 @@ def _write_with_template(
         # Replace images in image zones with generated/user images
         _replace_images_on_slide(new_slide, slide_data, workspace_root)
 
-    # Delete original template slides (keep only cloned + overlaid ones)
-    _delete_slides_by_id(prs, original_slide_ids)
+    # Delete original template slides (keep only cloned + overlaid ones), newest first
+    for del_idx in range(len(original_slide_ids) - 1, -1, -1):
+        _delete_slide_by_index(prs, del_idx)
 
     prs.save(str(output_path))
     return output_path
@@ -632,64 +633,99 @@ def _write_with_template(
 def _inject_zone_ids(slide, tpl_slide: dict) -> dict[str, object]:
     """Match template zones to PPTX shapes by position overlap.
 
-    For each shape on the cloned slide, finds the template zone whose
-    position has the largest overlap.  Stamps the zone_id into
-    ``shape.name`` and returns a ``{zone_id: shape}`` lookup map.
+    For each template zone, finds the shape whose position has the largest
+    **positive overlap** that is also reasonably close in size.  Each shape
+    is assigned to at most one zone, and each zone gets at most one shape.
 
-    The overlap is computed as the intersection area of the shape's
-    bounding box and the zone's bounding box (both normalised to
-    fractional coordinates).
+    This prevents a single large "background" zone from capturing every
+    shape on the slide (common in some template_zones analyses).
 
     Returns:
-        ``{zone_id: shape}`` — only includes shapes that had ≥1% overlap.
+        ``{zone_id: shape}`` — at most one shape per zone_id.
     """
     all_zones = tpl_slide.get("all_zones", [])
-    zone_id_map: dict[str, object] = {}
+    if not all_zones:
+        return {}
 
+    # Collect shapes with valid positions
+    shape_candidates: list[tuple[float, float, float, float, object]] = []
     for shape in slide.shapes:
-        # Skip non-visual shapes (they have no position)
         try:
             sx = (shape.left or 0) / SLIDE_W
             sy = (shape.top or 0) / SLIDE_H
             sw = (shape.width or 0) / SLIDE_W
             sh = (shape.height or 0) / SLIDE_H
+            shape_candidates.append((sx, sy, sw, sh, shape))
         except Exception:
             continue
 
-        best_zone = None
-        best_overlap = 0.0
+    # For each zone, find the BEST matching shape (then remove it from pool)
+    zone_id_map: dict[str, object] = {}
+    assigned_shape_indices: set[int] = set()
 
-        for zone in all_zones:
-            pos = zone.get("position", [0, 0, 0, 0])
-            if len(pos) < 4:
+    for zone in all_zones:
+        pos = zone.get("position", [0, 0, 0, 0])
+        if len(pos) < 4:
+            continue
+        zid = zone.get("zone_id", "")
+        if not zid:
+            continue
+        zx, zy, zw, zh = pos[0], pos[1], pos[2], pos[3]
+        zone_area = zw * zh
+
+        best_idx = -1
+        best_score = -1.0
+
+        for i, (sx, sy, sw, sh, _shape) in enumerate(shape_candidates):
+            if i in assigned_shape_indices:
                 continue
-            zx, zy, zw, zh = pos[0], pos[1], pos[2], pos[3]
 
-            # Intersection-over-area: overlap of the two rectangles
+            # Intersection area
             ox = max(0.0, min(sx + sw, zx + zw) - max(sx, zx))
             oy = max(0.0, min(sy + sh, zy + zh) - max(sy, zy))
             overlap = ox * oy
 
-            if overlap > best_overlap:
-                best_overlap = overlap
-                best_zone = zone
+            if overlap <= 0.0:
+                continue
 
-        if best_zone is not None and best_overlap > 0.0001:  # ≥0.01% overlap
-            zid = best_zone.get("zone_id", "")
-            if zid:
-                # Preserve original name for debugging
-                if shape.name and not shape.name.startswith("_"):
-                    shape._original_name = shape.name
-                shape.name = zid
-                zone_id_map[zid] = shape
-                logger.debug(
-                    "zone_id=%s → shape (overlap=%.4f, zone_type=%s)",
-                    zid, best_overlap, best_zone.get("type", "?"),
-                )
-        else:
+            shape_area = sw * sh
+
+            # Score = how much of the shape is inside the zone
+            # (overlap / shape_area).  Prefer shapes that fit snugly.
+            # Penalise when the zone is much larger than the shape
+            # (giant background zones should not steal small text shapes).
+            if shape_area > 0:
+                fill_ratio = overlap / min(shape_area, zone_area)
+            else:
+                fill_ratio = 0.0
+
+            # Boost for shapes that have similar area to the zone
+            if zone_area > 0 and shape_area > 0:
+                size_ratio = min(shape_area, zone_area) / max(shape_area, zone_area)
+                size_bonus = size_ratio * 0.5
+            else:
+                size_bonus = 0.0
+
+            score = fill_ratio + size_bonus
+
+            if score > best_score:
+                best_score = score
+                best_idx = i
+
+        # Require a meaningful match: fill ratio alone ≥ 1%
+        if best_idx >= 0 and best_score >= 0.01:
+            _sx, _sy, _sw, _sh, shape = shape_candidates[best_idx]
+            if shape.name and not shape.name.startswith("_"):
+                shape._original_name = shape.name
+            shape.name = zid
+            zone_id_map[zid] = shape
+            assigned_shape_indices.add(best_idx)
             logger.debug(
-                "shape '%s' at (%.3f,%.3f,%.3f,%.3f) — no matching zone (best_overlap=%.6f)",
-                shape.name or "unnamed", sx, sy, sw, sh, best_overlap,
+                "zone_id=%s → shape '%s' (score=%.3f, zone_type=%s)",
+                zid,
+                getattr(shape, "_original_name", shape.name),
+                best_score,
+                zone.get("type", "?"),
             )
 
     return zone_id_map
@@ -704,42 +740,44 @@ def write_pptx_from_mapping(
     output_path: Path | str,
     workspace_root: Path | None = None,
 ) -> Path:
-    """Assemble PPTX using Agent-provided zone_id → content mappings.
+    """Assemble PPTX using zone_id → content mappings.
 
-    This is the **Agent-driven** path.  The Agent has already read
-    ``template_zones.json`` and ``slide_contents.json``, reasoned about
-    which zone_id should receive which content, and passed explicit
-    ``mappings`` and ``image_mappings`` dicts.
+    Copies the template PPTX and modifies slides **in place** — no cloning,
+    no deleting.  This avoids ``_delete_slides_by_id`` corruption and
+    ``deepcopy`` / lxml compatibility issues with complex templates.
 
-    Guardrails (Agent may hallucinate — we do NOT trust blindly):
-
-    - Every zone_id from Agent is validated against the actual
-      ``zone_id_map`` built from the template slide.  Invalid ids
-      are logged and skipped.
-    - Slides with no entry in *mappings* fall back to the heuristic
-      ``_overlay_text_on_slide`` path.
-    - Image paths that don't exist on disk are skipped with a warning.
+    Guardrails:
+    - Every zone_id is validated against the actual template shapes.
+    - Invalid zone_ids are logged and skipped.
+    - Slides with no mappings fall back to ``_overlay_text_on_slide``.
     """
-    prs = Presentation(str(template_path))
-    n_template = len(prs.slides)
+    import shutil
+
     slides = slide_contents.get("slides", [])
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    original_slide_ids = [s.slide_id for s in prs.slides]
-    tpl_slides = {s["index"]: s for s in template_zones.get("slides", [])}
+    # Copy the template so we can mutate it safely
+    shutil.copy2(str(template_path), str(output_path))
+    prs = Presentation(str(output_path))
+    n_template = len(prs.slides)
+
+    tpl_slides_by_index = {s["index"]: s for s in template_zones.get("slides", [])}
 
     invalid_zone_ids: list[str] = []
     skipped_slides: list[int] = []
 
     for idx, slide_data in enumerate(slides):
         tpl_idx = idx % n_template
-        _clone_slide(prs, prs.slides[tpl_idx])
-        new_slide = prs.slides[-1]
+        if tpl_idx >= len(prs.slides):
+            logger.warning("Slide %d: template only has %d slides — skipping", idx, n_template)
+            continue
 
-        # Inject zone_ids into shapes and build the lookup map
-        tpl_slide = tpl_slides.get(tpl_idx, {})
-        zone_id_map = _inject_zone_ids(new_slide, tpl_slide)
+        slide = prs.slides[tpl_idx]
+        tpl_zone_data = tpl_slides_by_index.get(tpl_idx, {})
+
+        # Inject zone_ids into shapes by position overlap
+        zone_id_map = _inject_zone_ids(slide, tpl_zone_data)
 
         if not zone_id_map:
             logger.warning(
@@ -747,18 +785,17 @@ def write_pptx_from_mapping(
                 "falling back to heuristic overlay",
                 idx,
             )
-            _overlay_text_on_slide(new_slide, slide_data, workspace_root)
-            _replace_images_on_slide(new_slide, slide_data, workspace_root)
+            _overlay_text_on_slide(slide, slide_data, workspace_root)
+            _replace_images_on_slide(slide, slide_data, workspace_root)
             continue
 
         slide_mappings = mappings.get(idx, {})
         img_mappings = image_mappings.get(idx, {})
 
         if not slide_mappings and not img_mappings:
-            # Agent didn't provide mappings for this slide → fall back
             skipped_slides.append(idx)
-            _overlay_text_on_slide(new_slide, slide_data, workspace_root)
-            _replace_images_on_slide(new_slide, slide_data, workspace_root)
+            _overlay_text_on_slide(slide, slide_data, workspace_root)
+            _replace_images_on_slide(slide, slide_data, workspace_root)
             continue
 
         matched_zone_ids: set[str] = set()
@@ -766,28 +803,19 @@ def write_pptx_from_mapping(
         # ── Text replacement: zone_id → precise shape ──
         for content_type, entry in slide_mappings.items():
             if not isinstance(entry, dict):
-                logger.warning(
-                    "Slide %d: mapping entry for '%s' is not a dict (%s) — skipping",
-                    idx, content_type, type(entry).__name__,
-                )
                 continue
 
             zid = entry.get("zone_id", "")
             content = entry.get("content")
-
             if not zid:
-                logger.warning(
-                    "Slide %d: mapping entry '%s' has no zone_id — skipping",
-                    idx, content_type,
-                )
                 continue
 
             shape = zone_id_map.get(zid)
             if shape is None:
                 invalid_zone_ids.append(zid)
                 logger.warning(
-                    "Slide %d: Agent provided zone_id='%s' but it does not exist "
-                    "on the template slide (valid: %s) — skipping",
+                    "Slide %d: zone_id='%s' does not exist on the template slide "
+                    "(valid: %s) — skipping",
                     idx, zid, sorted(zone_id_map.keys())[:10],
                 )
                 continue
@@ -799,15 +827,11 @@ def write_pptx_from_mapping(
                 )
             matched_zone_ids.add(zid)
 
-        # ── Image replacement: zone_id → precise shape ──
+        # ── Image replacement ──
         for zid, img_path_str in img_mappings.items():
             shape = zone_id_map.get(zid)
             if shape is None:
                 invalid_zone_ids.append(zid)
-                logger.warning(
-                    "Slide %d: Agent image_mapping zone_id='%s' not found — skipping",
-                    idx, zid,
-                )
                 continue
 
             img_path = Path(img_path_str)
@@ -816,16 +840,29 @@ def write_pptx_from_mapping(
             if img_path.exists():
                 _replace_shape_image(shape, img_path)
                 matched_zone_ids.add(zid)
-            else:
-                logger.warning(
-                    "Slide %d: image path does not exist: %s",
-                    idx, img_path,
-                )
 
         # ── Clear unmatched text shapes ──
+        # 1) Shapes that matched a zone but got no content → clear.
         for zid, shape in zone_id_map.items():
-            if zid not in matched_zone_ids and hasattr(shape, "has_text_frame") and shape.has_text_frame:
+            if zid not in matched_zone_ids:
                 _clear_shape_text(shape)
+
+        # 2) Shapes that didn't match ANY zone (page numbers,
+        #    designer credits, decorative text) → clear to prevent
+        #    old template placeholder text from leaking into output.
+        #    Compare by .name (zone_id) — NOT by id(), because
+        #    python-pptx creates new wrapper objects on each iteration.
+        matched_names = {s.name for s in zone_id_map.values()}
+        for shape in slide.shapes:
+            if shape.name not in matched_names:
+                _clear_shape_text(shape)
+
+    # ── Remove unused template slides (when outline < template) ──
+    n_outline = len(slides)
+    if n_outline < n_template:
+        # Delete slides from the end, working backwards so indices stay valid
+        for del_idx in range(n_template - 1, n_outline - 1, -1):
+            _delete_slide_by_index(prs, del_idx)
 
     # ── Summary ──
     if invalid_zone_ids:
@@ -840,10 +877,32 @@ def write_pptx_from_mapping(
             len(skipped_slides), skipped_slides,
         )
 
-    _delete_slides_by_id(prs, original_slide_ids)
     prs.save(str(output_path))
-    logger.info("Agent-driven assembly complete: %s", output_path)
+    logger.info("Mapping-based assembly complete: %s", output_path)
     return output_path
+
+
+def _clone_shapes_from_source(target_slide, source_slide) -> None:
+    """Clone all shapes from *source_slide* onto *target_slide*.
+
+    Copies the full XML of each shape (including formatting, images, and
+    relationships) via ``lxml.deepcopy``.  Does NOT clone the slide itself
+    — only its shapes.
+
+    Used by ``write_pptx_from_mapping`` to build a clean presentation
+    without the ``_delete_slides_by_id`` corruption risk.
+    """
+    from copy import deepcopy as _deepcopy
+
+    # Remove any default shapes the blank layout may have placed
+    for shape in list(target_slide.shapes):
+        sp = shape._element
+        sp.getparent().remove(sp)
+
+    # Deep-copy every shape from the source slide
+    for shape in source_slide.shapes:
+        el = _deepcopy(shape._element)
+        target_slide.shapes._spTree.append(el)
 
 
 def _clone_slide(prs: Presentation, source_slide) -> None:
@@ -891,6 +950,21 @@ def _copy_slide_background(source, target) -> None:
             if existing is not None:
                 tgt_csld.remove(existing)
             tgt_csld.insert(0, deepcopy(src_bg))
+
+
+def _delete_slide_by_index(prs: Presentation, index: int) -> None:
+    """Delete a single slide by its index in the presentation.
+
+    Uses python-pptx's internal API — safer than deleting by slide_id
+    across the entire list, because we delete from the end working
+    backwards so indices never shift.
+    """
+    rId = prs.slides._sldIdLst[index].get(
+        "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
+    )
+    if rId is not None:
+        prs.part.drop_rel(rId)
+    prs.slides._sldIdLst.remove(prs.slides._sldIdLst[index])
 
 
 def _delete_slides_by_id(prs: Presentation, slide_ids: list[int]) -> None:
@@ -1054,6 +1128,8 @@ def _apply_text_to_shape(shape, zone: dict) -> None:
     Preserves the shape's original font, color, and formatting.
     Only changes the text content.
     """
+    if not hasattr(shape, "has_text_frame") or not shape.has_text_frame:
+        return
     tf = shape.text_frame
     zone_type = zone.get("type", "body")
     content = zone.get("content", "")
@@ -1081,10 +1157,13 @@ def _apply_text_to_shape(shape, zone: dict) -> None:
 
 def _clear_shape_text(shape) -> None:
     """Clear all text from a shape (removes template placeholder text)."""
-    if not shape.has_text_frame:
+    if not hasattr(shape, "has_text_frame") or not shape.has_text_frame:
         return
-    for p in shape.text_frame.paragraphs:
-        p.text = ""
+    try:
+        for p in shape.text_frame.paragraphs:
+            p.text = ""
+    except AttributeError:
+        pass  # shape claims has_text_frame but has no text_frame (rare edge case)
 
 
 def _replace_images_on_slide(slide, slide_data: dict, workspace_root: Path | None) -> None:

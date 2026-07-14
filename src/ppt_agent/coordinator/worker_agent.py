@@ -542,73 +542,54 @@ Your output artifact is: {output}
 """
         elif self.phase == "ppt_assembly":
             operation_guide = """
-## Your Workflow (AGENT-DRIVEN ASSEMBLY)
+## Your Role — Content Adaptation Specialist
 
-You are the decision-maker. The system will execute your decisions precisely.
-Your job is to match content to template shapes by zone_id.
+You have ONE job: make sure the text FITS in its template zone.
 
-### Step 1: READ the template structure
-Call **read_artifact("template_zones")** — this gives you the exact shapes
-that exist on each template slide:
-  - zone_id: the unique identifier (e.g. "s0_shape3", "s1_title0")
-  - type: "title", "subtitle", "body", "footer", "image", "decoration"
-  - position: [x, y, width, height] in fractional coordinates
-  - formatting: font_name, font_size_pt, font_color, alignment
-  - visual: text_likeness, is_content_area, mean_brightness, dominant_hex
+The heavy lifting is already done:
+- content_mapping assigned every piece of content to a zone_id
+- The tool auto-builds mappings from slide_contents
 
-### Step 2: READ the content to place
-Call **read_artifact("slide_contents")** — this gives you the content
-that needs to go on each slide:
-  - Each slide has zones with type and content
-  - title/subtitle: content is a string
-  - bullets/body: content is a list of strings
-  - image zones: have image_prompt and/or image_ref
+Your job:
+1. Call **assemble_pptx** (no arguments needed on first call)
+2. Read the result — if it contains **overflow_zones**, those need fixing
+3. For each overflow zone, shorten or merge the content so it fits:
+   - Title/subtitle too long → shorten while keeping the key message
+   - Too many bullets → merge related ones, drop the least important
+   - Bullet too long → compress to the core point
+4. Call **assemble_pptx** again with:
+   ```json
+   {"adaptations": {slide_index: {content_type: {content: ...}}}}
+   ```
+5. Check the result — repeat if overflow_zones still present
 
-### Step 3: MATCH content to template zones (YOUR CORE JOB)
-For each slide, decide which zone_id gets which content:
+## CRITICAL RULES
+- ONLY change **content** — zone_id is immutable and auto-assigned
+- NEVER invent or change zone_id, formatting, or position
+- adaptations format: `{slide_index: {"title"|"bullets": {content: ...}}}`
+- Keep slide_index as an integer, content_type as a string
+- If content fits, pass nothing — the tool handles the happy path
 
-**Matching rules (in priority order):**
-1. Match by TYPE: title content → zones with type="title"
-2. If no exact type match, use closest type: subtitle→title, bullets→body
-3. PREFER zones with formatting that fits (e.g. 28pt+ for titles)
-4. PREFER zones with high text_likeness (>0.7) and is_content_area=true
-5. Each template zone can be used at MOST once per slide
-6. Leave "decoration" type zones EMPTY (content: null) — they are visual only
-7. For image zones: match image_ref or generated_image path to image zones
-
-### Step 4: CALL assemble_pptx with your decisions
-Build a mappings dict and pass it to assemble_pptx:
-
-```
-mappings: {
-  <slide_index>: {
-    "title":    {"zone_id": "s0_shape3", "content": "项目汇报标题"},
-    "subtitle": {"zone_id": "s0_shape5", "content": "副标题文字"},
-    "bullets":  {"zone_id": "s0_body1", "content": ["要点1", "要点2"]},
-  },
-  ...
+## Example
+Tool returns overflow: slide 3 bullets zone has 5 items, capacity is 3 lines.
+Your adaptation:
+```json
+{
+  "adaptations": {
+    "3": {
+      "bullets": {
+        "content": [
+          "AI智能推荐引擎与实时处理",
+          "用户画像个性化推送",
+          "百万级并发分布式架构"
+        ]
+      }
+    }
+  }
 }
 ```
-
-```
-image_mappings: {
-  <slide_index>: {
-    "s0_img1": "background_images/slide-000.png",
-  },
-  ...
-}
-```
-
-### CRITICAL RULES
-- **zone_id MUST come from template_zones.json**. Copy the EXACT zone_id string.
-  Do NOT invent, guess, or modify zone_ids. If you use a made-up zone_id,
-  the assembly will fail for that zone.
-- **Every zone_id you use MUST exist** in that slide's all_zones list in
-  template_zones.json. Double-check before calling assemble_pptx.
-- Only include slides that have content. Slides without content will be
-  handled automatically.
-- Pass mappings as a JSON-serialized string.
 """
+
 
 
         skill_section = ""
@@ -788,10 +769,25 @@ You operate EXACTLY like CatPaw's host agent:
             tools.append({
                 "name": "assemble_pptx",
                 "description": (
-                    "Assemble the final PowerPoint file from slide_contents. "
-                    "Reads slide_contents.json and produces final.pptx in the workspace."
+                    "Assemble the final PowerPoint file using zone_id precise matching. "
+                    "Base mappings are built automatically from slide_contents zone_ids. "
+                    "Pass optional 'adaptations' to shorten or merge content that "
+                    "overflows its template zone — ONLY 'content' can be changed, "
+                    "zone_id and formatting are immutable. "
+                    "The result includes overflow_zones if any content may not fit."
                 ),
-                "parameters": {},
+                "parameters": {
+                    "adaptations": (
+                        "Optional: {slide_index: {content_type: {content: ...}}}. "
+                        "Only change 'content' values — zone_id is auto-assigned "
+                        "and cannot be overridden. Example: "
+                        '{"3": {"bullets": {"content": ["短标题1", "短标题2"]}}}'
+                    ),
+                    "image_mappings": (
+                        "Optional: {slide_index: {zone_id: image_path}} "
+                        "override image placements"
+                    ),
+                },
             })
             tools.append({
                 "name": "check_file",
@@ -881,7 +877,10 @@ You operate EXACTLY like CatPaw's host agent:
             "write_artifact": lambda: self._write_artifact(args.get("name", ""), args.get("payload", {})),
             "validate_output": lambda: self._validate_output(),
             "search_templates": lambda: self._search_templates(args.get("query", ""), int(args.get("top_k", 3))),
-            "assemble_pptx": lambda: self._assemble_pptx(),
+            "assemble_pptx": lambda: self._assemble_pptx(
+                adaptations=args.get("adaptations"),
+                image_mappings=args.get("image_mappings"),
+            ),
             "check_file": lambda: self._check_file_exists(args.get("path", "")),
             "run_shell_command": lambda: self._run_shell_command(args.get("command", ""), int(args.get("timeout", 120)), args.get("cwd")),
             "check_file_exists": lambda: self._check_file_exists(args.get("path", "")),
@@ -1127,25 +1126,93 @@ You operate EXACTLY like CatPaw's host agent:
         except Exception as e:
             return ToolResult(call_id="", output=None, success=False, error=str(e))
 
-    def _assemble_pptx(self) -> ToolResult:
-        """Assemble the final PPTX — LLM decides when to call this."""
+    def _assemble_pptx(self, adaptations: dict | None = None,
+                       image_mappings: dict | None = None) -> ToolResult:
+        """Assemble the final PPTX with zone_id precise matching + LLM adaptations.
+
+        1. Builds base mappings from slide_contents zone_ids (content_mapping's work).
+        2. Computes overflow report — zones where text exceeds template shape capacity.
+        3. Merges LLM *adaptations* (content-only changes, zone_id is immutable).
+        4. Assembles via ``write_pptx_from_mapping``.
+        5. Returns overflow info so the LLM can do a second pass if needed.
+        """
         try:
-            from ppt_agent.assembly.ppt_writer import write_pptx
+            from ppt_agent.assembly.ppt_writer import write_pptx, write_pptx_from_mapping
             from ppt_agent.coordinator.phase_state import load_artifact
+            from ppt_agent.workers.ppt_assembler import (
+                _build_mappings_from_slide_contents,
+                _build_overflow_report,
+                _find_template_pptx,
+                _merge_adaptations,
+            )
 
             slide_contents = load_artifact(self.workspace, "slide_contents")
             output_path = self.workspace.root / "final.pptx"
-            write_pptx(slide_contents, output_path, workspace_root=self.workspace.root)
+            template_path = _find_template_pptx(self.workspace)
+
+            if template_path:
+                template_zones = load_artifact(self.workspace, "template_zones")
+
+                # Layer 1: deterministic base mappings (zone_id immutable)
+                base_mappings, auto_images = _build_mappings_from_slide_contents(slide_contents)
+                if image_mappings is None:
+                    image_mappings = auto_images
+
+                # Layer 2: compute overflow before merging
+                overflow = _build_overflow_report(slide_contents, template_zones)
+
+                # Layer 3: merge LLM adaptations (content only)
+                mappings = _merge_adaptations(
+                    {k: dict(v) for k, v in base_mappings.items()},
+                    adaptations,
+                )
+
+                logger.info(
+                    "Agent assembly: template=%s, %d slides, %d overflow zones, "
+                    "adaptations=%s",
+                    template_path.name, len(mappings), len(overflow),
+                    "provided" if adaptations else "none",
+                )
+
+                write_pptx_from_mapping(
+                    template_path=template_path,
+                    template_zones=template_zones,
+                    mappings=mappings,
+                    image_mappings=image_mappings or {},
+                    slide_contents=slide_contents,
+                    output_path=output_path,
+                    workspace_root=self.workspace.root,
+                )
+
+                result_output = {
+                    "assembled": True,
+                    "path": str(output_path),
+                    "size_bytes": output_path.stat().st_size,
+                    "mode": "zone_id_precise",
+                    "slides_mapped": len(mappings),
+                }
+
+                if overflow:
+                    result_output["overflow_zones"] = overflow
+                    result_output["overflow_count"] = len(overflow)
+                    result_output["hint"] = (
+                        f"{len(overflow)} zone(s) may have content overflow. "
+                        "Call assemble_pptx again with 'adaptations' to shorten "
+                        "or merge overflowing content. Only 'content' can be "
+                        "changed — zone_id and formatting are immutable."
+                    )
+            else:
+                logger.info("No template PPTX found — blank assembly")
+                write_pptx(slide_contents, output_path, workspace_root=self.workspace.root)
+                result_output = {
+                    "assembled": True,
+                    "path": str(output_path),
+                    "size_bytes": output_path.stat().st_size,
+                    "mode": "blank_slides",
+                }
 
             if output_path.exists():
-                return ToolResult(
-                    call_id="", success=True,
-                    output={
-                        "assembled": True,
-                        "path": str(output_path),
-                        "size_bytes": output_path.stat().st_size,
-                    },
-                )
+                return ToolResult(call_id="", success=True, output=result_output)
             return ToolResult(
                 call_id="", success=False, output={"assembled": False},
                 error="write_pptx completed but final.pptx not found",

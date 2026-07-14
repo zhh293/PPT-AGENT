@@ -9,7 +9,15 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from dotenv import load_dotenv as _load_dotenv
+
 import yaml
+
+# Auto-load .env from the project root so that api_key_env references work.
+# The project root is two levels up from this file: src/ppt_agent/llm/config.py
+_ENV_PATH = Path(__file__).resolve().parent.parent.parent.parent / ".env"
+if _ENV_PATH.exists():
+    _load_dotenv(_ENV_PATH)
 
 
 @dataclass
