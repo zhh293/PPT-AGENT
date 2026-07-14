@@ -54,7 +54,18 @@ def prepare_generation_config(workspace: JobWorkspace, mode: str = "none") -> tu
     except (FileNotFoundError, Exception) as e:
         logger.info("No template_zones available for image enrichment: %s", e)
 
-    config = slide_contents_to_batch_config(slide_contents, mode=mode)
+    config = slide_contents_to_batch_config(slide_contents, mode=mode, template_root=None)
+
+    # Inject output_name into slide_contents image zones for the assembler
+    inline_map = config.get("_inline_map", {})
+    for slide in slide_contents.get("slides", []):
+        for zone in slide.get("zones", []):
+            if zone.get("type") != "image":
+                continue
+            zid = zone.get("zone_id", "")
+            if zid in inline_map:
+                zone["generated_image"] = inline_map[zid]
+
     config_path = write_artifact(workspace, "image_generation_config", config)
     return config_path, config
 
@@ -66,10 +77,11 @@ def _enrich_with_template_images(
 ) -> None:
     """Add template_image paths to slide_contents entries.
 
-    The template_zones artifact has per-slide template image paths.
-    We resolve them to absolute paths and inject into slide_contents.
+    Resolves template image paths relative to the project root (not workspace).
+    Template images are in ``templates/<category>/<name>/preview/slide_XX.png``.
     """
     tpl_slides = {s["index"]: s for s in template_zones.get("slides", [])}
+    cwd = Path.cwd()  # Project root
 
     for slide in slide_contents.get("slides", []):
         idx = slide.get("slide_index", slide.get("index", -1))
@@ -77,10 +89,10 @@ def _enrich_with_template_images(
         tpl_image = tpl_slide.get("template_image")
 
         if tpl_image and not slide.get("template_image"):
-            # Resolve to absolute path
             tpl_path = Path(tpl_image)
             if not tpl_path.is_absolute():
-                tpl_path = workspace.root / tpl_image
+                # Path is relative to project root (e.g. "templates/general/xxx/preview/slide_00.png")
+                tpl_path = cwd / tpl_image
             if tpl_path.exists():
                 slide["template_image"] = str(tpl_path)
             else:
@@ -186,6 +198,74 @@ def check_generated_images(workspace: JobWorkspace, config: dict) -> dict:
             f"{total_fallback} slide(s) have no background image — will use solid color.",
         ],
     }
+
+
+def _invoke_gptimage2_skill_background(workspace: JobWorkspace, config: dict) -> None:
+    """Launch GPTImage2 generation in the background via Popen.
+
+    Does NOT wait for completion — the process runs independently.
+    Images are polled for on the next pipeline run.
+    """
+    import subprocess
+    import uuid
+
+    _project_root = Path(__file__).resolve().parent.parent.parent.parent
+    skill_script = _project_root / ".catpaw/skills/gptimage2-generator/scripts/gptimage2_client.py"
+    accounts_file = _project_root / ".catpaw/skills/gptimage2-generator/assets/accounts.json"
+    config_path = workspace.artifact_path("image_generation_config")
+    output_dir = workspace.background_images_dir
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Account provisioning
+    total_slides = len(config.get("slides", []))
+    resolution = config.get("slides", [{}])[0].get("resolution", "1K") if config.get("slides") else "1K"
+    cost_per_slide = {"1K": 10, "2K": 20, "4K": 40}.get(resolution, 10)
+    credits_per_account = 30
+    slides_per_account = max(1, credits_per_account // cost_per_slide)
+    needed_accounts = max(1, (total_slides + slides_per_account - 1) // slides_per_account) if total_slides > 0 else 0
+
+    accounts = {"accounts": [], "current_index": 0}
+    if accounts_file.exists():
+        try:
+            accounts = json.loads(accounts_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    active = sum(1 for a in accounts.get("accounts", []) if a.get("status") == "active")
+    need_to_register = max(0, needed_accounts - active)
+
+    for _ in range(need_to_register):
+        email = f"pptagent_{uuid.uuid4().hex[:8]}@outlook.com"
+        password = f"Agent{uuid.uuid4().hex[:8]}!"
+        logger.info("Auto-registering GPTImage2 account: %s", email)
+        r = subprocess.run(
+            ["python", str(skill_script), "--accounts-file", str(accounts_file),
+             "signup", "--email", email, "--password", password],
+            capture_output=True, text=True, timeout=30,
+            cwd=str(_project_root),
+        )
+        if r.returncode != 0:
+            logger.warning("Registration failed: %s", r.stderr[-200:])
+            break
+
+    # Launch batch-generate in background
+    log_file = workspace.root / "gptimage2_output.log"
+    logger.info("Launching GPTImage2 background generation: %d slides", total_slides)
+    # Open outside a ``with`` block so the handle stays alive for the
+    # lifetime of the background process.  The OS will close it when the
+    # child exits.
+    log_handle = open(log_file, "w")
+    subprocess.Popen(
+        [
+            "python", str(skill_script),
+            "--accounts-file", str(accounts_file),
+            "batch-generate",
+            "--config", str(config_path),
+            "--output-dir", str(output_dir),
+        ],
+        stdout=log_handle, stderr=subprocess.STDOUT,
+        cwd=str(_project_root),
+    )
+    logger.info("GPTImage2 launched in background — output logging to %s", log_file)
 
 
 def _invoke_gptimage2_skill(workspace: JobWorkspace, config: dict) -> None:
@@ -298,30 +378,58 @@ def run(workspace: JobWorkspace, force: bool = False, mode: str = "all") -> Path
 
     report = check_generated_images(workspace, config)
 
-    # Only invoke the skill if there are slides to generate
-    if config.get("slides") and report["generated"] == 0:
+    # Only invoke the skill if there are slides to generate AND we haven't
+    # already kicked off a background generation
+    generation_status_path = workspace.root / ".generation_status.json"
+    generation_running = False
+    if generation_status_path.exists():
         try:
-            _invoke_gptimage2_skill(workspace, config)
-        except Exception as e:
-            logger.warning("GPTImage2 skill invocation failed: %s", e)
+            gs = json.loads(generation_status_path.read_text(encoding="utf-8"))
+            generation_running = gs.get("running", False)
+        except Exception:
+            pass
 
-        report = check_generated_images(workspace, config)
-        if report["generated"] > 0:
-            report["execution"] = {"method": "gptimage2_skill"}
-        else:
-            report = fallback_image_report(
-                workspace.root.name,
-                len(config.get("slides", [])),
-            )
-            report["execution"] = {
-                "method": "deterministic_fallback",
-                "skill_context_path": str(instructions_path),
-                "error": "No images generated",
-            }
-    elif report["generated"] > 0:
-        report["execution"] = {"method": "pre_existing_images"}
+    if config.get("slides") and report["generated"] == 0 and not generation_running:
+        try:
+            _invoke_gptimage2_skill_background(workspace, config)
+            generation_running = True
+        except Exception as e:
+            logger.warning("GPTImage2 background launch failed: %s", e)
+
+    # Check for pre-existing or just-generated images
+    report = check_generated_images(workspace, config)
+
+    if report["generated"] > 0:
+        report["execution"] = {"method": "gptimage2_skill"}
+        # Cleanup status file
+        if generation_status_path.exists():
+            generation_status_path.unlink()
+    elif generation_running:
+        report["execution"] = {
+            "method": "gptimage2_pending",
+            "note": "Image generation is running in the background. Re-run the pipeline to pick up results.",
+        }
+        # Record running status so subsequent runs don't re-launch
+        generation_status_path.write_text(json.dumps({
+            "running": True,
+            "pid": None,
+            "slides": len(config.get("slides", [])),
+            "started_at": None,
+        }))
+    elif config.get("slides"):
+        report = fallback_image_report(
+            workspace.root.name,
+            len(config.get("slides", [])),
+        )
+        report["execution"] = {
+            "method": "deterministic_fallback",
+            "skill_context_path": str(instructions_path),
+            "error": "No images generated",
+        }
     else:
-        # mode="none" or empty config — skip generation entirely
-        report["execution"] = {"method": "template_only", "note": "Using template slides directly, no AI generation needed"}
+        report["execution"] = {
+            "method": "template_only",
+            "note": "Using template slides directly, no AI generation needed",
+        }
 
     return write_artifact(workspace, "image_generation_report", report)

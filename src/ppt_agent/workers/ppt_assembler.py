@@ -39,6 +39,66 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
     return output
 
 
+def assemble_with_mapping(
+    workspace: JobWorkspace,
+    mappings: dict,
+    image_mappings: dict | None = None,
+    force: bool = False,
+) -> Path:
+    """Agent-driven assembly — Agent already decided zone_id → content mapping.
+
+    This is the NEW path: the Agent reads ``template_zones.json`` and
+    ``slide_contents.json``, reasons about which zone_id gets which content,
+    and passes explicit ``mappings`` + ``image_mappings`` dicts.
+
+    Args:
+        workspace: Job workspace with all artifacts.
+        mappings: ``{slide_index: {content_type: {zone_id, content}}}``
+        image_mappings: ``{slide_index: {zone_id: image_path}}``
+        force: Skip review_status check.
+
+    Returns:
+        Path to the generated ``final.pptx``.
+
+    Raises:
+        FileNotFoundError: If no template PPTX is found.
+    """
+    if image_mappings is None:
+        image_mappings = {}
+
+    template_path = _find_template_pptx(workspace)
+    if not template_path:
+        raise FileNotFoundError(
+            "No template PPTX found — cannot run agent-driven assembly. "
+            "Ensure selected_template.json has a valid template_path."
+        )
+
+    slide_contents = load_artifact(workspace, "slide_contents")
+
+    review_status = slide_contents.get("review_status")
+    if review_status != "approved" and not force:
+        raise ValueError(
+            "Cannot assemble PPT: slide_contents.json has not been approved. "
+            f"(review_status={review_status!r}). "
+            "Approve it or pass force=True."
+        )
+
+    template_zones = load_artifact(workspace, "template_zones")
+    output = workspace.root / "final.pptx"
+
+    from ppt_agent.assembly.ppt_writer import write_pptx_from_mapping
+    write_pptx_from_mapping(
+        template_path=template_path,
+        template_zones=template_zones,
+        mappings=mappings,
+        image_mappings=image_mappings,
+        slide_contents=slide_contents,
+        output_path=output,
+        workspace_root=workspace.root,
+    )
+    return output
+
+
 def _find_template_pptx(workspace: JobWorkspace) -> Path | None:
     """Find the template PPTX file from the selected_template artifact."""
     try:

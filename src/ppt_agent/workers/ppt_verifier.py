@@ -82,12 +82,16 @@ def _fresh_eyes_validation(workspace: JobWorkspace, llm_client) -> dict:
 
     logger.info("Running fresh-eyes LLM validation (no prior phase context)")
 
+    from ppt_agent.llm.schemas import VERIFICATION_SCHEMA
+
     result = llm_client.generate_json(
         prompt=prompt,
         context={},  # Intentionally empty — no prior phase context
         system=_FRESH_EYES_SYSTEM,
         phase="verification",
         fallback=fallback,
+        json_schema=VERIFICATION_SCHEMA,
+        schema_name="validation_report",
     )
 
     # Ensure expected keys are present

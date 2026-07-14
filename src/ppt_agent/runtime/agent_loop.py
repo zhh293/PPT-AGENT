@@ -167,6 +167,8 @@ class AgentLoop(ABC):
         self.messages: list[LLMMessage] = []
         self.turns: list[AgentTurn] = []
         self._consecutive_errors = 0
+        self._no_action_count = 0
+        self._max_no_action_retries = 3
         self._aborted = False
         self._loaded_skills: set[str] = set()
 
@@ -189,6 +191,7 @@ class AgentLoop(ABC):
         # ── Reset per-run state (re-entrant safety) ────────────
         self.turns = []
         self._consecutive_errors = 0
+        self._no_action_count = 0
 
         with agent_attribution(self.agent_id):
             # Initialize messages
@@ -242,11 +245,29 @@ class AgentLoop(ABC):
                     final_output = self._extract_final_output(turn)
                     break
 
-                # No tool calls and no stop signal → agent just produced text
+                # No tool calls and no stop signal → agent produced
+                # reasoning text without a tool call.  Give it a chance to
+                # recover by appending a continuation prompt and retrying
+                # (up to _max_no_action_retries).  Prevents immediate
+                # NO_ACTION death on pure-thinking turns while guarding
+                # against infinite silent loops.
                 if not turn.tool_calls:
-                    stop_reason = StopReason.NO_ACTION
-                    final_output = turn.thought
-                    break
+                    self._no_action_count += 1
+                    if self._no_action_count >= self._max_no_action_retries:
+                        stop_reason = StopReason.NO_ACTION
+                        final_output = turn.thought
+                        break
+                    logger.info(
+                        "Agent %s turn %d: no tool call (retry %d/%d), appending continuation prompt.",
+                        self.agent_id, turn_num,
+                        self._no_action_count, self._max_no_action_retries,
+                    )
+                    self.messages.append(LLMMessage.user(
+                        "Please take an action: call a tool, or signal completion "
+                        'with {"done": true}. Do not output reasoning-only JSON.'
+                    ))
+                    self._consecutive_errors = 0  # reasoning is not an error
+                    continue
 
                 # Check error budget
                 if self._consecutive_errors >= self.max_consecutive_errors:
@@ -431,7 +452,12 @@ class AgentLoop(ABC):
         return turn
 
     def _call_llm(self) -> LLMResult:
-        """Call the LLM with current messages and available tools."""
+        """Call the LLM with current messages and available tools.
+
+        Retries up to 2 times with exponential backoff on transient failures
+        (network errors, rate limits).  Persistent errors (e.g. invalid API
+        key) are raised immediately.
+        """
         # ── Phase 2: Compress messages before LLM call ───────────
         self._compress_messages()
 
@@ -449,19 +475,49 @@ class AgentLoop(ABC):
         else:
             augmented_messages = self.messages
 
-        result = self.llm_client.provider.generate(
-            augmented_messages,
-            temperature=0.3,
-            max_tokens=4096,
-        )
+        last_error = None
+        for attempt in range(3):
+            try:
+                result = self.llm_client.provider.generate(
+                    augmented_messages,
+                    temperature=0.3,
+                    max_tokens=4096,
+                )
+            except Exception as exc:
+                last_error = exc
+                if attempt < 2:
+                    wait_s = 2 ** attempt
+                    logger.warning(
+                        "Agent %s LLM call attempt %d/3 raised %s, retrying in %ds.",
+                        self.agent_id, attempt + 1, type(exc).__name__, wait_s,
+                    )
+                    time.sleep(wait_s)
+                    continue
+                raise RuntimeError(
+                    f"LLM call failed after 3 attempts: {exc}"
+                ) from exc
 
-        # ── Phase 3: Audit ALL calls before raising on failure ───
-        self._log_model_call(result)
+            # ── Phase 3: Audit ALL calls before raising on failure ───
+            self._log_model_call(result)
 
-        if not result.success:
-            raise RuntimeError(f"LLM returned error: {result.error}")
+            if result.success:
+                return result
 
-        return result
+            last_error = result.error
+            if attempt < 2:
+                wait_s = 2 ** attempt
+                logger.warning(
+                    "Agent %s LLM call attempt %d/3 returned error: %s, retrying in %ds.",
+                    self.agent_id, attempt + 1, result.error, wait_s,
+                )
+                time.sleep(wait_s)
+            else:
+                raise RuntimeError(
+                    f"LLM returned error after 3 attempts: {result.error}"
+                )
+
+        # Unreachable — kept for type checker
+        raise RuntimeError(f"LLM call failed: {last_error}")
 
     def _log_model_call(self, result: LLMResult) -> None:
         """Append a record to model_calls.jsonl (Phase 3 audit trail).

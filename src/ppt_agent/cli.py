@@ -88,8 +88,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--until")
     run.add_argument("--from", dest="start_from")
     run.add_argument("--force", action="store_true")
-    run.add_argument("--model-profile", dest="model_profile", default=None,
-                     help="LLM provider profile from config/models.yml (e.g., anthropic, openai, fake)")
+    run.add_argument("--model-profile", dest="model_profile", default="deepseek",
+                     help="LLM provider profile from config/models.yml (default: deepseek. Use 'fake' for deterministic mode)")
     run.set_defaults(func=cmd_run)
 
     approve = sub.add_parser("approve")

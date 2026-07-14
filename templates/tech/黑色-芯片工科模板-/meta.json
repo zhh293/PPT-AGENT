@@ -4,7 +4,7 @@
   "scene": [
     "report"
   ],
-  "style": "professional",
+  "style": "bold",
   "slide_count": 22,
   "color_scheme": {
     "primary": "#1F4E79",
@@ -19,7 +19,7 @@
       "zones": [
         {
           "zone_id": "s0_shape0",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3785,
             0.0,
@@ -29,20 +29,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape0",
-            "mean_brightness": 74.7,
-            "edge_density": 0.0184,
-            "text_likeness": 0.922,
-            "dominant_hex": "#504F40",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape2",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2587,
             0.0,
@@ -52,20 +43,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape2",
-            "mean_brightness": 74.9,
-            "edge_density": 0.021,
-            "text_likeness": 0.946,
-            "dominant_hex": "#524F3E",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape3",
-          "type": "body",
+          "type": "image",
           "position": [
             0.196,
             0.0,
@@ -75,16 +57,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape3",
-            "mean_brightness": 74.5,
-            "edge_density": 0.0305,
-            "text_likeness": 0.977,
-            "dominant_hex": "#564F38",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape7",
@@ -107,16 +80,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape7",
-            "mean_brightness": 108.2,
-            "edge_density": 0.0258,
-            "text_likeness": 0.985,
-            "dominant_hex": "#736F60",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape8",
@@ -139,16 +103,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape8",
-            "mean_brightness": 71.0,
-            "edge_density": 0.0763,
-            "text_likeness": 0.635,
-            "dominant_hex": "#4B493F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape9",
@@ -162,20 +117,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape9",
-            "mean_brightness": 69.0,
-            "edge_density": 0.0644,
-            "text_likeness": 0.719,
-            "dominant_hex": "#4B473B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape10",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1355,
             0.0199,
@@ -185,20 +131,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape10",
-            "mean_brightness": 90.4,
-            "edge_density": 0.1085,
-            "text_likeness": 0.6,
-            "dominant_hex": "#686046",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape11",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5969,
             0.4893,
@@ -208,20 +145,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape11",
-            "mean_brightness": 63.6,
-            "edge_density": 0.0331,
-            "text_likeness": 0.765,
-            "dominant_hex": "#494331",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5509,
             0.4893,
@@ -231,20 +159,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape12",
-            "mean_brightness": 94.5,
-            "edge_density": 0.0537,
-            "text_likeness": 0.661,
-            "dominant_hex": "#6F6646",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape13",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5057,
             0.4893,
@@ -254,20 +173,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape13",
-            "mean_brightness": 98.5,
-            "edge_density": 0.0653,
-            "text_likeness": 0.6,
-            "dominant_hex": "#736A49",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape14",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3151,
             0.156,
@@ -277,20 +187,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape14",
-            "mean_brightness": 105.0,
-            "edge_density": 0.0318,
-            "text_likeness": 0.892,
-            "dominant_hex": "#7E714B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape15",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1233,
             0.4196,
@@ -300,16 +201,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape15",
-            "mean_brightness": 135.8,
-            "edge_density": 0.0516,
-            "text_likeness": 0.737,
-            "dominant_hex": "#878787",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape16",
@@ -323,20 +215,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape16",
-            "mean_brightness": 36.7,
-            "edge_density": 0.038,
-            "text_likeness": 0.788,
-            "dominant_hex": "#29261E",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s0_shape17",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0193,
             0.0218,
@@ -346,22 +229,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s0_shape17",
-            "mean_brightness": 51.6,
-            "edge_density": 0.1135,
-            "text_likeness": 0.6,
-            "dominant_hex": "#333333",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 1,
-      "layout": "two_column",
+      "layout": "content_with_image",
       "zones": [
         {
           "zone_id": "s1_shape0",
@@ -375,16 +249,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape0",
-            "mean_brightness": 67.2,
-            "edge_density": 0.065,
-            "text_likeness": 0.631,
-            "dominant_hex": "#4E4535",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape1",
@@ -398,16 +263,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape1",
-            "mean_brightness": 63.8,
-            "edge_density": 0.0604,
-            "text_likeness": 0.64,
-            "dominant_hex": "#4B4230",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape2",
@@ -421,16 +277,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape2",
-            "mean_brightness": 45.6,
-            "edge_density": 0.0356,
-            "text_likeness": 0.62,
-            "dominant_hex": "#3E3019",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape3",
@@ -444,16 +291,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape3",
-            "mean_brightness": 79.0,
-            "edge_density": 0.0462,
-            "text_likeness": 0.606,
-            "dominant_hex": "#5A5240",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape4",
@@ -467,16 +305,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape4",
-            "mean_brightness": 79.1,
-            "edge_density": 0.0769,
-            "text_likeness": 0.6,
-            "dominant_hex": "#575243",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape5",
@@ -490,16 +319,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape5",
-            "mean_brightness": 98.2,
-            "edge_density": 0.0423,
-            "text_likeness": 0.567,
-            "dominant_hex": "#71684D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape6",
@@ -522,16 +342,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape6",
-            "mean_brightness": 106.3,
-            "edge_density": 0.0492,
-            "text_likeness": 0.524,
-            "dominant_hex": "#7A7053",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape7",
@@ -554,16 +365,7 @@
             "line_spacing": 9.448818897637794e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape7",
-            "mean_brightness": 71.4,
-            "edge_density": 0.1061,
-            "text_likeness": 0.6,
-            "dominant_hex": "#4C4940",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape9",
@@ -577,16 +379,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape9",
-            "mean_brightness": 66.3,
-            "edge_density": 0.0625,
-            "text_likeness": 0.624,
-            "dominant_hex": "#4E4533",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape11",
@@ -600,20 +393,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape11",
-            "mean_brightness": 79.7,
-            "edge_density": 0.0549,
-            "text_likeness": 0.764,
-            "dominant_hex": "#535149",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.4029,
             0.5813,
@@ -623,16 +407,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape12",
-            "mean_brightness": 49.3,
-            "edge_density": 0.0316,
-            "text_likeness": 0.925,
-            "dominant_hex": "#493317",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s1_shape13",
@@ -646,16 +421,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s1_shape13",
-            "mean_brightness": 68.2,
-            "edge_density": 0.0164,
-            "text_likeness": 0.93,
-            "dominant_hex": "#464541",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -675,16 +441,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape0",
-            "mean_brightness": 79.9,
-            "edge_density": 0.0606,
-            "text_likeness": 0.6,
-            "dominant_hex": "#5A5341",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape1",
@@ -698,16 +455,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape1",
-            "mean_brightness": 58.1,
-            "edge_density": 0.1279,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3C3A37",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape2",
@@ -721,16 +469,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape2",
-            "mean_brightness": 38.8,
-            "edge_density": 0.03,
-            "text_likeness": 0.966,
-            "dominant_hex": "#2D2A1C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape3",
@@ -744,16 +483,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape3",
-            "mean_brightness": 52.4,
-            "edge_density": 0.0369,
-            "text_likeness": 0.901,
-            "dominant_hex": "#403823",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape4",
@@ -767,16 +497,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape4",
-            "mean_brightness": 49.6,
-            "edge_density": 0.0367,
-            "text_likeness": 0.912,
-            "dominant_hex": "#3B3522",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape5",
@@ -790,16 +511,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape5",
-            "mean_brightness": 42.4,
-            "edge_density": 0.0365,
-            "text_likeness": 0.921,
-            "dominant_hex": "#332E1D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape6",
@@ -813,16 +525,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape6",
-            "mean_brightness": 64.9,
-            "edge_density": 0.0409,
-            "text_likeness": 0.869,
-            "dominant_hex": "#42423D",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape7",
@@ -836,16 +539,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape7",
-            "mean_brightness": 92.6,
-            "edge_density": 0.0684,
-            "text_likeness": 0.498,
-            "dominant_hex": "#655F50",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s2_shape12",
@@ -859,22 +553,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s2_shape12",
-            "mean_brightness": 68.1,
-            "edge_density": 0.0118,
-            "text_likeness": 0.889,
-            "dominant_hex": "#454541",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 3,
-      "layout": "content",
+      "layout": "content_with_image",
       "zones": [
         {
           "zone_id": "s3_shape0",
@@ -888,16 +573,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape0",
-            "mean_brightness": 60.1,
-            "edge_density": 0.0269,
-            "text_likeness": 0.991,
-            "dominant_hex": "#403D36",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape1",
@@ -911,16 +587,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape1",
-            "mean_brightness": 140.2,
-            "edge_density": 0.0426,
-            "text_likeness": 0.804,
-            "dominant_hex": "#AC9A5E",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape2",
@@ -934,16 +601,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape2",
-            "mean_brightness": 136.7,
-            "edge_density": 0.043,
-            "text_likeness": 0.807,
-            "dominant_hex": "#A7965B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape3",
@@ -957,16 +615,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape3",
-            "mean_brightness": 138.0,
-            "edge_density": 0.0428,
-            "text_likeness": 0.807,
-            "dominant_hex": "#A9975C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape4",
@@ -980,16 +629,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape4",
-            "mean_brightness": 55.3,
-            "edge_density": 0.0491,
-            "text_likeness": 0.811,
-            "dominant_hex": "#3B3832",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape5",
@@ -1003,16 +643,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape5",
-            "mean_brightness": 65.2,
-            "edge_density": 0.0404,
-            "text_likeness": 0.862,
-            "dominant_hex": "#464439",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape7",
@@ -1026,16 +657,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape7",
-            "mean_brightness": 52.6,
-            "edge_density": 0.0162,
-            "text_likeness": 0.911,
-            "dominant_hex": "#353533",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape8",
@@ -1049,16 +671,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape8",
-            "mean_brightness": 48.8,
-            "edge_density": 0.0164,
-            "text_likeness": 0.933,
-            "dominant_hex": "#31302F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape9",
@@ -1081,20 +694,11 @@
             "line_spacing": 9.448818897637794e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape9",
-            "mean_brightness": 68.3,
-            "edge_density": 0.0521,
-            "text_likeness": 0.792,
-            "dominant_hex": "#574D27",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape10",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.5066,
             0.665,
@@ -1104,20 +708,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape10",
-            "mean_brightness": 253.5,
-            "edge_density": 0.003,
-            "text_likeness": 0.38,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape11",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.663,
             0.665,
@@ -1127,20 +722,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape11",
-            "mean_brightness": 253.6,
-            "edge_density": 0.0028,
-            "text_likeness": 0.365,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape12",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.8194,
             0.665,
@@ -1150,16 +736,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape12",
-            "mean_brightness": 253.7,
-            "edge_density": 0.0026,
-            "text_likeness": 0.355,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape13",
@@ -1173,16 +750,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape13",
-            "mean_brightness": 75.6,
-            "edge_density": 0.0177,
-            "text_likeness": 0.936,
-            "dominant_hex": "#4E4D47",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s3_shape14",
@@ -1205,16 +773,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s3_shape14",
-            "mean_brightness": 60.2,
-            "edge_density": 0.0245,
-            "text_likeness": 0.988,
-            "dominant_hex": "#3F3D36",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -1234,16 +793,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape0",
-            "mean_brightness": 67.5,
-            "edge_density": 0.028,
-            "text_likeness": 0.989,
-            "dominant_hex": "#4C4638",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape1",
@@ -1257,16 +807,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape1",
-            "mean_brightness": 112.3,
-            "edge_density": 0.032,
-            "text_likeness": 0.902,
-            "dominant_hex": "#8A7B4B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape2",
@@ -1280,16 +821,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape2",
-            "mean_brightness": 51.4,
-            "edge_density": 0.0177,
-            "text_likeness": 0.918,
-            "dominant_hex": "#38322F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape3",
@@ -1303,16 +835,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape3",
-            "mean_brightness": 54.7,
-            "edge_density": 0.0175,
-            "text_likeness": 0.903,
-            "dominant_hex": "#3B3632",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape4",
@@ -1335,16 +858,7 @@
             "line_spacing": 9.448818897637794e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape4",
-            "mean_brightness": 71.3,
-            "edge_density": 0.0544,
-            "text_likeness": 0.787,
-            "dominant_hex": "#624E25",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape5",
@@ -1358,16 +872,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape5",
-            "mean_brightness": 92.8,
-            "edge_density": 0.0567,
-            "text_likeness": 0.77,
-            "dominant_hex": "#625E54",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape6",
@@ -1381,16 +886,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape6",
-            "mean_brightness": 90.9,
-            "edge_density": 0.0568,
-            "text_likeness": 0.771,
-            "dominant_hex": "#605C53",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape7",
@@ -1404,16 +900,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape7",
-            "mean_brightness": 94.5,
-            "edge_density": 0.0549,
-            "text_likeness": 0.774,
-            "dominant_hex": "#656055",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape8",
@@ -1427,16 +914,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape8",
-            "mean_brightness": 92.4,
-            "edge_density": 0.0553,
-            "text_likeness": 0.773,
-            "dominant_hex": "#645D53",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape9",
@@ -1450,16 +928,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape9",
-            "mean_brightness": 55.7,
-            "edge_density": 0.027,
-            "text_likeness": 0.896,
-            "dominant_hex": "#393933",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s4_shape10",
@@ -1473,22 +942,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s4_shape10",
-            "mean_brightness": 71.1,
-            "edge_density": 0.0145,
-            "text_likeness": 0.908,
-            "dominant_hex": "#484844",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 5,
-      "layout": "two_column",
+      "layout": "content_with_image",
       "zones": [
         {
           "zone_id": "s5_shape0",
@@ -1511,16 +971,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape0",
-            "mean_brightness": 99.1,
-            "edge_density": 0.038,
-            "text_likeness": 0.858,
-            "dominant_hex": "#766849",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape1",
@@ -1534,16 +985,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape1",
-            "mean_brightness": 68.3,
-            "edge_density": 0.0837,
-            "text_likeness": 0.633,
-            "dominant_hex": "#4C463A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape2",
@@ -1557,16 +999,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape2",
-            "mean_brightness": 160.5,
-            "edge_density": 0.0293,
-            "text_likeness": 0.632,
-            "dominant_hex": "#C6AA70",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape3",
@@ -1580,16 +1013,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape3",
-            "mean_brightness": 50.9,
-            "edge_density": 0.1035,
-            "text_likeness": 0.6,
-            "dominant_hex": "#38352B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape4",
@@ -1603,16 +1027,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape4",
-            "mean_brightness": 49.7,
-            "edge_density": 0.0989,
-            "text_likeness": 0.6,
-            "dominant_hex": "#373429",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape5",
@@ -1626,16 +1041,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape5",
-            "mean_brightness": 52.8,
-            "edge_density": 0.0856,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3D3729",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape6",
@@ -1649,16 +1055,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape6",
-            "mean_brightness": 50.5,
-            "edge_density": 0.0948,
-            "text_likeness": 0.6,
-            "dominant_hex": "#36352B",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape7",
@@ -1672,16 +1069,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape7",
-            "mean_brightness": 60.6,
-            "edge_density": 0.109,
-            "text_likeness": 0.6,
-            "dominant_hex": "#423F33",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape8",
@@ -1695,20 +1083,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape8",
-            "mean_brightness": 60.7,
-            "edge_density": 0.1014,
-            "text_likeness": 0.6,
-            "dominant_hex": "#413F34",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape13",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0181,
             0.2745,
@@ -1718,16 +1097,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape13",
-            "mean_brightness": 89.4,
-            "edge_density": 0.0573,
-            "text_likeness": 0.6,
-            "dominant_hex": "#6D5C42",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s5_shape14",
@@ -1741,16 +1111,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s5_shape14",
-            "mean_brightness": 72.5,
-            "edge_density": 0.0172,
-            "text_likeness": 0.929,
-            "dominant_hex": "#4A4945",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -1779,16 +1140,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape0",
-            "mean_brightness": 75.3,
-            "edge_density": 0.0341,
-            "text_likeness": 0.921,
-            "dominant_hex": "#534E40",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape1",
@@ -1811,16 +1163,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape1",
-            "mean_brightness": 87.7,
-            "edge_density": 0.0518,
-            "text_likeness": 0.751,
-            "dominant_hex": "#685D41",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape2",
@@ -1843,20 +1186,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape2",
-            "mean_brightness": 83.7,
-            "edge_density": 0.0418,
-            "text_likeness": 0.858,
-            "dominant_hex": "#59554C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape3",
-          "type": "body",
+          "type": "image",
           "position": [
             0.7295,
             0.7263,
@@ -1866,20 +1200,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape3",
-            "mean_brightness": 227.6,
-            "edge_density": 0.0656,
-            "text_likeness": 0.565,
-            "dominant_hex": "#E9E1E0",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape4",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6558,
             0.7263,
@@ -1889,20 +1214,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape4",
-            "mean_brightness": 230.1,
-            "edge_density": 0.0532,
-            "text_likeness": 0.594,
-            "dominant_hex": "#E5E8E4",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape5",
-          "type": "body",
+          "type": "image",
           "position": [
             0.8031,
             0.7263,
@@ -1912,20 +1228,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape5",
-            "mean_brightness": 216.0,
-            "edge_density": 0.0797,
-            "text_likeness": 0.629,
-            "dominant_hex": "#D8D7D7",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape6",
-          "type": "body",
+          "type": "image",
           "position": [
             0.7295,
             0.5992,
@@ -1935,20 +1242,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape6",
-            "mean_brightness": 208.8,
-            "edge_density": 0.0933,
-            "text_likeness": 0.6,
-            "dominant_hex": "#D7CACF",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape7",
-          "type": "body",
+          "type": "image",
           "position": [
             0.657,
             0.6,
@@ -1958,20 +1256,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape7",
-            "mean_brightness": 225.5,
-            "edge_density": 0.0679,
-            "text_likeness": 0.749,
-            "dominant_hex": "#E1E1E1",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape8",
-          "type": "body",
+          "type": "image",
           "position": [
             0.8031,
             0.5992,
@@ -1981,16 +1270,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape8",
-            "mean_brightness": 234.7,
-            "edge_density": 0.0539,
-            "text_likeness": 0.522,
-            "dominant_hex": "#E1EDF1",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape9",
@@ -2013,20 +1293,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape9",
-            "mean_brightness": 110.5,
-            "edge_density": 0.0954,
-            "text_likeness": 0.6,
-            "dominant_hex": "#737067",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape10",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2059,
             0.5979,
@@ -2036,20 +1307,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape10",
-            "mean_brightness": 222.6,
-            "edge_density": 0.0562,
-            "text_likeness": 0.781,
-            "dominant_hex": "#EAD8D9",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape11",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2059,
             0.7263,
@@ -2059,20 +1321,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape11",
-            "mean_brightness": 226.5,
-            "edge_density": 0.0611,
-            "text_likeness": 0.55,
-            "dominant_hex": "#D3E6EE",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1323,
             0.5979,
@@ -2082,20 +1335,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape12",
-            "mean_brightness": 204.0,
-            "edge_density": 0.0835,
-            "text_likeness": 0.6,
-            "dominant_hex": "#BECED7",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape13",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2796,
             0.5979,
@@ -2105,20 +1349,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape13",
-            "mean_brightness": 231.9,
-            "edge_density": 0.0602,
-            "text_likeness": 0.511,
-            "dominant_hex": "#E1EAEB",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape14",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1323,
             0.7263,
@@ -2128,20 +1363,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape14",
-            "mean_brightness": 220.3,
-            "edge_density": 0.0413,
-            "text_likeness": 0.878,
-            "dominant_hex": "#CAE2E8",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape15",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2796,
             0.7263,
@@ -2151,16 +1377,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape15",
-            "mean_brightness": 223.1,
-            "edge_density": 0.0529,
-            "text_likeness": 0.767,
-            "dominant_hex": "#D7E1E4",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape16",
@@ -2183,16 +1400,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape16",
-            "mean_brightness": 99.4,
-            "edge_density": 0.0863,
-            "text_likeness": 0.6,
-            "dominant_hex": "#68645C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape17",
@@ -2215,16 +1423,7 @@
             "line_spacing": 9.448818897637794e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape17",
-            "mean_brightness": 74.7,
-            "edge_density": 0.1092,
-            "text_likeness": 0.6,
-            "dominant_hex": "#514B42",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape20",
@@ -2247,16 +1446,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape20",
-            "mean_brightness": 48.1,
-            "edge_density": 0.055,
-            "text_likeness": 0.516,
-            "dominant_hex": "#523B02",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape21",
@@ -2279,16 +1469,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape21",
-            "mean_brightness": 77.2,
-            "edge_density": 0.0396,
-            "text_likeness": 0.397,
-            "dominant_hex": "#775B15",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape22",
@@ -2302,16 +1483,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape22",
-            "mean_brightness": 66.9,
-            "edge_density": 0.0662,
-            "text_likeness": 0.722,
-            "dominant_hex": "#434440",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape23",
@@ -2325,16 +1497,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape23",
-            "mean_brightness": 63.1,
-            "edge_density": 0.0586,
-            "text_likeness": 0.664,
-            "dominant_hex": "#423F3A",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape25",
@@ -2348,16 +1511,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape25",
-            "mean_brightness": 66.1,
-            "edge_density": 0.0138,
-            "text_likeness": 0.907,
-            "dominant_hex": "#43433F",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s6_shape26",
@@ -2371,22 +1525,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s6_shape26",
-            "mean_brightness": 95.0,
-            "edge_density": 0.0184,
-            "text_likeness": 0.963,
-            "dominant_hex": "#686152",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 7,
-      "layout": "content",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s7_shape0",
@@ -2400,16 +1545,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape0",
-            "mean_brightness": 48.8,
-            "edge_density": 0.0251,
-            "text_likeness": 0.908,
-            "dominant_hex": "#383227",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape1",
@@ -2423,16 +1559,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape1",
-            "mean_brightness": 44.1,
-            "edge_density": 0.032,
-            "text_likeness": 0.895,
-            "dominant_hex": "#2F2D26",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape2",
@@ -2446,16 +1573,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape2",
-            "mean_brightness": 44.8,
-            "edge_density": 0.0206,
-            "text_likeness": 0.859,
-            "dominant_hex": "#332E24",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape3",
@@ -2469,16 +1587,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape3",
-            "mean_brightness": 40.1,
-            "edge_density": 0.0292,
-            "text_likeness": 0.899,
-            "dominant_hex": "#2B2923",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape5",
@@ -2492,16 +1601,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape5",
-            "mean_brightness": 65.3,
-            "edge_density": 0.025,
-            "text_likeness": 0.999,
-            "dominant_hex": "#494436",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape6",
@@ -2515,16 +1615,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape6",
-            "mean_brightness": 59.5,
-            "edge_density": 0.032,
-            "text_likeness": 0.927,
-            "dominant_hex": "#3E3E35",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape7",
@@ -2538,16 +1629,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape7",
-            "mean_brightness": 24.3,
-            "edge_density": 0.0307,
-            "text_likeness": 0.774,
-            "dominant_hex": "#1E1712",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape8",
@@ -2561,16 +1643,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape8",
-            "mean_brightness": 10.5,
-            "edge_density": 0.025,
-            "text_likeness": 0.716,
-            "dominant_hex": "#0D0908",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape9",
@@ -2584,16 +1657,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape9",
-            "mean_brightness": 103.7,
-            "edge_density": 0.0984,
-            "text_likeness": 0.6,
-            "dominant_hex": "#706B5B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape12",
@@ -2607,16 +1671,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape12",
-            "mean_brightness": 68.0,
-            "edge_density": 0.1103,
-            "text_likeness": 0.6,
-            "dominant_hex": "#49453D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape13",
@@ -2639,20 +1694,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape13",
-            "mean_brightness": 72.8,
-            "edge_density": 0.0576,
-            "text_likeness": 0.8,
-            "dominant_hex": "#504C3D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape14",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0114,
             0.4486,
@@ -2662,16 +1708,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape14",
-            "mean_brightness": 25.3,
-            "edge_density": 0.0292,
-            "text_likeness": 0.723,
-            "dominant_hex": "#181919",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape15",
@@ -2685,16 +1722,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape15",
-            "mean_brightness": 68.9,
-            "edge_density": 0.0147,
-            "text_likeness": 0.913,
-            "dominant_hex": "#464642",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s7_shape16",
@@ -2708,22 +1736,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s7_shape16",
-            "mean_brightness": 87.7,
-            "edge_density": 0.0201,
-            "text_likeness": 0.959,
-            "dominant_hex": "#5E594F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 8,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s8_shape2",
@@ -2737,20 +1756,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape2",
-            "mean_brightness": 218.1,
-            "edge_density": 0.0385,
-            "text_likeness": 0.824,
-            "dominant_hex": "#DADADA",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape3",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3462,
             0.5582,
@@ -2760,20 +1770,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape3",
-            "mean_brightness": 245.8,
-            "edge_density": 0.0127,
-            "text_likeness": 0.703,
-            "dominant_hex": "#F6F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape4",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3462,
             0.6968,
@@ -2783,20 +1784,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape4",
-            "mean_brightness": 245.8,
-            "edge_density": 0.0124,
-            "text_likeness": 0.7,
-            "dominant_hex": "#F5F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape5",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2667,
             0.5582,
@@ -2806,20 +1798,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape5",
-            "mean_brightness": 245.6,
-            "edge_density": 0.0128,
-            "text_likeness": 0.71,
-            "dominant_hex": "#F5F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape6",
-          "type": "body",
+          "type": "image",
           "position": [
             0.4257,
             0.5582,
@@ -2829,20 +1812,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape6",
-            "mean_brightness": 245.8,
-            "edge_density": 0.0125,
-            "text_likeness": 0.702,
-            "dominant_hex": "#F6F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape7",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2667,
             0.6968,
@@ -2852,20 +1826,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape7",
-            "mean_brightness": 245.2,
-            "edge_density": 0.0127,
-            "text_likeness": 0.705,
-            "dominant_hex": "#F5F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape8",
-          "type": "body",
+          "type": "image",
           "position": [
             0.4257,
             0.6968,
@@ -2875,16 +1840,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape8",
-            "mean_brightness": 245.9,
-            "edge_density": 0.0123,
-            "text_likeness": 0.697,
-            "dominant_hex": "#F6F5F5",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape9",
@@ -2898,16 +1854,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape9",
-            "mean_brightness": 52.8,
-            "edge_density": 0.0266,
-            "text_likeness": 0.904,
-            "dominant_hex": "#3A362D",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape10",
@@ -2921,16 +1868,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape10",
-            "mean_brightness": 68.2,
-            "edge_density": 0.1111,
-            "text_likeness": 0.6,
-            "dominant_hex": "#484340",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape11",
@@ -2944,20 +1882,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape11",
-            "mean_brightness": 66.1,
-            "edge_density": 0.1105,
-            "text_likeness": 0.6,
-            "dominant_hex": "#434240",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6512,
             0.4667,
@@ -2967,16 +1896,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape12",
-            "mean_brightness": 72.4,
-            "edge_density": 0.0133,
-            "text_likeness": 0.533,
-            "dominant_hex": "#6F3A2F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape18",
@@ -2990,20 +1910,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape18",
-            "mean_brightness": 69.7,
-            "edge_density": 0.0134,
-            "text_likeness": 0.892,
-            "dominant_hex": "#474642",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape19",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0,
             0.2601,
@@ -3013,16 +1924,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape19",
-            "mean_brightness": 142.6,
-            "edge_density": 0.0199,
-            "text_likeness": 0.997,
-            "dominant_hex": "#978C87",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape20",
@@ -3036,16 +1938,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape20",
-            "mean_brightness": 222.1,
-            "edge_density": 0.043,
-            "text_likeness": 0.812,
-            "dominant_hex": "#DEDEDE",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape21",
@@ -3059,16 +1952,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape21",
-            "mean_brightness": 222.2,
-            "edge_density": 0.0428,
-            "text_likeness": 0.814,
-            "dominant_hex": "#DEDEDE",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape22",
@@ -3082,16 +1966,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape22",
-            "mean_brightness": 222.1,
-            "edge_density": 0.043,
-            "text_likeness": 0.813,
-            "dominant_hex": "#DEDEDD",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape23",
@@ -3105,20 +1980,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape23",
-            "mean_brightness": 218.1,
-            "edge_density": 0.0362,
-            "text_likeness": 0.857,
-            "dominant_hex": "#DADAD9",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s8_shape24",
-          "type": "body",
+          "type": "image",
           "position": [
             0.7307,
             0.109,
@@ -3128,16 +1994,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s8_shape24",
-            "mean_brightness": 110.1,
-            "edge_density": 0.0197,
-            "text_likeness": 0.872,
-            "dominant_hex": "#7E7259",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -3157,16 +2014,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape0",
-            "mean_brightness": 65.9,
-            "edge_density": 0.0431,
-            "text_likeness": 0.835,
-            "dominant_hex": "#44443C",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape1",
@@ -3180,16 +2028,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape1",
-            "mean_brightness": 49.8,
-            "edge_density": 0.0357,
-            "text_likeness": 0.938,
-            "dominant_hex": "#35332D",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape3",
@@ -3212,16 +2051,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape3",
-            "mean_brightness": 93.5,
-            "edge_density": 0.0708,
-            "text_likeness": 0.611,
-            "dominant_hex": "#646152",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape4",
@@ -3244,16 +2074,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape4",
-            "mean_brightness": 93.0,
-            "edge_density": 0.0739,
-            "text_likeness": 0.608,
-            "dominant_hex": "#646051",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape5",
@@ -3276,16 +2097,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape5",
-            "mean_brightness": 84.5,
-            "edge_density": 0.0705,
-            "text_likeness": 0.663,
-            "dominant_hex": "#5C5749",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape7",
@@ -3308,16 +2120,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape7",
-            "mean_brightness": 93.9,
-            "edge_density": 0.0691,
-            "text_likeness": 0.618,
-            "dominant_hex": "#656152",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape8",
@@ -3340,16 +2143,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape8",
-            "mean_brightness": 93.9,
-            "edge_density": 0.0766,
-            "text_likeness": 0.6,
-            "dominant_hex": "#676051",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape9",
@@ -3372,16 +2166,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape9",
-            "mean_brightness": 86.2,
-            "edge_density": 0.0678,
-            "text_likeness": 0.668,
-            "dominant_hex": "#5E594B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape10",
@@ -3395,16 +2180,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape10",
-            "mean_brightness": 91.6,
-            "edge_density": 0.0285,
-            "text_likeness": 0.99,
-            "dominant_hex": "#5F5C56",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape11",
@@ -3418,16 +2194,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape11",
-            "mean_brightness": 62.4,
-            "edge_density": 0.0926,
-            "text_likeness": 0.6,
-            "dominant_hex": "#484131",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s9_shape12",
@@ -3441,22 +2208,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s9_shape12",
-            "mean_brightness": 68.1,
-            "edge_density": 0.0133,
-            "text_likeness": 0.904,
-            "dominant_hex": "#454541",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 10,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s10_shape0",
@@ -3470,16 +2228,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape0",
-            "mean_brightness": 81.9,
-            "edge_density": 0.0569,
-            "text_likeness": 0.78,
-            "dominant_hex": "#585448",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape1",
@@ -3493,16 +2242,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape1",
-            "mean_brightness": 82.8,
-            "edge_density": 0.0566,
-            "text_likeness": 0.776,
-            "dominant_hex": "#5B5547",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape2",
@@ -3516,16 +2256,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape2",
-            "mean_brightness": 87.0,
-            "edge_density": 0.0554,
-            "text_likeness": 0.777,
-            "dominant_hex": "#5F594B",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape3",
@@ -3539,16 +2270,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape3",
-            "mean_brightness": 84.5,
-            "edge_density": 0.0562,
-            "text_likeness": 0.776,
-            "dominant_hex": "#5E5648",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape4",
@@ -3562,16 +2284,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape4",
-            "mean_brightness": 79.7,
-            "edge_density": 0.0596,
-            "text_likeness": 0.778,
-            "dominant_hex": "#5F5539",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape5",
@@ -3585,16 +2298,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape5",
-            "mean_brightness": 73.5,
-            "edge_density": 0.0611,
-            "text_likeness": 0.774,
-            "dominant_hex": "#5A4E33",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape8",
@@ -3608,16 +2312,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape8",
-            "mean_brightness": 128.0,
-            "edge_density": 0.0,
-            "text_likeness": 0.0,
-            "dominant_hex": "#808080",
-            "suggested_type": "",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape9",
@@ -3631,16 +2326,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape9",
-            "mean_brightness": 128.0,
-            "edge_density": 0.0,
-            "text_likeness": 0.0,
-            "dominant_hex": "#808080",
-            "suggested_type": "",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape10",
@@ -3654,16 +2340,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape10",
-            "mean_brightness": 57.9,
-            "edge_density": 0.0978,
-            "text_likeness": 0.6,
-            "dominant_hex": "#423B30",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape11",
@@ -3677,16 +2354,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape11",
-            "mean_brightness": 60.0,
-            "edge_density": 0.0996,
-            "text_likeness": 0.6,
-            "dominant_hex": "#433E32",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape12",
@@ -3700,16 +2368,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape12",
-            "mean_brightness": 52.7,
-            "edge_density": 0.0885,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3C372A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape13",
@@ -3723,16 +2382,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape13",
-            "mean_brightness": 52.1,
-            "edge_density": 0.0879,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3F3527",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape14",
@@ -3746,16 +2396,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape14",
-            "mean_brightness": 78.8,
-            "edge_density": 0.0393,
-            "text_likeness": 0.887,
-            "dominant_hex": "#535049",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape15",
@@ -3769,16 +2410,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape15",
-            "mean_brightness": 78.3,
-            "edge_density": 0.0446,
-            "text_likeness": 0.865,
-            "dominant_hex": "#50504A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape16",
@@ -3792,20 +2424,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape16",
-            "mean_brightness": 71.6,
-            "edge_density": 0.0142,
-            "text_likeness": 0.901,
-            "dominant_hex": "#494844",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape17",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0122,
             0.1508,
@@ -3815,20 +2438,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape17",
-            "mean_brightness": 106.6,
-            "edge_density": 0.0206,
-            "text_likeness": 0.882,
-            "dominant_hex": "#7A6E56",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape18",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2609,
             0.1508,
@@ -3838,20 +2452,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape18",
-            "mean_brightness": 111.7,
-            "edge_density": 0.0204,
-            "text_likeness": 0.882,
-            "dominant_hex": "#7E745C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape19",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5096,
             0.1508,
@@ -3861,20 +2466,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape19",
-            "mean_brightness": 109.9,
-            "edge_density": 0.0207,
-            "text_likeness": 0.882,
-            "dominant_hex": "#7E7259",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape20",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0122,
             0.5419,
@@ -3884,20 +2480,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape20",
-            "mean_brightness": 106.7,
-            "edge_density": 0.0214,
-            "text_likeness": 0.904,
-            "dominant_hex": "#7A6E56",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape21",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2609,
             0.5419,
@@ -3907,20 +2494,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape21",
-            "mean_brightness": 108.3,
-            "edge_density": 0.0215,
-            "text_likeness": 0.885,
-            "dominant_hex": "#7D6F57",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s10_shape22",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5096,
             0.5419,
@@ -3930,22 +2508,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s10_shape22",
-            "mean_brightness": 111.9,
-            "edge_density": 0.0218,
-            "text_likeness": 0.903,
-            "dominant_hex": "#847358",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 11,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s11_shape0",
@@ -3959,16 +2528,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape0",
-            "mean_brightness": 76.1,
-            "edge_density": 0.0325,
-            "text_likeness": 0.969,
-            "dominant_hex": "#564F3E",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape1",
@@ -3982,16 +2542,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape1",
-            "mean_brightness": 55.1,
-            "edge_density": 0.0266,
-            "text_likeness": 0.899,
-            "dominant_hex": "#393932",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape3",
@@ -4005,16 +2556,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape3",
-            "mean_brightness": 48.5,
-            "edge_density": 0.0707,
-            "text_likeness": 0.667,
-            "dominant_hex": "#393224",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape4",
@@ -4028,16 +2570,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape4",
-            "mean_brightness": 48.1,
-            "edge_density": 0.0722,
-            "text_likeness": 0.681,
-            "dominant_hex": "#353327",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape5",
@@ -4051,20 +2584,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape5",
-            "mean_brightness": 49.4,
-            "edge_density": 0.072,
-            "text_likeness": 0.664,
-            "dominant_hex": "#383427",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape6",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0526,
             0.3408,
@@ -4074,20 +2598,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape6",
-            "mean_brightness": 251.7,
-            "edge_density": 0.0065,
-            "text_likeness": 0.482,
-            "dominant_hex": "#FCFBFB",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape7",
-          "type": "body",
+          "type": "image",
           "position": [
             0.287,
             0.3408,
@@ -4097,20 +2612,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape7",
-            "mean_brightness": 251.8,
-            "edge_density": 0.0063,
-            "text_likeness": 0.474,
-            "dominant_hex": "#FCFBFB",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape8",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5215,
             0.3408,
@@ -4120,16 +2626,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape8",
-            "mean_brightness": 251.9,
-            "edge_density": 0.0062,
-            "text_likeness": 0.468,
-            "dominant_hex": "#FCFCFB",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s11_shape10",
@@ -4143,22 +2640,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s11_shape10",
-            "mean_brightness": 65.9,
-            "edge_density": 0.0119,
-            "text_likeness": 0.886,
-            "dominant_hex": "#43423F",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 12,
-      "layout": "two_column",
+      "layout": "content_with_image",
       "zones": [
         {
           "zone_id": "s12_shape0",
@@ -4181,20 +2669,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape0",
-            "mean_brightness": 52.1,
-            "edge_density": 0.0218,
-            "text_likeness": 0.981,
-            "dominant_hex": "#3F312B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape2",
-          "type": "body",
+          "type": "image",
           "position": [
             0.389,
             0.395,
@@ -4204,16 +2683,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape2",
-            "mean_brightness": 78.3,
-            "edge_density": 0.0237,
-            "text_likeness": 0.932,
-            "dominant_hex": "#66483B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape3",
@@ -4227,16 +2697,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape3",
-            "mean_brightness": 71.1,
-            "edge_density": 0.0269,
-            "text_likeness": 0.954,
-            "dominant_hex": "#4D4640",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape4",
@@ -4250,16 +2711,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape4",
-            "mean_brightness": 254.4,
-            "edge_density": 0.0,
-            "text_likeness": 0.274,
-            "dominant_hex": "#FEFEFE",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape5",
@@ -4273,16 +2725,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape5",
-            "mean_brightness": 254.4,
-            "edge_density": 0.0,
-            "text_likeness": 0.266,
-            "dominant_hex": "#FEFEFE",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape6",
@@ -4296,16 +2739,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape6",
-            "mean_brightness": 254.2,
-            "edge_density": 0.0,
-            "text_likeness": 0.303,
-            "dominant_hex": "#FEFEFE",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape7",
@@ -4319,16 +2753,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape7",
-            "mean_brightness": 254.2,
-            "edge_density": 0.0,
-            "text_likeness": 0.296,
-            "dominant_hex": "#FEFEFE",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape8",
@@ -4342,16 +2767,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape8",
-            "mean_brightness": 95.7,
-            "edge_density": 0.055,
-            "text_likeness": 0.678,
-            "dominant_hex": "#686353",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape9",
@@ -4365,16 +2781,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape9",
-            "mean_brightness": 93.9,
-            "edge_density": 0.0535,
-            "text_likeness": 0.679,
-            "dominant_hex": "#656153",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape10",
@@ -4388,16 +2795,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape10",
-            "mean_brightness": 89.9,
-            "edge_density": 0.0419,
-            "text_likeness": 0.77,
-            "dominant_hex": "#605C50",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape11",
@@ -4411,16 +2809,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape11",
-            "mean_brightness": 89.8,
-            "edge_density": 0.0411,
-            "text_likeness": 0.771,
-            "dominant_hex": "#605C50",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape12",
@@ -4434,16 +2823,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape12",
-            "mean_brightness": 84.2,
-            "edge_density": 0.0326,
-            "text_likeness": 0.888,
-            "dominant_hex": "#565550",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape18",
@@ -4457,16 +2837,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape18",
-            "mean_brightness": 38.3,
-            "edge_density": 0.0199,
-            "text_likeness": 0.917,
-            "dominant_hex": "#272823",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s12_shape19",
@@ -4480,22 +2851,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s12_shape19",
-            "mean_brightness": 66.5,
-            "edge_density": 0.012,
-            "text_likeness": 0.884,
-            "dominant_hex": "#434340",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 13,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s13_shape0",
@@ -4509,16 +2871,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape0",
-            "mean_brightness": 62.9,
-            "edge_density": 0.0281,
-            "text_likeness": 0.989,
-            "dominant_hex": "#4F4429",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape1",
@@ -4532,16 +2885,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape1",
-            "mean_brightness": 77.9,
-            "edge_density": 0.0352,
-            "text_likeness": 0.896,
-            "dominant_hex": "#5D523A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape2",
@@ -4555,16 +2899,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape2",
-            "mean_brightness": 83.6,
-            "edge_density": 0.0359,
-            "text_likeness": 0.912,
-            "dominant_hex": "#62583F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape3",
@@ -4587,16 +2922,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape3",
-            "mean_brightness": 54.0,
-            "edge_density": 0.0591,
-            "text_likeness": 0.594,
-            "dominant_hex": "#3F3928",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape7",
@@ -4619,16 +2945,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape7",
-            "mean_brightness": 114.6,
-            "edge_density": 0.0419,
-            "text_likeness": 0.803,
-            "dominant_hex": "#76726E",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape8",
@@ -4651,16 +2968,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape8",
-            "mean_brightness": 111.5,
-            "edge_density": 0.0464,
-            "text_likeness": 0.758,
-            "dominant_hex": "#746F69",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape9",
@@ -4674,16 +2982,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape9",
-            "mean_brightness": 74.4,
-            "edge_density": 0.0362,
-            "text_likeness": 0.909,
-            "dominant_hex": "#585036",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape10",
@@ -4697,16 +2996,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape10",
-            "mean_brightness": 65.5,
-            "edge_density": 0.0285,
-            "text_likeness": 0.939,
-            "dominant_hex": "#44433C",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape13",
@@ -4720,16 +3010,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape13",
-            "mean_brightness": 39.3,
-            "edge_density": 0.1004,
-            "text_likeness": 0.6,
-            "dominant_hex": "#2B2821",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape14",
@@ -4743,16 +3024,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape14",
-            "mean_brightness": 43.8,
-            "edge_density": 0.0988,
-            "text_likeness": 0.6,
-            "dominant_hex": "#2D2E27",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape15",
@@ -4766,16 +3038,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape15",
-            "mean_brightness": 47.7,
-            "edge_density": 0.0976,
-            "text_likeness": 0.6,
-            "dominant_hex": "#30322B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape16",
@@ -4798,16 +3061,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape16",
-            "mean_brightness": 128.0,
-            "edge_density": 0.0,
-            "text_likeness": 0.0,
-            "dominant_hex": "#808080",
-            "suggested_type": "",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape18",
@@ -4821,20 +3075,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape18",
-            "mean_brightness": 41.3,
-            "edge_density": 0.0444,
-            "text_likeness": 0.889,
-            "dominant_hex": "#312A1F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape19",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3017,
             0.2992,
@@ -4844,20 +3089,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape19",
-            "mean_brightness": 252.3,
-            "edge_density": 0.0054,
-            "text_likeness": 0.434,
-            "dominant_hex": "#FCFCFC",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape20",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6551,
             0.2992,
@@ -4867,20 +3103,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape20",
-            "mean_brightness": 252.2,
-            "edge_density": 0.0055,
-            "text_likeness": 0.439,
-            "dominant_hex": "#FCFCFC",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape21",
-          "type": "body",
+          "type": "image",
           "position": [
             0.4632,
             0.2992,
@@ -4890,20 +3117,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape21",
-            "mean_brightness": 252.1,
-            "edge_density": 0.0058,
-            "text_likeness": 0.443,
-            "dominant_hex": "#FCFCFB",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape22",
-          "type": "body",
+          "type": "image",
           "position": [
             0.8166,
             0.2992,
@@ -4913,20 +3131,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape22",
-            "mean_brightness": 252.6,
-            "edge_density": 0.0048,
-            "text_likeness": 0.415,
-            "dominant_hex": "#FCFCFC",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape23",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0,
             0.4945,
@@ -4936,16 +3145,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape23",
-            "mean_brightness": 32.9,
-            "edge_density": 0.0236,
-            "text_likeness": 0.904,
-            "dominant_hex": "#32220D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape24",
@@ -4968,16 +3168,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape24",
-            "mean_brightness": 17.0,
-            "edge_density": 0.0235,
-            "text_likeness": 0.78,
-            "dominant_hex": "#16110B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s13_shape28",
@@ -4991,22 +3182,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s13_shape28",
-            "mean_brightness": 74.3,
-            "edge_density": 0.0148,
-            "text_likeness": 0.912,
-            "dominant_hex": "#4C4B46",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 14,
-      "layout": "two_column",
+      "layout": "content_with_image",
       "zones": [
         {
           "zone_id": "s14_shape0",
@@ -5020,16 +3202,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape0",
-            "mean_brightness": 29.2,
-            "edge_density": 0.0578,
-            "text_likeness": 0.525,
-            "dominant_hex": "#211F15",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape1",
@@ -5043,16 +3216,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape1",
-            "mean_brightness": 32.8,
-            "edge_density": 0.053,
-            "text_likeness": 0.484,
-            "dominant_hex": "#2C2015",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape2",
@@ -5066,16 +3230,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape2",
-            "mean_brightness": 27.2,
-            "edge_density": 0.05,
-            "text_likeness": 0.493,
-            "dominant_hex": "#1F1D14",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape3",
@@ -5089,20 +3244,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape3",
-            "mean_brightness": 65.8,
-            "edge_density": 0.0438,
-            "text_likeness": 0.853,
-            "dominant_hex": "#43433E",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape4",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0544,
             0.2851,
@@ -5112,20 +3258,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape4",
-            "mean_brightness": 118.8,
-            "edge_density": 0.0423,
-            "text_likeness": 0.607,
-            "dominant_hex": "#7B7771",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape5",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1999,
             0.2851,
@@ -5135,20 +3272,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape5",
-            "mean_brightness": 113.6,
-            "edge_density": 0.1005,
-            "text_likeness": 0.593,
-            "dominant_hex": "#808153",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape6",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3436,
             0.2851,
@@ -5158,16 +3286,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape6",
-            "mean_brightness": 129.4,
-            "edge_density": 0.03,
-            "text_likeness": 0.814,
-            "dominant_hex": "#8A8178",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape7",
@@ -5190,16 +3309,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape7",
-            "mean_brightness": 79.7,
-            "edge_density": 0.0367,
-            "text_likeness": 0.86,
-            "dominant_hex": "#605539",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape8",
@@ -5222,20 +3332,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape8",
-            "mean_brightness": 76.9,
-            "edge_density": 0.036,
-            "text_likeness": 0.869,
-            "dominant_hex": "#5A523A",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape9",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6248,
             0.1352,
@@ -5245,16 +3346,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape9",
-            "mean_brightness": 68.7,
-            "edge_density": 0.0173,
-            "text_likeness": 0.975,
-            "dominant_hex": "#594D27",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape10",
@@ -5277,16 +3369,7 @@
             "line_spacing": 9.448818897637794e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape10",
-            "mean_brightness": 58.6,
-            "edge_density": 0.0932,
-            "text_likeness": 0.627,
-            "dominant_hex": "#3B3A39",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape11",
@@ -5300,16 +3383,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape11",
-            "mean_brightness": 127.9,
-            "edge_density": 0.0284,
-            "text_likeness": 0.797,
-            "dominant_hex": "#A28B51",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape12",
@@ -5323,16 +3397,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape12",
-            "mean_brightness": 129.6,
-            "edge_density": 0.063,
-            "text_likeness": 0.574,
-            "dominant_hex": "#9C8B5C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape13",
@@ -5346,16 +3411,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape13",
-            "mean_brightness": 115.2,
-            "edge_density": 0.0792,
-            "text_likeness": 0.6,
-            "dominant_hex": "#887A56",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape14",
@@ -5369,16 +3425,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape14",
-            "mean_brightness": 103.4,
-            "edge_density": 0.099,
-            "text_likeness": 0.6,
-            "dominant_hex": "#736C55",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape15",
@@ -5401,16 +3448,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape15",
-            "mean_brightness": 43.5,
-            "edge_density": 0.0423,
-            "text_likeness": 0.738,
-            "dominant_hex": "#41350B",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape16",
@@ -5424,20 +3462,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape16",
-            "mean_brightness": 73.6,
-            "edge_density": 0.0211,
-            "text_likeness": 0.97,
-            "dominant_hex": "#4D4B43",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape17",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5926,
             0.64,
@@ -5447,16 +3476,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape17",
-            "mean_brightness": 189.1,
-            "edge_density": 0.0441,
-            "text_likeness": 0.492,
-            "dominant_hex": "#E5C68B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape18",
@@ -5470,16 +3490,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape18",
-            "mean_brightness": 133.3,
-            "edge_density": 0.0294,
-            "text_likeness": 0.771,
-            "dominant_hex": "#A99055",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s14_shape19",
@@ -5493,22 +3504,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s14_shape19",
-            "mean_brightness": 96.9,
-            "edge_density": 0.0166,
-            "text_likeness": 0.979,
-            "dominant_hex": "#6D6450",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 15,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s15_shape0",
@@ -5522,16 +3524,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape0",
-            "mean_brightness": 144.2,
-            "edge_density": 0.0138,
-            "text_likeness": 0.819,
-            "dominant_hex": "#C49952",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape1",
@@ -5554,16 +3547,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape1",
-            "mean_brightness": 57.5,
-            "edge_density": 0.0351,
-            "text_likeness": 0.9,
-            "dominant_hex": "#433C2C",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape2",
@@ -5577,20 +3561,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape2",
-            "mean_brightness": 62.6,
-            "edge_density": 0.0379,
-            "text_likeness": 0.887,
-            "dominant_hex": "#494230",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape3",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6484,
             0.5751,
@@ -5600,16 +3575,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape3",
-            "mean_brightness": 50.9,
-            "edge_density": 0.0527,
-            "text_likeness": 0.497,
-            "dominant_hex": "#3A3429",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape4",
@@ -5623,20 +3589,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape4",
-            "mean_brightness": 73.6,
-            "edge_density": 0.0305,
-            "text_likeness": 0.963,
-            "dominant_hex": "#564F37",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape5",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.0285,
             0.2964,
@@ -5646,20 +3603,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape5",
-            "mean_brightness": 253.5,
-            "edge_density": 0.0029,
-            "text_likeness": 0.37,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape6",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.211,
             0.2964,
@@ -5669,20 +3617,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape6",
-            "mean_brightness": 253.6,
-            "edge_density": 0.0028,
-            "text_likeness": 0.363,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape7",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.1198,
             0.2964,
@@ -5692,16 +3631,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape7",
-            "mean_brightness": 253.6,
-            "edge_density": 0.0028,
-            "text_likeness": 0.366,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape9",
@@ -5715,20 +3645,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape9",
-            "mean_brightness": 66.5,
-            "edge_density": 0.0118,
-            "text_likeness": 0.882,
-            "dominant_hex": "#44433F",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape10",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5024,
             0.2715,
@@ -5738,20 +3659,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape10",
-            "mean_brightness": 58.7,
-            "edge_density": 0.136,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3C3B38",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape11",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6303,
             0.2715,
@@ -5761,20 +3673,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape11",
-            "mean_brightness": 64.2,
-            "edge_density": 0.1433,
-            "text_likeness": 0.6,
-            "dominant_hex": "#40413D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.7417,
             0.2715,
@@ -5784,20 +3687,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape12",
-            "mean_brightness": 61.8,
-            "edge_density": 0.1415,
-            "text_likeness": 0.6,
-            "dominant_hex": "#3E3F3B",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape13",
-          "type": "body",
+          "type": "image",
           "position": [
             0.8555,
             0.2715,
@@ -5807,16 +3701,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape13",
-            "mean_brightness": 54.8,
-            "edge_density": 0.1348,
-            "text_likeness": 0.6,
-            "dominant_hex": "#383734",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s15_shape14",
@@ -5830,16 +3715,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s15_shape14",
-            "mean_brightness": 109.0,
-            "edge_density": 0.0261,
-            "text_likeness": 0.905,
-            "dominant_hex": "#7D705A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -5859,16 +3735,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape0",
-            "mean_brightness": 176.0,
-            "edge_density": 0.0277,
-            "text_likeness": 0.984,
-            "dominant_hex": "#B6B2A7",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape1",
@@ -5882,16 +3749,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape1",
-            "mean_brightness": 55.6,
-            "edge_density": 0.0269,
-            "text_likeness": 0.896,
-            "dominant_hex": "#393933",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape2",
@@ -5905,16 +3763,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape2",
-            "mean_brightness": 235.8,
-            "edge_density": 0.012,
-            "text_likeness": 0.544,
-            "dominant_hex": "#F9EFD9",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape3",
@@ -5928,16 +3777,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape3",
-            "mean_brightness": 125.5,
-            "edge_density": 0.0318,
-            "text_likeness": 0.964,
-            "dominant_hex": "#817F77",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape4",
@@ -5951,16 +3791,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape4",
-            "mean_brightness": 131.4,
-            "edge_density": 0.0303,
-            "text_likeness": 0.974,
-            "dominant_hex": "#88847D",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape5",
@@ -5974,16 +3805,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape5",
-            "mean_brightness": 129.2,
-            "edge_density": 0.0311,
-            "text_likeness": 0.968,
-            "dominant_hex": "#84827C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape6",
@@ -5997,16 +3819,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape6",
-            "mean_brightness": 129.9,
-            "edge_density": 0.0307,
-            "text_likeness": 0.971,
-            "dominant_hex": "#86827C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape7",
@@ -6020,16 +3833,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape7",
-            "mean_brightness": 126.9,
-            "edge_density": 0.0311,
-            "text_likeness": 0.971,
-            "dominant_hex": "#82807A",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s16_shape8",
@@ -6043,22 +3847,13 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s16_shape8",
-            "mean_brightness": 71.5,
-            "edge_density": 0.0147,
-            "text_likeness": 0.91,
-            "dominant_hex": "#494844",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 17,
-      "layout": "content",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s17_shape0",
@@ -6072,16 +3867,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape0",
-            "mean_brightness": 95.1,
-            "edge_density": 0.0274,
-            "text_likeness": 0.969,
-            "dominant_hex": "#655F58",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape1",
@@ -6095,16 +3881,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape1",
-            "mean_brightness": 96.3,
-            "edge_density": 0.0278,
-            "text_likeness": 0.982,
-            "dominant_hex": "#65615A",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape2",
@@ -6118,20 +3895,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape2",
-            "mean_brightness": 53.1,
-            "edge_density": 0.0278,
-            "text_likeness": 0.92,
-            "dominant_hex": "#343634",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape4",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.0424,
             0.3318,
@@ -6141,20 +3909,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape4",
-            "mean_brightness": 253.8,
-            "edge_density": 0.0024,
-            "text_likeness": 0.349,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape5",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.3186,
             0.3318,
@@ -6164,20 +3923,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape5",
-            "mean_brightness": 253.8,
-            "edge_density": 0.0023,
-            "text_likeness": 0.34,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape6",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.2266,
             0.3318,
@@ -6187,20 +3937,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape6",
-            "mean_brightness": 253.8,
-            "edge_density": 0.0024,
-            "text_likeness": 0.345,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape7",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.1345,
             0.3318,
@@ -6210,20 +3951,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape7",
-            "mean_brightness": 253.8,
-            "edge_density": 0.0023,
-            "text_likeness": 0.343,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape8",
-          "type": "decoration",
+          "type": "image",
           "position": [
             0.4107,
             0.3318,
@@ -6233,16 +3965,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape8",
-            "mean_brightness": 253.9,
-            "edge_density": 0.0022,
-            "text_likeness": 0.338,
-            "dominant_hex": "#FDFDFD",
-            "suggested_type": "decoration",
-            "is_content_area": false
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape9",
@@ -6256,16 +3979,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape9",
-            "mean_brightness": 54.6,
-            "edge_density": 0.0714,
-            "text_likeness": 0.707,
-            "dominant_hex": "#3D392C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s17_shape10",
@@ -6279,16 +3993,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s17_shape10",
-            "mean_brightness": 65.0,
-            "edge_density": 0.0117,
-            "text_likeness": 0.879,
-            "dominant_hex": "#42423E",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -6308,16 +4013,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape0",
-            "mean_brightness": 72.2,
-            "edge_density": 0.0728,
-            "text_likeness": 0.6,
-            "dominant_hex": "#514B3C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape1",
@@ -6331,16 +4027,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape1",
-            "mean_brightness": 76.0,
-            "edge_density": 0.0667,
-            "text_likeness": 0.582,
-            "dominant_hex": "#524F41",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape2",
@@ -6354,16 +4041,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape2",
-            "mean_brightness": 103.5,
-            "edge_density": 0.0432,
-            "text_likeness": 0.788,
-            "dominant_hex": "#6F6A5C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape3",
@@ -6377,16 +4055,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape3",
-            "mean_brightness": 85.7,
-            "edge_density": 0.0519,
-            "text_likeness": 0.664,
-            "dominant_hex": "#5F5848",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape4",
@@ -6400,16 +4069,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape4",
-            "mean_brightness": 97.3,
-            "edge_density": 0.0508,
-            "text_likeness": 0.695,
-            "dominant_hex": "#6E6450",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape5",
@@ -6432,16 +4092,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape5",
-            "mean_brightness": 73.9,
-            "edge_density": 0.0486,
-            "text_likeness": 0.634,
-            "dominant_hex": "#534D3C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape6",
@@ -6464,20 +4115,11 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape6",
-            "mean_brightness": 73.0,
-            "edge_density": 0.0463,
-            "text_likeness": 0.742,
-            "dominant_hex": "#504B3F",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape7",
-          "type": "body",
+          "type": "image",
           "position": [
             0.9236,
             0.3875,
@@ -6487,16 +4129,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape7",
-            "mean_brightness": 8.6,
-            "edge_density": 0.0146,
-            "text_likeness": 0.633,
-            "dominant_hex": "#080908",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape9",
@@ -6510,20 +4143,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape9",
-            "mean_brightness": 77.2,
-            "edge_density": 0.0634,
-            "text_likeness": 0.6,
-            "dominant_hex": "#64542E",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape10",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0,
             0.6322,
@@ -6533,20 +4157,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape10",
-            "mean_brightness": 54.1,
-            "edge_density": 0.0528,
-            "text_likeness": 0.813,
-            "dominant_hex": "#383632",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape12",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0637,
             0.77,
@@ -6556,16 +4171,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape12",
-            "mean_brightness": 98.3,
-            "edge_density": 0.1494,
-            "text_likeness": 0.6,
-            "dominant_hex": "#6D6653",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape14",
@@ -6579,20 +4185,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape14",
-            "mean_brightness": 81.8,
-            "edge_density": 0.0583,
-            "text_likeness": 0.599,
-            "dominant_hex": "#635839",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape15",
-          "type": "body",
+          "type": "image",
           "position": [
             0.1586,
             0.597,
@@ -6602,16 +4199,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape15",
-            "mean_brightness": 68.1,
-            "edge_density": 0.058,
-            "text_likeness": 0.745,
-            "dominant_hex": "#48463C",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape18",
@@ -6625,20 +4213,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape18",
-            "mean_brightness": 96.7,
-            "edge_density": 0.073,
-            "text_likeness": 0.575,
-            "dominant_hex": "#756942",
-            "suggested_type": "footer",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape19",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3336,
             0.5704,
@@ -6648,16 +4227,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape19",
-            "mean_brightness": 78.0,
-            "edge_density": 0.0709,
-            "text_likeness": 0.624,
-            "dominant_hex": "#584E43",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape22",
@@ -6671,20 +4241,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape22",
-            "mean_brightness": 97.1,
-            "edge_density": 0.0461,
-            "text_likeness": 0.716,
-            "dominant_hex": "#776843",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape23",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5086,
             0.5077,
@@ -6694,16 +4255,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape23",
-            "mean_brightness": 77.8,
-            "edge_density": 0.043,
-            "text_likeness": 0.803,
-            "dominant_hex": "#565140",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape26",
@@ -6717,20 +4269,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape26",
-            "mean_brightness": 97.2,
-            "edge_density": 0.0481,
-            "text_likeness": 0.682,
-            "dominant_hex": "#786941",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape27",
-          "type": "body",
+          "type": "image",
           "position": [
             0.6836,
             0.4339,
@@ -6740,20 +4283,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape27",
-            "mean_brightness": 75.0,
-            "edge_density": 0.0543,
-            "text_likeness": 0.762,
-            "dominant_hex": "#544E3E",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape29",
-          "type": "body",
+          "type": "image",
           "position": [
             0.2385,
             0.7404,
@@ -6763,20 +4297,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape29",
-            "mean_brightness": 137.4,
-            "edge_density": 0.0702,
-            "text_likeness": 0.6,
-            "dominant_hex": "#8A8888",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape30",
-          "type": "body",
+          "type": "image",
           "position": [
             0.4154,
             0.7153,
@@ -6786,20 +4311,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape30",
-            "mean_brightness": 84.1,
-            "edge_density": 0.1208,
-            "text_likeness": 0.545,
-            "dominant_hex": "#4C5956",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape31",
-          "type": "body",
+          "type": "image",
           "position": [
             0.7646,
             0.5721,
@@ -6809,20 +4325,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape31",
-            "mean_brightness": 184.4,
-            "edge_density": 0.0432,
-            "text_likeness": 0.644,
-            "dominant_hex": "#BFB8B1",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape32",
-          "type": "body",
+          "type": "image",
           "position": [
             0.5903,
             0.6515,
@@ -6832,16 +4339,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape32",
-            "mean_brightness": 156.5,
-            "edge_density": 0.0698,
-            "text_likeness": 0.567,
-            "dominant_hex": "#A49D93",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape33",
@@ -6855,16 +4353,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape33",
-            "mean_brightness": 64.9,
-            "edge_density": 0.042,
-            "text_likeness": 0.826,
-            "dominant_hex": "#44433B",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape34",
@@ -6887,16 +4376,7 @@
             "line_spacing": 7.874015748031496e-05
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape34",
-            "mean_brightness": 34.0,
-            "edge_density": 0.0222,
-            "text_likeness": 0.901,
-            "dominant_hex": "#332A08",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape35",
@@ -6919,16 +4399,7 @@
             "line_spacing": 0.00010236220472440946
           },
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape35",
-            "mean_brightness": 48.1,
-            "edge_density": 0.0827,
-            "text_likeness": 0.6,
-            "dominant_hex": "#2F3130",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s18_shape36",
@@ -6942,26 +4413,17 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s18_shape36",
-            "mean_brightness": 74.6,
-            "edge_density": 0.0194,
-            "text_likeness": 0.968,
-            "dominant_hex": "#504D42",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
     {
       "index": 19,
-      "layout": "two_column",
+      "layout": "full_image",
       "zones": [
         {
           "zone_id": "s19_shape2",
-          "type": "body",
+          "type": "image",
           "position": [
             0.3641,
             0.0,
@@ -6971,16 +4433,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape2",
-            "mean_brightness": 82.7,
-            "edge_density": 0.0222,
-            "text_likeness": 0.961,
-            "dominant_hex": "#5E5940",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape3",
@@ -6994,20 +4447,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape3",
-            "mean_brightness": 73.8,
-            "edge_density": 0.129,
-            "text_likeness": 0.6,
-            "dominant_hex": "#464B4B",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape4",
-          "type": "body",
+          "type": "image",
           "position": [
             0.8333,
             0.0264,
@@ -7017,16 +4461,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape4",
-            "mean_brightness": 68.8,
-            "edge_density": 0.1063,
-            "text_likeness": 0.6,
-            "dominant_hex": "#474541",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape5",
@@ -7040,16 +4475,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape5",
-            "mean_brightness": 83.8,
-            "edge_density": 0.0652,
-            "text_likeness": 0.704,
-            "dominant_hex": "#5A5847",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape6",
@@ -7063,16 +4489,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape6",
-            "mean_brightness": 100.0,
-            "edge_density": 0.0309,
-            "text_likeness": 0.968,
-            "dominant_hex": "#6F6953",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape7",
@@ -7086,16 +4503,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape7",
-            "mean_brightness": 23.8,
-            "edge_density": 0.0122,
-            "text_likeness": 0.505,
-            "dominant_hex": "#1B1912",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape8",
@@ -7109,20 +4517,11 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape8",
-            "mean_brightness": 21.9,
-            "edge_density": 0.0122,
-            "text_likeness": 0.524,
-            "dominant_hex": "#191810",
-            "suggested_type": "body",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         },
         {
           "zone_id": "s19_shape9",
-          "type": "body",
+          "type": "image",
           "position": [
             0.0284,
             0.0,
@@ -7132,16 +4531,7 @@
           "text": "",
           "formatting": {},
           "confidence": 100.0,
-          "source": "pptx_shape",
-          "visual": {
-            "zone_id": "s19_shape9",
-            "mean_brightness": 66.1,
-            "edge_density": 0.0223,
-            "text_likeness": 0.954,
-            "dominant_hex": "#484637",
-            "suggested_type": "title",
-            "is_content_area": true
-          }
+          "source": "pptx_shape"
         }
       ]
     },
@@ -7155,15 +4545,5 @@
       "layout": "content",
       "zones": []
     }
-  ],
-  "design_audit": {
-    "aggregate_score": 73.4,
-    "font_issues": 1,
-    "overflow_issues": 47,
-    "contrast_issues": 0,
-    "recommendations": [
-      "修复 1 处字体大小问题",
-      "修复 47 处文字溢出问题"
-    ]
-  }
+  ]
 }

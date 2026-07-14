@@ -137,12 +137,39 @@ class FakeProvider(BaseLLMProvider):
             max_context_tokens=32_000,
         )
 
+    # Agent-loop detection markers — when the system prompt contains these
+    # sections (injected by AgentLoop._format_tools_for_prompt), the caller
+    # expects {"tool": ..., "arguments": ...} or {"done": true} JSON, not
+    # domain data.
+    _AGENT_LOOP_MARKERS = ("## Response Format", "## Available Tools")
+
+    @staticmethod
+    def _is_agent_loop(messages: list[LLMMessage]) -> bool:
+        """Detect whether *messages* are from an agent-loop context."""
+        combined = " ".join(msg.text() for msg in messages)
+        return any(marker in combined for marker in FakeProvider._AGENT_LOOP_MARKERS)
+
+    @staticmethod
+    def _is_coordinator(messages: list[LLMMessage]) -> bool:
+        """Coordinator has orchestration tools (spawn_agent) in its prompt."""
+        combined = " ".join(msg.text() for msg in messages)
+        return '"spawn_agent"' in combined or '"spawn_worker"' in combined
+
     def _find_response(self, messages: list[LLMMessage]) -> dict | str:
         """Find a matching response based on message content.
 
         Prioritizes the user/prompt messages over system messages to avoid
         false matches when memory/skill context is injected into the system prompt.
         """
+        # Agent-loop path: Coordinator gets {"done": true} to complete cleanly;
+        # Workers get plain text → NO_ACTION → falls back to deterministic worker.
+        if self._is_agent_loop(messages):
+            if self._is_coordinator(messages):
+                return {"done": True, "result": "Fake coordinator completed — use a real LLM provider for actual work."}
+            # Worker: return plain text so parse_llm_response finds no tool/done
+            # → StopReason.NO_ACTION → WorkerAgent._fallback_execution() runs
+            return "[FakeProvider] Triggering agent-loop fallback to deterministic worker."
+
         # Separate user messages from system messages for priority matching
         user_text = " ".join(msg.text() for msg in messages if msg.role != "system").lower()
         full_text = " ".join(msg.text() for msg in messages).lower()
@@ -176,6 +203,8 @@ class FakeProvider(BaseLLMProvider):
         temperature: float | None = None,
         max_tokens: int | None = None,
         json_mode: bool = False,
+        json_schema: dict | None = None,
+        schema_name: str = "",
     ) -> LLMResult:
         if self.simulate_latency_ms > 0:
             time.sleep(self.simulate_latency_ms / 1000)

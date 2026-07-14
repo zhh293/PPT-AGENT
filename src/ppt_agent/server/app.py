@@ -16,7 +16,7 @@ import threading
 from pathlib import Path
 from typing import AsyncGenerator
 
-from fastapi import FastAPI, HTTPException, UploadFile, File, BackgroundTasks
+from fastapi import FastAPI, Form, HTTPException, UploadFile, File, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -24,21 +24,11 @@ from pydantic import BaseModel
 
 from ppt_agent.coordinator.event_bus import EventBus, EventConsumer, CallbackConsumer
 from ppt_agent.coordinator.phase_state import create_job
-from ppt_agent.coordinator.workflow import run_workflow
+from ppt_agent.coordinator.workflow import PHASES, run_workflow
 from ppt_agent.models.artifacts import JobWorkspace, read_json
 
 # ─── Configuration ─────────────────────────────────────────────────────
 WORKSPACE_ROOT = Path("workspace/jobs")
-PHASES = [
-    "document_analysis",
-    "outline_generation",
-    "template_matching",
-    "design_planning",
-    "content_mapping",
-    "visual_generation",
-    "ppt_assembly",
-    "verification",
-]
 
 # ─── App Setup ─────────────────────────────────────────────────────────
 app = FastAPI(title="PPT Agent Dashboard", version="0.1.0")
@@ -187,7 +177,10 @@ def get_job(job_id: str) -> JobInfo:
 
 
 @app.post("/api/jobs")
-async def create_new_job(files: list[UploadFile] = File(...)) -> JobInfo:
+async def create_new_job(
+    files: list[UploadFile] = File(...),
+    user_prompt: str = Form(""),
+) -> JobInfo:
     """Create a new job by uploading input files."""
     import tempfile
     from datetime import datetime, timezone
@@ -215,6 +208,7 @@ async def create_new_job(files: list[UploadFile] = File(...)) -> JobInfo:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "input_files": [f.filename for f in files],
         "status": "created",
+        "user_prompt": user_prompt.strip() if user_prompt else "",
     }
     (job_path / "job.json").write_text(json.dumps(job_meta, indent=2))
 

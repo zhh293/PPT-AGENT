@@ -45,11 +45,12 @@ def _llm_design(llm_client, outline: dict, template_meta: dict | None) -> dict:
         context["template"] = {
             "template_id": template_meta.get("template_id", ""),
             "color_scheme": template_meta.get("color_scheme", {}),
-            "available_layouts": [s.get("layout") for s in template_meta.get("slides", [])],
         }
 
     slide_count = outline.get("meta", {}).get("total_slides", 8)
     fallback = default_design_plan(slide_count)
+
+    from ppt_agent.llm.schemas import DESIGN_PLAN_SCHEMA
 
     result = llm_client.generate_json(
         prompt=prompt,
@@ -57,6 +58,8 @@ def _llm_design(llm_client, outline: dict, template_meta: dict | None) -> dict:
         system="You are a presentation design director. Output only valid JSON.",
         phase="design_planning",
         fallback=fallback,
+        json_schema=DESIGN_PLAN_SCHEMA,
+        schema_name="slide_design_plan",
     )
 
     # Validate and fix

@@ -92,6 +92,9 @@ class _TestAgent(AgentLoop):
         """Override to return canned responses — bypasses real LLM."""
         if self._next_responses:
             return self._next_responses.pop(0)
+        # Fallback: return a plain-text response that triggers NO_ACTION,
+        # rather than returning None (which would crash parse_llm_response).
+        return LLMResult(text="[no more canned responses]", provider="fake", model="fake")
         return LLMResult(text="done", json_data={"done": True, "result": "done"})
 
 
@@ -115,13 +118,17 @@ def test_agent_loop_without_new_params_behaves_identically() -> None:
 
 
 def test_agent_loop_no_action_stops() -> None:
-    """Agent produces text without tool calls or done → stops with NO_ACTION."""
-    agent = _TestAgent(max_turns=3)
-    agent.set_response(text="Just some reasoning text, no tool call.")
+    """Agent produces text without tool calls or done → retries, then stops with NO_ACTION.
+
+    B3 changed the behaviour: pure-text / non-tool-JSON turns now get a
+    continuation prompt up to 3 times before NO_ACTION is raised.
+    """
+    agent = _TestAgent(max_turns=6)
+    for _ in range(4):  # 4 non-tool responses → 3 retries + final NO_ACTION
+        agent.set_response(text="Just some reasoning text, no tool call.")
 
     result = agent.run("test task")
     assert result.stop_reason == StopReason.NO_ACTION
-    assert result.final_output == "Just some reasoning text, no tool call."
 
 
 def test_load_skill_builtin_tool_works_in_execute_turn() -> None:

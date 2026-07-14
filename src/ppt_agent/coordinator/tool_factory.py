@@ -44,11 +44,12 @@ class ToolFactory:
 
     def _register_common(self, registry, capability, skill_loader=None) -> None:
         from ppt_agent.coordinator.tool_impls.common import (
-            make_load_skill, make_read_artifact, make_search_knowledge_base,
-            make_validate_output, make_write_artifact,
+            make_compose_artifact, make_load_skill, make_read_artifact,
+            make_search_knowledge_base, make_validate_output, make_write_artifact,
         )
         makers = {
             "read_artifact": make_read_artifact,
+            "compose_artifact": make_compose_artifact,
             "write_artifact": make_write_artifact,
             "validate_output": make_validate_output,
             "search_knowledge_base": make_search_knowledge_base,
@@ -56,13 +57,16 @@ class ToolFactory:
         }
         for tool_name in capability.tools:
             if tool_name in makers:
-                desc, executor = makers[tool_name](self.workspace, skill_loader=skill_loader)
+                desc, executor = makers[tool_name](self.workspace)
                 if tool_name == "load_skill":
-                    # load_skill executor is bound by AgentLoop, not here
+                    # load_skill is intercepted by AgentLoop._execute_turn()
+                    # before reaching the ToolRegistry.  Register as
+                    # descriptor-only so the LLM can see it in the tool list,
+                    # but the actual execution is handled by the AgentLoop.
                     if executor is not None:
                         registry.register_tool(desc, executor)
                     else:
-                        registry.register(desc)  # descriptor-only; AgentLoop wires it
+                        registry.register(desc)
                 else:
                     registry.register_tool(desc, executor)
 

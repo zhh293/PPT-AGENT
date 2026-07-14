@@ -49,7 +49,7 @@ def test_all_capabilities_have_tools() -> None:
 def test_capabilities_are_in_pipeline_order() -> None:
     ids = [c.capability_id for c in CAPABILITIES_IN_ORDER]
     assert ids[0] == "document_analysis"
-    assert ids[-1] == "quality_verification"
+    assert ids[-1] == "verification"
 
 
 # ── ToolFactory ──────────────────────────────────────────────────────

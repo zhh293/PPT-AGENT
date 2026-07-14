@@ -83,7 +83,19 @@ class CoordinatorAgent(AgentLoop):
 
         # State
         self._worker_results: dict[str, Any] = {}
-        self._completed: list[str] = []  # capability_ids that completed  # capability_ids that completed
+        self._completed: list[str] = []
+
+    @property
+    def completed_phases(self) -> list[str]:
+        """Capability IDs that have completed (read-only snapshot)."""
+        with self._state_lock:
+            return list(self._completed)
+
+    @property
+    def worker_results(self) -> dict[str, Any]:
+        """Per-phase worker results (read-only snapshot)."""
+        with self._state_lock:
+            return dict(self._worker_results)
 
     def build_system_prompt(self) -> str:
         memory_context = build_memory_context(self.workspace.root)
@@ -107,7 +119,7 @@ class CoordinatorAgent(AgentLoop):
 - content_mapping depends on outline + template + design_plan + source_summary + template_zones
 - visual_generation depends on slide_contents
 - ppt_assembly depends on slide_contents (and optionally visual_generation)
-- quality_verification depends on ppt_assembly
+- verification depends on ppt_assembly
 
 ## Parallel Opportunities
 - outline_generation and template_matching can run in parallel after document_analysis
@@ -129,20 +141,58 @@ When all work is done, use synthesize_output.{constraint}
 {f'## Memory{chr(10)}{memory_context}' if memory_context else ''}"""
 
     def get_available_tools(self) -> list[dict]:
-        """Phase 6: 6 orchestration tools."""
+        """Phase 6: 6 orchestration tools with JSON Schema parameters."""
         return [
-            {"name": "spawn_agent", "description": "Spawn a worker for a capability. Set async=true for background.",
-             "parameters": {"capability": "Capability ID", "instructions": "Extra instructions", "async": "Run in background (default: false)"}},
-            {"name": "check_artifacts", "description": "Check which artifacts exist.",
-             "parameters": {"artifact_names": "List of artifact names to check (optional)"}},
-            {"name": "wait_agents", "description": "Wait for async agents to complete.",
-             "parameters": {"task_ids": "Task IDs to wait for", "timeout": "Timeout seconds (default: 300)"}},
-            {"name": "review_result", "description": "Review a completed worker's output.",
-             "parameters": {"task_id": "Task ID"}},
-            {"name": "request_user_review", "description": "Pause for user review of slide contents.",
-             "parameters": {"message": "Message for the user"}},
-            {"name": "synthesize_output", "description": "Final output after all work.",
-             "parameters": {"summary": "Summary", "warnings": "Any warnings"}},
+            {"name": "spawn_agent", "description": "Spawn a worker agent for a capability. Set async=true to run in background.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "capability": {"type": "string", "description": "Capability ID to execute (e.g. document_analysis)"},
+                     "instructions": {"type": "string", "description": "Optional extra instructions for the worker"},
+                     "async": {"type": "boolean", "description": "Run in background without waiting (default: false)"},
+                 },
+                 "required": ["capability"],
+             }},
+            {"name": "check_artifacts", "description": "Check which artifact files exist in the workspace.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "artifact_names": {"type": "array", "items": {"type": "string"}, "description": "List of artifact names to check (optional, checks all if omitted)"},
+                 },
+             }},
+            {"name": "wait_agents", "description": "Wait for async agent tasks to complete.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "task_ids": {"type": "array", "items": {"type": "string"}, "description": "Task IDs returned by spawn_agent(async=true)"},
+                     "timeout": {"type": "integer", "description": "Max seconds to wait (default: 300)"},
+                 },
+                 "required": ["task_ids"],
+             }},
+            {"name": "review_result", "description": "Review a completed worker agent's output and status.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "task_id": {"type": "string", "description": "Task ID of the worker to review"},
+                 },
+                 "required": ["task_id"],
+             }},
+            {"name": "request_user_review", "description": "Pause the pipeline and request user review of slide_contents.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "message": {"type": "string", "description": "Message to display to the user explaining what needs review"},
+                 },
+                 "required": ["message"],
+             }},
+            {"name": "synthesize_output", "description": "Produce the final output after all pipeline phases are done.",
+             "parameters": {
+                 "type": "object",
+                 "properties": {
+                     "summary": {"type": "string", "description": "Summary of what was accomplished"},
+                     "warnings": {"type": "array", "items": {"type": "string"}, "description": "Any warnings or issues encountered"},
+                 },
+             }},
         ]
 
     def execute_tool(self, tool_call: ToolCall) -> ToolResult:
@@ -165,7 +215,12 @@ When all work is done, use synthesize_output.{constraint}
             return self._synthesize_output(args.get("summary", ""), args.get("warnings", []))
         # Legacy tool names
         elif name == "spawn_worker":
-            return self._spawn_agent(args.get("phase", ""), args.get("instructions", ""), False)
+            # Legacy alias: accepts "phase" (old name) or "capability" (current name)
+            return self._spawn_agent(
+                args.get("capability", args.get("phase", "")),
+                args.get("instructions", ""),
+                False,
+            )
         elif name == "stop_worker":
             return ToolResult(call_id=tool_call.call_id, output={"stopped": args.get("task_id", "")}, success=True)
         elif name == "send_message":
@@ -207,8 +262,8 @@ When all work is done, use synthesize_output.{constraint}
         """Emit events after each turn."""
         if self.event_bus:
             for tc in turn.tool_calls:
-                if tc.tool_name == "spawn_worker":
-                    phase = tc.arguments.get("phase", "")
+                if tc.tool_name in ("spawn_agent", "spawn_worker"):
+                    phase = tc.arguments.get("capability", tc.arguments.get("phase", ""))
                     self.event_bus.emit(
                         EventType.PHASE_STARTED,
                         phase=phase,
@@ -324,7 +379,7 @@ When all work is done, use synthesize_output.{constraint}
         deadline = time.monotonic() + timeout
         for tid in task_ids:
             remaining = max(0, deadline - time.monotonic())
-            future = self._futures.pop(tid, None)  # pop to prevent unbounded growth
+            future = self._futures.pop(tid, None)
             if future:
                 try:
                     r = future.result(timeout=remaining)
@@ -333,6 +388,13 @@ When all work is done, use synthesize_output.{constraint}
                     results[tid] = {"status": "failed", "error": str(e)}
             else:
                 results[tid] = {"status": "unknown", "error": "task_id not found"}
+
+        # Clean up any remaining futures on each wait call — prevents unbounded
+        # growth if someone forgets to wait on an async task.
+        done_tids = [tid for tid, f in list(self._futures.items()) if f.done()]
+        for tid in done_tids:
+            self._futures.pop(tid, None)
+
         return ToolResult(call_id="", output=results, success=True)
 
     def shutdown(self, wait: bool = True) -> None:
@@ -393,7 +455,7 @@ When all work is done, use synthesize_output.{constraint}
             "design_planning": ["outline", "template_meta"],
             "content_mapping": ["outline", "selected_template", "slide_design_plan", "source_summary"],
             "visual_generation": ["slide_contents"],
-            "ppt_assembly": ["slide_contents"],
+            "ppt_assembly": ["slide_contents", "template_zones"],
             "verification": ["slide_contents", "image_generation_report"],
         }
 
