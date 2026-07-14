@@ -103,7 +103,7 @@ def _fallback_mapping(
         )
 
     return {
-        "template_id": selected["template_id"],
+        "template_id": selected.get("template_id") or selected.get("selected_template_id", "fallback.default"),
         "review_status": aggregate_review_status(slides),
         "slides": slides,
     }
@@ -249,7 +249,7 @@ def _llm_mapping(llm_client, outline: dict, selected: dict, design: dict,
             "meta": outline.get("meta", {}),
             "slides": outline.get("slides", []),
         },
-        "template_id": selected.get("template_id", "fallback.default"),
+        "template_id": selected.get("template_id") or selected.get("selected_template_id", "fallback.default"),
         "design_plan": {
             "theme_profile": design.get("theme_profile", {}),
             "slides": design.get("slides", []),
@@ -307,27 +307,88 @@ For each slide, decide WHICH content goes into WHICH zone. You may:
 1. **zone_id**: COPY the exact zone_id from the template all_zones. Do NOT invent IDs.
 2. **position**: COPY the position array from the template zone. Do NOT calculate or guess.
 3. **formatting**: Preserve any existing formatting from the template zone.
-4. **placement_reason**: For each zone with content, add a brief explanation of why
-   you chose that zone for that content. This helps review and debugging.
-5. **image zones**: Keep them with content: null and the original image_prompt.
-6. **capacity**: Read the capacity_hint on each zone — don't put 10 bullets in a
-   zone that only fits 2-3 lines.
-7. Output ONLY the JSON object — no markdown, no explanation outside the JSON.
+4. **placement_reason**: Give a reason for EVERY zone — filled or empty.
+   For filled zones: why this zone for this content. For empty: why left empty
+   (e.g. "decorative element, no content needed").
+5. **image zones**: Keep content: null and the original image_prompt.
+6. **capacity is HARD LIMIT**: Read capacity_hint on each zone.
+   - title zone (28pt+): 20 chars max, 1 line
+   - body zone (12-14pt): 2-4 lines, 25-40 chars per line
+   - footer: 1 line, 50 chars max
+   Shorten or split content to fit. Never exceed the zone's capacity.
+7. **Output EVERY zone**: You MUST include EVERY zone from the template all_zones
+   list. Even empty zones — set content: null with a reason like "decorative".
+8. Output ONLY the JSON object — no markdown, no explanation outside the JSON.
 """
 
     enhanced_prompt = (prompt + "\n\n" + assignment_instruction).strip()
+    full_fallback = _fallback_mapping(outline, selected, design, source_summary, template_zones)
 
-    fallback = _fallback_mapping(outline, selected, design, source_summary, template_zones)
+    # ── Batching: process slides in groups to avoid output token truncation ──
+    BATCH_SIZE = 2   # 2 slides per batch — avoids 16k output token truncation
+    outline_slides = outline.get("slides", [])
+    all_batch_slides: list[dict] = []
 
-    result = llm_client.generate_json(
-        prompt=enhanced_prompt,
-        context=context,
-        system="You are a content editor for PPT generation. Output only valid JSON.",
-        phase="content_mapping",
-        fallback=fallback,
-        max_tokens=16000,
-    )
+    for batch_start in range(0, len(outline_slides), BATCH_SIZE):
+        batch_end = min(batch_start + BATCH_SIZE, len(outline_slides))
+        batch_outline_slides = outline_slides[batch_start:batch_end]
 
+        # Build per-batch context — only the matching slides
+        batch_context: dict = {
+            "template_id": context["template_id"],
+            "image_inventory": context["image_inventory"],
+            "outline": {
+                "meta": context["outline"]["meta"],
+                "slides": batch_outline_slides,
+            },
+            "design_plan": {
+                "theme_profile": context["design_plan"].get("theme_profile", {}),
+                "slides": [s for s in context["design_plan"].get("slides", [])
+                          if s.get("slide_index", -1) in range(batch_start, batch_end)],
+            },
+        }
+        if "template_zones" in context:
+            batch_context["template_zones"] = {
+                "color_scheme": context["template_zones"]["color_scheme"],
+                "slides": [s for s in context["template_zones"]["slides"]
+                          if s["index"] in range(batch_start, batch_end)],
+            }
+
+        batch_fallback = {
+            "template_id": full_fallback["template_id"],
+            "review_status": full_fallback["review_status"],
+            "slides": [s for s in full_fallback["slides"]
+                      if s["slide_index"] in range(batch_start, batch_end)],
+        }
+
+        logger.info("Content mapping batch %d-%d / %d slides",
+                    batch_start + 1, batch_end, len(outline_slides))
+
+        from ppt_agent.llm.schemas import SLIDE_CONTENTS_SCHEMA
+
+        result = llm_client.generate_json(
+            prompt=enhanced_prompt,
+            context=batch_context,
+            system="You are a content editor for PPT generation. Output only valid JSON.",
+            phase=f"content_mapping_{batch_start}",
+            fallback=batch_fallback,
+            max_tokens=16000,
+            temperature=0.1,
+            json_schema=SLIDE_CONTENTS_SCHEMA,
+            schema_name="slide_contents",
+        )
+
+        batch_slides = result.get("slides", [])
+        if not batch_slides:
+            batch_slides = batch_fallback["slides"]
+        all_batch_slides.extend(batch_slides)
+
+    # Assemble and validate the full merged result
+    result = {
+        "template_id": selected.get("template_id") or selected.get("selected_template_id", "fallback.default"),
+        "review_status": "draft",
+        "slides": all_batch_slides,
+    }
     _ensure_valid_mapping(result, outline, selected, design, source_summary, template_zones)
     return result
 
@@ -337,7 +398,7 @@ def _ensure_valid_mapping(
     source_summary: dict, template_zones: dict | None = None,
 ) -> None:
     """Ensure the LLM mapping has all required fields."""
-    mapping.setdefault("template_id", selected.get("template_id", "fallback.default"))
+    mapping.setdefault("template_id", selected.get("template_id") or selected.get("selected_template_id", "fallback.default"))
     mapping.setdefault("review_status", "draft")
 
     if "slides" not in mapping or not mapping["slides"]:
@@ -348,15 +409,19 @@ def _ensure_valid_mapping(
     design_by_index = {item["slide_index"]: item for item in design.get("slides", [])}
     image_inventory = source_summary.get("image_inventory", [])
     tpl_slides = {}
+    tpl_count = 0
     if template_zones:
         tpl_slides = {s["index"]: s for s in template_zones.get("slides", [])}
+        tpl_count = len(tpl_slides)
 
     for i, slide in enumerate(mapping["slides"]):
         slide["slide_index"] = i
         decision = design_by_index.get(i, {})
-        tpl_slide = tpl_slides.get(i, {})
-        slide.setdefault("layout", decision.get("layout_id", tpl_slide.get("layout", "fallback.basic")))
-        slide.setdefault("layout_id", slide["layout"])
+        # Layout comes from the template page itself — OVERRIDE whatever the LLM said
+        tpl_slide = tpl_slides.get(i % max(tpl_count, 1), {})
+        layout = tpl_slide.get("layout", "fallback.basic")
+        slide["layout"] = layout
+        slide["layout_id"] = layout
         slide.setdefault("visual_density", decision.get("visual_density", "medium"))
         slide.setdefault("review_status", "draft")
         slide.setdefault("source_refs", [])
@@ -379,20 +444,23 @@ def _ensure_valid_mapping(
                         else:
                             zone.setdefault("_warning", f"zone_id {zid} not in template and no fallback found")
 
-        # ── Force template zone positions (LLM may invent wrong ones) ──
+        # ── Safety-net: copy real positions from template (AI chose zone_id, we double-check) ──
         if tpl_slide:
-            tpl_text_zones = tpl_slide.get("text_zones", [])
-            tpl_image_zones = tpl_slide.get("image_zones", [])
-            if tpl_text_zones or tpl_image_zones:
+            all_tpl_zones = tpl_slide.get("all_zones", tpl_slide.get("text_zones", []))
+            if all_tpl_zones:
                 slide["zones"] = _lock_zone_positions(
                     slide.get("zones", []),
-                    tpl_text_zones,
-                    tpl_image_zones,
+                    all_tpl_zones,
+                    [],  # image zones included in all_zones
                 )
 
         # ── Preserve template formatting on matched zones ──
         if tpl_slide:
             slide["zones"] = _inject_formatting(slide.get("zones", []), tpl_slide)
+
+        # ── Safety-net: truncate content that exceeds zone capacity ──
+        if tpl_slide:
+            slide["zones"] = _truncate_overflow(slide.get("zones", []), tpl_slide)
 
         # Carry template_image through for downstream img2img
         if tpl_slide.get("template_image"):
@@ -437,62 +505,27 @@ def _lock_zone_positions(
     tpl_text_zones: list[dict],
     tpl_image_zones: list[dict],
 ) -> list[dict]:
-    """Force zone positions to match template zones.
+    """Safety-net: copy real template positions by zone_id.
 
-    The LLM decides which content goes to which zone, but the POSITION
-    must come from the template's actual shape coordinates, not the LLM's
-    invented layout.
-
-    Matches LLM zones to template zones by type (title→title, body→body, etc.)
-    using a greedy best-match approach.
+    The AI already chose the right zone_id from context. This function just
+    double-checks: for every zone_id the AI used, copy the REAL position
+    from the template.  No type-based re-matching — the AI's zone_id choice is
+    authoritative.
     """
-    # Build pools of template zones grouped by type
-    tpl_by_type: dict[str, list[dict]] = {}
+    # Build zone_id → position lookup
+    tpl_positions: dict[str, list[float]] = {}
     for tz in tpl_text_zones:
-        t = tz.get("type", "body")
-        if t not in tpl_by_type:
-            tpl_by_type[t] = []
-        tpl_by_type[t].append(tz)
+        if tz.get("zone_id"):
+            tpl_positions[tz["zone_id"]] = tz.get("position", [0.1, 0.1, 0.8, 0.8])
     for iz in tpl_image_zones:
-        if "image" not in tpl_by_type:
-            tpl_by_type["image"] = []
-        tpl_by_type["image"].append(iz)
-
-    # Track which template zones have been used
-    used: set[int] = set()  # by id(tz)
+        if iz.get("zone_id"):
+            tpl_positions[iz["zone_id"]] = iz.get("position", [0.1, 0.1, 0.8, 0.8])
 
     for zone in llm_zones:
-        zone_type = zone.get("type", "body")
-        candidates = tpl_by_type.get(zone_type, [])
-
-        # Find best unused template zone of matching type.
-        # If no exact match, fall back: subtitle→body, bullets→body, body→title.
-        _FALLBACK_TYPES = {
-            "subtitle": ["body", "title"],
-            "bullets": ["body", "subtitle"],
-            "body": ["title", "subtitle"],
-        }
-        type_options = [zone_type] + _FALLBACK_TYPES.get(zone_type, [])
-        available = []
-        for t in type_options:
-            pool = tpl_by_type.get(t, [])
-            available = sorted(
-                [tz for tz in pool if id(tz) not in used],
-                key=lambda tz: (
-                    0 if tz["position"][0] < 0.85 else 1,
-                    tz["position"][1],
-                    -(tz["position"][2]),
-                ),
-            )
-            if available:
-                break
-
-        if available:
-            # Use the first available template zone of matching type
-            tpl_zone = available[0]
-            zone["position"] = tpl_zone["position"]
-            zone["zone_id"] = tpl_zone.get("zone_id", zone.get("zone_id", ""))
-            used.add(id(tpl_zone))
+        zid = zone.get("zone_id", "")
+        real_pos = tpl_positions.get(zid)
+        if real_pos is not None:
+            zone["position"] = real_pos
 
     return llm_zones
 
@@ -519,6 +552,48 @@ def _inject_formatting(zones: list[dict], tpl_slide: dict) -> list[dict]:
         # Inject visual hints as well
         if tpl_zone and tpl_zone.get("visual"):
             zone.setdefault("visual", tpl_zone["visual"])
+
+    return zones
+
+
+def _truncate_overflow(zones: list[dict], tpl_slide: dict) -> list[dict]:
+    """Truncate content that exceeds zone capacity (safety net).
+
+    Uses the same capacity model as ``_estimate_capacity``.  Only acts when
+    content clearly overflows — doesn't touch zones that fit.
+    """
+    all_zones = {z.get("zone_id", ""): z for z in tpl_slide.get("all_zones", [])}
+
+    for zone in zones:
+        zid = zone.get("zone_id", "")
+        tpl_zone = all_zones.get(zid, {})
+        pos = tpl_zone.get("position", [0, 0, 0, 0])
+        if len(pos) < 4:
+            continue
+        w, h = pos[2], pos[3]
+        fmt = zone.get("formatting", {}) or {}
+        font_pt = fmt.get("font_size_pt", 14) or 14
+        max_lines = max(1, int(h * 720 / max(int(font_pt), 10)))
+        chars_per_line = max(5, int(w * 10 * (10 / max(int(font_pt), 10))))
+
+        content = zone.get("content")
+        zone_type = zone.get("type", "")
+
+        if zone_type in ("title", "subtitle") and isinstance(content, str):
+            if len(content) > chars_per_line:
+                zone["content"] = content[:chars_per_line]
+                zone["fit_status"] = "truncated"
+        elif zone_type in ("bullets", "body") and isinstance(content, list):
+            truncated: list[str] = []
+            for item in content[:max_lines]:
+                if len(item) > chars_per_line:
+                    item = item[:chars_per_line]
+                truncated.append(item)
+            if len(content) > max_lines or any(
+                len(c) > chars_per_line for c in content
+            ):
+                zone["content"] = truncated
+                zone["fit_status"] = "truncated"
 
     return zones
 

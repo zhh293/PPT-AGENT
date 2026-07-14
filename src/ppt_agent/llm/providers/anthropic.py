@@ -122,6 +122,8 @@ class AnthropicProvider(BaseLLMProvider):
         temperature: float | None = None,
         max_tokens: int | None = None,
         json_mode: bool = False,
+        json_schema: dict | None = None,
+        schema_name: str = "",
     ) -> LLMResult:
         client = self._get_client()
         system_text, api_messages = self._convert_messages(messages)

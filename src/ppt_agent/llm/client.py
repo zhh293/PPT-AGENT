@@ -143,12 +143,19 @@ class LLMClient:
         fallback: dict | None = None,
         temperature: float | None = None,
         max_tokens: int | None = None,
+        json_schema: dict | None = None,
+        schema_name: str = "",
     ) -> dict:
         """Generate structured JSON output.
 
         The prompt should instruct the model to output only JSON.
         The response is parsed, repaired if needed, and validated
         against the schema.
+
+        When *json_schema* is provided, the provider uses structured
+        output mode (``response_format: json_schema``) which guarantees
+        the response matches the schema at the API level — no local
+        JSON repair needed.
 
         Returns the parsed dict. Falls back to `fallback` if provided
         and parsing fails. Raises RuntimeError if no fallback.
@@ -159,12 +166,19 @@ class LLMClient:
 
         messages = self._build_messages(prompt, context, json_system)
 
-        # First attempt
+        # First attempt — use json_schema (strict) when the provider supports it,
+        # otherwise fall back to json_object mode.
+        _use_schema = (
+            json_schema is not None
+            and self._capabilities.supports_json_schema
+        )
         result = self.provider.generate(
             messages,
             temperature=temperature,
             max_tokens=max_tokens,
-            json_mode=self._capabilities.supports_json_mode,
+            json_mode=self._capabilities.supports_json_mode if not _use_schema else False,
+            json_schema=json_schema if _use_schema else None,
+            schema_name=schema_name if _use_schema else "",
         )
 
         schema_name = schema.get("title", "") if schema else ""

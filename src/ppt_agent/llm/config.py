@@ -9,7 +9,15 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from dotenv import load_dotenv as _load_dotenv
+
 import yaml
+
+# Auto-load .env from the project root so that api_key_env references work.
+# The project root is two levels up from this file: src/ppt_agent/llm/config.py
+_ENV_PATH = Path(__file__).resolve().parent.parent.parent.parent / ".env"
+if _ENV_PATH.exists():
+    _load_dotenv(_ENV_PATH)
 
 
 @dataclass
@@ -22,6 +30,7 @@ class ProviderConfig:
     api_key_env: str = ""
     base_url_env: str = ""
     endpoint: str = ""
+    beta_endpoint: str = ""   # e.g. https://api.deepseek.com/beta for strict tool calling
     text_model: str = ""
     vision_model: str = ""
     reasoning_model: str = ""
@@ -90,6 +99,7 @@ def load_model_config(path: str | Path = "config/models.yml") -> ModelConfig:
             api_key_env=prov_data.get("api_key_env", ""),
             base_url_env=prov_data.get("base_url_env", ""),
             endpoint=prov_data.get("endpoint", ""),
+            beta_endpoint=prov_data.get("beta_endpoint", ""),
             text_model=prov_data.get("text_model", ""),
             vision_model=prov_data.get("vision_model", ""),
             reasoning_model=prov_data.get("reasoning_model", ""),

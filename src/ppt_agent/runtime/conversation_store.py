@@ -14,6 +14,7 @@ mid-flight.
 from __future__ import annotations
 
 import json
+import logging
 import threading
 import time
 import uuid
@@ -23,6 +24,8 @@ from pathlib import Path
 from typing import Any
 
 from ppt_agent.llm.messages import ContentBlock, LLMMessage
+
+logger = logging.getLogger(__name__)
 
 # Valid LLMMessage roles — used to validate deserialized entries.
 _VALID_ROLES = frozenset({"system", "user", "assistant", "tool"})
@@ -326,7 +329,3 @@ def _dict_to_content_block(d: dict[str, Any]) -> ContentBlock:
         data=d.get("data"),
         image_data=d.get("image_data"),
     )
-
-
-import logging
-logger = logging.getLogger(__name__)

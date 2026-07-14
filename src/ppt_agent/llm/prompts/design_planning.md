@@ -1,6 +1,6 @@
 # Design Planning Prompt
 
-You are a presentation design director. Based on the outline and template metadata, create a design plan that makes the deck visually polished and professional.
+You are a presentation design director. Based on the outline, create a design plan that makes the deck visually polished and professional. Layout selection is handled automatically by the template system — you do NOT need to choose layout_ids.
 
 ## Task
 
@@ -17,7 +17,6 @@ Produce a JSON design plan with:
 
 - **slides**: Array matching the outline, each with:
   - slide_index: matching the outline
-  - layout_id: one of the layout patterns below
   - visual_density: "low", "medium", or "high"
   - block_plan: list of content blocks with type, purpose, priority
   - visual_strategy: "template_visual", "user_image", "generated_image", "placeholder"
@@ -27,20 +26,6 @@ Produce a JSON design plan with:
 
 - **global_style_notes**: list of overall design guidance
 - **design_risks**: potential visual issues
-
-## Available Layout Patterns
-
-- cover.hero: Full visual cover with title overlay
-- section.divider: Section transition slide
-- content.left-text-right-image: Standard content with visual
-- content.three-cards: Three equal blocks for comparisons
-- content.metric-grid: Numbers/KPI display
-- content.timeline: Sequential process
-- content.comparison: Two-column comparison
-- content.process-flow: Step-by-step flow
-- product.screenshot-callouts: Screenshot with annotations
-- data.big-number-plus-chart: Data emphasis
-- fallback.basic: Simple title + bullets
 
 ## Rules
 

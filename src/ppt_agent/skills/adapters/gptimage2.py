@@ -13,9 +13,80 @@ text-to-image mode with a descriptive prompt.
 from __future__ import annotations
 
 
+def _evaluate_template_background(image_path: str | None) -> tuple[float, bool]:
+    """Evaluate if a template background image is good enough to keep.
+
+    Returns (quality_score, should_generate).
+
+    quality_score: 0.0-1.0, higher = better template background.
+    should_generate: True if the template background is NOT good enough.
+    """
+    if not image_path:
+        return 0.0, True  # No template image → must generate
+
+    from pathlib import Path
+    p = Path(image_path)
+    if not p.exists():
+        return 0.0, True
+
+    try:
+        from PIL import Image
+        import numpy as np
+        img = Image.open(p).convert("RGB")
+        arr = np.array(img, dtype=np.float32)
+
+        h, w = arr.shape[:2]
+        if h < 100 or w < 100:
+            return 0.0, True  # Too small to evaluate
+
+        # ── Edge density (Sobel) ──
+        gray = np.mean(arr, axis=2)
+        if h >= 3 and w >= 3:
+            gx = np.abs(gray[1:-1, 2:] - gray[1:-1, :-2])
+            gy = np.abs(gray[2:, 1:-1] - gray[:-2, 1:-1])
+            edge_density = float(np.mean((gx + gy) / 2 > 20))
+        else:
+            edge_density = 0.0
+
+        # ── Color variance ──
+        color_std = float(np.std(arr, axis=(0, 1)).mean())
+
+        # ── Brightness ──
+        brightness = float(gray.mean())
+
+        # ── Scoring ──
+        # Edge: 0.02-0.15 is good (some texture but not chaotic)
+        edge_score = 1.0 if 0.02 <= edge_density <= 0.20 else (
+            edge_density / 0.02 if edge_density < 0.02 else
+            max(0, 1.0 - (edge_density - 0.20) / 0.20)
+        )
+
+        # Color: >20 std is visually interesting, <5 is solid color
+        color_score = min(1.0, color_std / 20.0)
+
+        # Brightness: 60-200 is readable, extremes are bad
+        brightness_score = 1.0 if 60 <= brightness <= 200 else (
+            brightness / 60.0 if brightness < 60 else
+            max(0, 1.0 - (brightness - 200) / 55.0)
+        )
+
+        quality = edge_score * 0.4 + color_score * 0.4 + brightness_score * 0.2
+
+        # Threshold: below 0.4 → needs generation
+        should_generate = quality < 0.4
+
+        return round(quality, 3), should_generate
+
+    except ImportError:
+        return 0.5, False  # Can't evaluate, assume it's fine
+    except Exception:
+        return 0.5, False
+
+
 def slide_contents_to_batch_config(
     slide_contents: dict,
     mode: str = "none",
+    template_root: str | None = None,
 ) -> dict:
     """Convert slide_contents into GPTImage2 batch-generate config.
 
@@ -45,18 +116,17 @@ def slide_contents_to_batch_config(
     if mode == "none":
         return {"slides": []}
 
+    kept_count = 0
+    generated_count = 0
     to_generate: list[dict] = []
     for slide in slides:
         idx = slide["slide_index"]
         layout = slide.get("layout", "")
 
-        if mode == "all":
-            pass  # include all
-        elif mode == "cover-only":
-            if idx != 0:
-                continue
+        # ── Mode filter ──
+        if mode == "cover-only" and idx != 0:
+            continue
         elif mode == "key":
-            # Cover + section/chapter dividers only
             is_cover = (idx == 0)
             is_section = any(
                 tag in str(layout).lower()
@@ -65,9 +135,17 @@ def slide_contents_to_batch_config(
             if not (is_cover or is_section):
                 continue
 
+        # ── Quality check: keep template background if it looks good ──
+        reference_image = slide.get("template_image")  # Already absolute or None
+        quality, should_generate = _evaluate_template_background(reference_image)
+
+        if not should_generate:
+            kept_count += 1
+            continue  # Template background is good enough → skip generation
+
+        generated_count += 1
         output_name = f"slide-{idx:03d}.png"
         prompt = _build_slide_prompt(slide)
-        reference_image = slide.get("template_image")
 
         to_generate.append({
             "index": idx,
@@ -78,9 +156,73 @@ def slide_contents_to_batch_config(
             "reference_image": reference_image,
             "output_name": output_name,
             "fallback": "placeholder" if not reference_image else "text2img",
+            "template_quality_score": quality,
         })
 
-    return {"slides": to_generate}
+    # ── Inline image zones: generate content images (not backgrounds) ──
+    inline_count = 0
+    for slide in slides:
+        idx = slide["slide_index"]
+        for zi, zone in enumerate(slide.get("zones", [])):
+            if zone.get("type") != "image":
+                continue
+            image_prompt = zone.get("image_prompt")
+            image_ref = zone.get("image_ref")
+            # Skip if: no prompt, or user provided an image, or prompt is empty
+            if not image_prompt or not str(image_prompt).strip():
+                continue
+            if image_ref:
+                continue  # User-uploaded image → don't generate
+
+            inline_count += 1
+            zone_id = zone.get("zone_id", f"image_{idx}_{zi}")
+            # GPTImage2 script uses output_name directly; for multiple inline
+            # images per slide, append a short index suffix to keep names unique.
+            suffix = f"-{inline_count}" if inline_count > 1 else ""
+            output_name = f"slide-{idx:03d}{suffix}.png"
+
+            # Build a focused prompt for the inline image
+            slide_context = _build_slide_title(slide)
+            inline_prompt = (
+                f"Content image for slide about '{slide_context}'. "
+                f"{image_prompt}. "
+                f"Clean professional style, no text in the image."
+            )
+
+            to_generate.append({
+                "index": idx,
+                "mode": "content_image",
+                "zone_id": zone_id,
+                "prompt": inline_prompt,
+                "aspect_ratio": "4:3",
+                "resolution": "1K",
+                "reference_image": None,
+                "output_name": output_name,
+                "fallback": "placeholder",
+            })
+
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(
+        "Background: %d kept, %d generated. Inline images: %d to generate (mode=%s)",
+        kept_count, generated_count, inline_count, mode,
+    )
+
+    return {
+        "slides": to_generate,
+        "_inline_map": {  # zone_id → output_name for assembler
+            entry["zone_id"]: entry["output_name"]
+            for entry in to_generate if entry.get("mode") == "content_image"
+        },
+    }
+
+
+def _build_slide_title(slide: dict) -> str:
+    """Extract a short title from a slide for context in image prompts."""
+    for zone in slide.get("zones", []):
+        if zone.get("type") == "title" and zone.get("content"):
+            return str(zone["content"])[:60]
+    return f"slide {slide.get('slide_index', 0)}"
 
 
 def _build_slide_prompt(slide: dict) -> str:

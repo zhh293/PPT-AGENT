@@ -23,6 +23,7 @@ from ppt_agent.context.session_summary import append_phase_summary
 from ppt_agent.context.dream import run_dream_task
 from ppt_agent.coordinator.event_bus import emit_event, EventBus, EventType, LoggingConsumer
 from ppt_agent.models.artifacts import JobWorkspace
+from ppt_agent.runtime.agent_loop import StopReason
 from ppt_agent.runtime.task_manager import TaskManager
 from ppt_agent.runtime.task_types import TaskType, TaskStatus
 from ppt_agent.skills.loader import SkillLoader
@@ -60,6 +61,11 @@ _LLM_PHASES = {
     "design_planning",
     "content_mapping",
     "verification",
+}
+
+# Extra kwargs to pass to specific phases
+_PHASE_EXTRA_KWARGS: dict[str, dict] = {
+    "visual_generation": {"mode": "all"},
 }
 
 # Phase → skill name mapping (from config/dispatcher.yml)
@@ -161,23 +167,170 @@ def run_workflow(
 
     # Create LLM client if a model profile is specified
     llm_client = None
+    agent_mode = False
     if model_profile:
+        # "agent:<profile>" → full agent mode (Coordinator + Worker agent loops)
+        if model_profile.startswith("agent:"):
+            agent_mode = True
+            model_profile = model_profile[len("agent:"):]
         llm_client = _create_llm_client(model_profile, workspace.root)
 
     if llm_client is not None:
-        # ── LLM-AUGMENTED DETERMINISTIC MODE ──
-        # Each worker calls the LLM for intelligent analysis (document analysis,
-        # outline generation, etc.) but the pipeline runs linearly — fast and reliable.
-        # Agent mode (Coordinator + Worker agent loops) is available by passing
-        # model_profile="agent:<name>".
-        return _run_llm_augmented_workflow(
-            workspace, llm_client, bus, active_phases, force,
-        )
+        if agent_mode:
+            # ── AGENT MODE ──
+            # Deterministic scheduler + WorkerAgent per phase.
+            # For-loop iterates phases in order. Each phase gets a
+            # WorkerAgent with its own agent loop for decision-making.
+            # Tools inside the agent loop call worker functions (no llm_client).
+            return _run_agent_workers(
+                workspace, llm_client, bus, active_phases, force,
+            )
+        else:
+            # ── LLM-AUGMENTED DETERMINISTIC MODE ──
+            # Each worker calls the LLM for intelligent analysis but the
+            # pipeline runs linearly — fast and reliable.
+            return _run_llm_augmented_workflow(
+                workspace, llm_client, bus, active_phases, force,
+            )
     else:
         # ── DETERMINISTIC MODE: Linear for-loop (backward compatible) ──
         return _run_deterministic_workflow(
             workspace, bus, active_phases, force,
         )
+
+
+def _run_agent_workers(
+    workspace: JobWorkspace,
+    llm_client,
+    bus: EventBus,
+    phases: list[str],
+    force: bool,
+) -> list[Path]:
+    """Deterministic scheduler + WorkerAgent per phase.
+
+    No CoordinatorAgent — just a for-loop. Each phase gets its own
+    WorkerAgent with agent loop for decision-making. Tools inside
+    the agent loop bridge to worker functions (no internal llm_client).
+    """
+    from ppt_agent.coordinator.capabilities import get_capability
+    from ppt_agent.coordinator.worker_agent import WorkerAgent
+
+    skill_loader = SkillLoader(root=Path(__file__).resolve().parent.parent.parent.parent / ".catpaw" / "skills")
+    memory_context = build_memory_context(workspace.root)
+    if memory_context:
+        llm_client._memory_context = memory_context
+
+    outputs: list[Path] = []
+
+    for phase in phases:
+        bus.emit(EventType.PHASE_STARTED, phase=phase, message=f"Starting {phase} (agent)")
+
+        capability = get_capability(phase)
+        if capability is None:
+            logger.warning("No capability for phase %s, skipping", phase)
+            continue
+
+        _inject_phase_skill(skill_loader, llm_client, phase)
+
+        # Load the skill content for this phase so the WorkerAgent's
+        # system prompt can include the full SKILL.md documentation.
+        skill_content = None
+        if capability.skill_name and skill_loader:
+            skill_content = skill_loader.load_skill(capability.skill_name)
+
+        worker = WorkerAgent(
+            workspace=workspace,
+            phase_or_capability=capability,
+            llm_client=llm_client,
+            force=force,
+            skill_content=skill_content,
+        )
+
+        # Build the task prompt.  For skill-autonomous phases (visual_generation)
+        # we MUST give the agent an explicit command to execute on its first turn,
+        # otherwise it tends to reason about the skill doc indefinitely without
+        # ever calling run_shell_command.
+        if phase == "visual_generation" and capability.skill_name:
+            config_path = workspace.artifact_path("image_generation_config")
+            output_dir = workspace.background_images_dir
+            _project_root = Path(__file__).resolve().parent.parent.parent.parent
+            skill_script = _project_root / ".catpaw" / "skills" / "gptimage2-generator" / "scripts" / "gptimage2_client.py"
+            accounts_file = _project_root / ".catpaw" / "skills" / "gptimage2-generator" / "assets" / "accounts.json"
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            shell_cmd = (
+                f"python \"{skill_script}\" "
+                f"--accounts-file \"{accounts_file}\" "
+                f"batch-generate "
+                f"--config \"{config_path}\" "
+                f"--output-dir \"{output_dir}\""
+            )
+            task_prompt = (
+                f"Execute the visual_generation capability.\n\n"
+                f"## MANDATORY FIRST ACTION\n"
+                f"On your VERY FIRST turn, call run_shell_command with:\n"
+                f"  command: {shell_cmd}\n"
+                f"  timeout: 600\n"
+                f"  cwd: \"{_project_root}\"\n\n"
+                f"DO NOT reason first. DO NOT read the skill doc first. "
+                f"EXECUTE the command NOW. The skill handles login, generation, "
+                f"and account switching automatically.\n\n"
+                f"After the command completes, check batch_report.json in "
+                f"\"{output_dir}\" and write the image_generation_report."
+            )
+        else:
+            task_prompt = f"Execute the {phase} capability."
+
+        result = worker.run(task_prompt=task_prompt)
+
+        if result.stop_reason == StopReason.COMPLETED:
+            bus.emit(EventType.PHASE_COMPLETED, phase=phase, message=f"Completed {phase}")
+        else:
+            logger.warning("Phase %s ended with %s", phase, result.stop_reason.value)
+
+        append_phase_summary(
+            workspace.root, phase,
+            summary=f"Agent phase {phase}: {result.stop_reason.value}",
+            artifact_name=str(result.final_output) if result.final_output else None,
+        )
+
+        if phase == "content_mapping":
+            if not _check_review_gate(workspace, bus, force, outputs):
+                break
+
+    # Collect artifacts
+    _collect_outputs(workspace, phases, outputs)
+
+    if "verification" in phases and llm_client is not None:
+        try:
+            insights = run_dream_task(workspace.root, llm_client)
+            if insights:
+                logger.info("Dream task saved %d insights", len(insights))
+        except Exception as e:
+            logger.warning("Dream task failed: %s", e)
+
+    return outputs
+
+
+def _collect_outputs(workspace, phases, outputs):
+    """Scan workspace for expected artifacts and append to outputs."""
+    _PHASE_ARTIFACTS = {
+        "document_analysis": ["source_summary"],
+        "outline_generation": ["outline"],
+        "template_matching": ["selected_template", "template_meta", "template_zones"],
+        "design_planning": ["slide_design_plan"],
+        "content_mapping": ["slide_contents"],
+        "visual_generation": ["image_generation_report"],
+        "verification": ["validation_report"],
+    }
+    for phase in phases:
+        for name in _PHASE_ARTIFACTS.get(phase, []):
+            p = workspace.artifact_path(name)
+            if p.exists() and p not in outputs:
+                outputs.append(p)
+    final_pptx = workspace.root / "final.pptx"
+    if final_pptx.exists():
+        outputs.append(final_pptx)
 
 
 def _run_agent_workflow(
@@ -199,7 +352,7 @@ def _run_agent_workflow(
     from ppt_agent.coordinator.coordinator_agent import CoordinatorAgent
 
     task_manager = TaskManager()
-    skill_loader = SkillLoader(root=Path(".catpaw/skills"))
+    skill_loader = SkillLoader(root=Path(__file__).resolve().parent.parent.parent.parent / ".catpaw" / "skills")
 
     # Inject memory context into LLM client
     memory_context = build_memory_context(workspace.root)
@@ -238,9 +391,10 @@ def _run_agent_workflow(
     )
     result = coordinator.run(
         task_prompt=(
-            f"Execute the PPT generation pipeline phases in order: {phase_list}. "
-            f"For each phase, spawn a worker using the spawn_worker tool. "
-            f"Wait for each worker to complete before spawning the next. "
+            f"Execute the PPT generation pipeline. Available capabilities: {phase_list}. "
+            f"Decide which capabilities to invoke and in what order. "
+            f"Respect dependency rules (e.g. outline_generation needs source_summary from document_analysis). "
+            f"Use spawn_agent for each capability. Independent phases may run in parallel. "
             f"After all phases complete, use synthesize_output to produce the final result."
             f"{force_note}"
         ),
@@ -253,8 +407,8 @@ def _run_agent_workflow(
         task_manager.transition(coord_task.task_id, TaskStatus.FAILED, error=result.error)
 
     # Record session summaries for completed phases
-    for phase in coordinator._completed:
-        worker_info = coordinator._worker_results.get(phase, {})
+    for phase in coordinator.completed_phases:
+        worker_info = coordinator.worker_results.get(phase, {})
         append_phase_summary(
             workspace.root, phase,
             summary=f"Phase {phase} completed via agent loop ({worker_info.get('turns', '?')} turns).",
@@ -262,7 +416,7 @@ def _run_agent_workflow(
         )
 
     # Run dream consolidation
-    if "verification" in coordinator._completed or "quality_verification" in coordinator._completed:
+    if "verification" in coordinator.completed_phases:
         try:
             insights = run_dream_task(workspace.root, llm_client)
             if insights:
@@ -270,19 +424,29 @@ def _run_agent_workflow(
         except Exception as e:
             logger.warning("Dream task failed: %s", e)
 
-    # Collect output paths
+    # Collect output paths — scan workspace for expected artifacts rather
+    # than relying on worker_result, which stores task metadata not file paths.
     outputs: list[Path] = []
-    for phase in coordinator._completed:
-        worker_output = coordinator._worker_results.get(phase, {}).get("output")
-        if worker_output:
-            p = Path(worker_output)
+    # Phase → expected artifact names (same order as PHASES)
+    _PHASE_ARTIFACTS: dict[str, list[str]] = {
+        "document_analysis": ["source_summary"],
+        "outline_generation": ["outline"],
+        "template_matching": ["selected_template", "template_meta", "template_zones"],
+        "design_planning": ["slide_design_plan"],
+        "content_mapping": ["slide_contents"],
+        "visual_generation": ["image_generation_report"],
+        "ppt_assembly": [],  # final.pptx handled separately
+        "verification": ["validation_report"],
+    }
+    for phase in coordinator.completed_phases:
+        for name in _PHASE_ARTIFACTS.get(phase, []):
+            p = workspace.artifact_path(name)
             if p.exists():
                 outputs.append(p)
-            elif isinstance(worker_output, str):
-                # Try as relative to workspace
-                maybe = workspace.root / worker_output
-                if maybe.exists():
-                    outputs.append(maybe)
+    # Check for final.pptx
+    pptx = workspace.root / "final.pptx"
+    if pptx.exists():
+        outputs.append(pptx)
 
     return outputs
 
@@ -302,7 +466,7 @@ def _run_llm_augmented_workflow(
     analysis. Used when the LLM provider is "fake" or otherwise not capable
     of producing structured agent tool-call JSON.
     """
-    skill_loader = SkillLoader(root=Path(".catpaw/skills"))
+    skill_loader = SkillLoader(root=Path(__file__).resolve().parent.parent.parent.parent / ".catpaw" / "skills")
 
     # Inject memory context into LLM client
     memory_context = build_memory_context(workspace.root)
@@ -317,10 +481,11 @@ def _run_llm_augmented_workflow(
         _inject_phase_skill(skill_loader, llm_client, phase)
 
         # Execute the worker (with or without LLM)
+        extra = _PHASE_EXTRA_KWARGS.get(phase, {})
         if phase in _LLM_PHASES and llm_client is not None:
-            output = PHASE_TO_WORKER[phase](workspace, force=force, llm_client=llm_client)
+            output = PHASE_TO_WORKER[phase](workspace, force=force, llm_client=llm_client, **extra)
         else:
-            output = PHASE_TO_WORKER[phase](workspace, force=force)
+            output = PHASE_TO_WORKER[phase](workspace, force=force, **extra)
 
         if isinstance(output, list):
             outputs.extend(output)
@@ -368,7 +533,7 @@ def _run_deterministic_workflow(
 
     This preserves full backward compatibility with the original implementation.
     """
-    skill_loader = SkillLoader(root=Path(".catpaw/skills"))
+    skill_loader = SkillLoader(root=Path(__file__).resolve().parent.parent.parent.parent / ".catpaw" / "skills")
 
     outputs: list[Path] = []
     for phase in phases:

@@ -18,7 +18,11 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from enum import IntEnum
 
-# fcntl is Unix-only; on Windows we fall back to no locking
+# fcntl is Unix-only; on Windows we fall back to no locking.
+# Concurrent writes to the same mailbox file in Agent Mode (ThreadPoolExecutor)
+# may produce interleaved lines on Windows.  This is a known limitation — the
+# append-only JSONL format tolerates occasional corruption (a line is either
+# fully written or not), but cross-agent message ordering is best-effort.
 try:
     import fcntl
     _HAS_FCNTL = True

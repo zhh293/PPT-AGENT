@@ -128,6 +128,7 @@ CATEGORY_PERMISSIONS: dict[str, frozenset[str]] = {
     "retrieval":      WORKER_AND_ABOVE,
     "assembly":       WORKER_AND_ABOVE,
     "verification":   WORKER_AND_ABOVE,
+    "content":        WORKER_AND_ABOVE,
     "extraction":     WORKER_AND_ABOVE,
     "generation":     WORKER_AND_ABOVE,
     "skill":          WORKER_AND_ABOVE,

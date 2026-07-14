@@ -64,6 +64,12 @@ _OPERATION_PHASES = {
     "ppt_assembly",
 }
 
+# ── ALL phases run through agent loop. ──
+# Each phase's tools delegate to the worker function internally,
+# so the LLM drives execution but the core logic is our code.
+# No phases are skipped — the agent decides when to call each tool.
+_WORKER_DIRECT_PHASES: set[str] = set()  # Empty — agent loop for all phases
+
 _SKILL_AUTONOMOUS_PHASES = {
     "visual_generation",
 }
@@ -74,6 +80,8 @@ _SKILL_AUTONOMOUS_PHASES = {
 # arguments is fundamentally unsafe.  Use SafeFilesystem for path
 # containment and consider OS-level sandboxing (containers, seccomp) for
 # production deployments.
+#
+# Keep in sync with tool_impls/visual_generation.py:run_shell_command.
 _BLOCKED_PATTERNS = (
     # Block only root-targeting rm variants (not /tmp or workspace paths)
     "rm -rf / ",
@@ -134,7 +142,7 @@ _PHASE_IO = {
         "output": "image_generation_report",
     },
     "ppt_assembly": {
-        "inputs": ["slide_contents"],
+        "inputs": ["slide_contents", "template_zones"],
         "output": None,  # produces final.pptx
     },
     "verification": {
@@ -162,7 +170,10 @@ _PHASE_DESCRIPTIONS = {
     "template_matching": (
         "You are a Template Selector. Your job is to read the outline, "
         "search the template index for matching templates, evaluate the top "
-        "candidates, and produce a selected_template and template_meta artifact."
+        "candidates, and produce a selected_template and template_meta artifact. "
+        "IMPORTANT: In your compose_artifact output, use the key 'template_id' "
+        "(NOT 'selected_template_id') for the chosen template identifier. "
+        "Also include: selection_status, template_path, ranking, rationale."
     ),
     "design_planning": (
         "You are a Design Director. Your job is to read the outline and "
@@ -177,11 +188,10 @@ _PHASE_DESCRIPTIONS = {
         "positions, image references, and fit status."
     ),
     "ppt_assembly": (
-        "You are a PPT Assembler. Your job is to read slide_contents and "
-        "assemble the final PowerPoint file (final.pptx). Each slide uses "
-        "a full-page background image (from background_images/) with "
-        "transparent text overlays. If no background image exists for a slide, "
-        "it falls back to a solid-color background with traditional text zones."
+        "You are a PPT Assembler. Your job is to place content into template "
+        "shapes by reading template_zones.json and slide_contents.json, then "
+        "deciding exactly which zone_id gets which content. "
+        "You MUST use zone_ids from template_zones — NEVER invent them."
     ),
     "verification": (
         "You are a Quality Reviewer with fresh eyes. You have NOT seen any "
@@ -256,7 +266,23 @@ class WorkerAgent(AgentLoop):
         return "content_reasoning"
 
     def run(self, task_prompt: str, context: dict | None = None) -> AgentLoopResult:
-        """Execute the worker — LLM loop with deterministic fallback."""
+        """Execute the worker — LLM loop with deterministic fallback.
+
+        For phases in _WORKER_DIRECT_PHASES, skips the agent loop entirely
+        and delegates straight to our hand-crafted worker code.
+        """
+        # ── Worker-direct phases: skip agent loop, use our code ──
+        if self.phase in _WORKER_DIRECT_PHASES:
+            logger.info("Phase %s: worker-direct — calling %s", self.phase, self.capability.fallback_module)
+            output = self._run_deterministic_worker()
+            agent_result = AgentLoopResult(
+                stop_reason=StopReason.COMPLETED,
+                final_output=str(output) if output else None,
+            )
+            if self.phase == "visual_generation":
+                self._post_skill_execution()
+            return agent_result
+
         # Enrich context for skill-autonomous phases
         if self.phase in _SKILL_AUTONOMOUS_PHASES:
             context = self._enrich_skill_context(context or {})
@@ -285,7 +311,7 @@ class WorkerAgent(AgentLoop):
                 build_skill_context,
             )
             try:
-                _config_path, config = prepare_generation_config(self.workspace)
+                _config_path, config = prepare_generation_config(self.workspace, mode="all")
                 skill_ctx = build_skill_context(self.workspace, config)
                 # Point output to background_images/ (the new directory)
                 skill_ctx["output_dir"] = str(self.workspace.background_images_dir)
@@ -296,13 +322,86 @@ class WorkerAgent(AgentLoop):
 
     def _post_skill_execution(self) -> None:
         if self.phase == "visual_generation":
-            from ppt_agent.workers.image_generator import check_generated_images
+            import time
             from ppt_agent.coordinator.phase_state import load_artifact, write_artifact
             try:
                 config = load_artifact(self.workspace, "image_generation_config")
-                report = check_generated_images(self.workspace, config)
-                report["execution"] = {"method": "agent_autonomous_skill"}
+
+                # ── Wait for gptimage2 to ACTUALLY finish ──
+                # batch_report.json is written progressively (one entry per image).
+                # We must wait until done == total, not just until the file exists.
+                batch_report_path = self.workspace.background_images_dir / "batch_report.json"
+                deadline = time.monotonic() + 600  # 10 min max for all images
+                last_progress = ""
+                while time.monotonic() < deadline:
+                    if batch_report_path.exists():
+                        import json
+                        try:
+                            batch = json.loads(batch_report_path.read_text(encoding="utf-8"))
+                            done = batch.get("done", 0)
+                            total = batch.get("total", 0)
+                            progress = batch.get("progress", "")
+                            if progress != last_progress:
+                                logger.info("Image generation progress: %s", progress)
+                                last_progress = progress
+                            if total > 0 and done >= total:
+                                break  # All done!
+                        except (json.JSONDecodeError, OSError):
+                            pass  # File may be mid-write — retry
+                    time.sleep(10)
+                else:
+                    logger.warning("Timed out waiting for image generation after 10 min (last: %s)", last_progress)
+
+                # Build report from batch_report.json or fall back to file check
+                if batch_report_path.exists():
+                    import json
+                    batch = json.loads(batch_report_path.read_text(encoding="utf-8"))
+                    details = batch.get("details", {})
+                    success_list = details.get("success", [])
+                    failed_list = details.get("failed", [])
+                    success_indices = {s["index"] for s in success_list}
+                    failed_indices  = {s["index"] for s in failed_list}
+
+                    slides = config.get("slides", [])
+                    slide_results = []
+                    generated = 0
+                    fallback = 0
+                    for slide_entry in slides:
+                        idx = slide_entry["index"]
+                        if idx in success_indices:
+                            slide_results.append({"slide_index": idx, "status": "generated",
+                                                  "prompt_used": slide_entry.get("prompt", "")})
+                            generated += 1
+                        elif idx in failed_indices:
+                            slide_results.append({"slide_index": idx, "status": "failed",
+                                                  "reason": "API error or credit exhausted",
+                                                  "prompt_used": slide_entry.get("prompt", "")})
+                            fallback += 1
+                        else:
+                            slide_results.append({"slide_index": idx, "status": "fallback_used",
+                                                  "reason": "Image generation did not complete in time",
+                                                  "prompt_used": slide_entry.get("prompt", "")})
+                            fallback += 1
+
+                    status = "all_fallback" if generated == 0 else ("partial" if fallback > 0 else "all_generated")
+                    report = {
+                        "job_id": self.workspace.root.name,
+                        "status": status,
+                        "total_slides": len(slides),
+                        "generated": generated,
+                        "fallback": fallback,
+                        "slides": slide_results,
+                        "warnings": [f"{fallback} slide(s) have no background image – will use solid color."] if fallback > 0 else [],
+                        "execution": {"method": "agent_autonomous_skill", "batch_progress": batch.get("progress", "?")},
+                    }
+                else:
+                    from ppt_agent.workers.image_generator import check_generated_images
+                    report = check_generated_images(self.workspace, config)
+                    report["execution"] = {"method": "agent_autonomous_skill", "note": "No batch_report.json — checked files directly"}
+
                 write_artifact(self.workspace, "image_generation_report", report)
+                logger.info("Visual generation report: generated=%d fallback=%d status=%s",
+                           report.get("generated", 0), report.get("fallback", 0), report.get("status", "?"))
             except Exception as e:
                 logger.warning("Post-execution check failed: %s", e)
 
@@ -334,6 +433,17 @@ class WorkerAgent(AgentLoop):
         return module.run(self.workspace, force=self.force)
 
     # ── System prompt ──
+
+    def _build_memory_section(self) -> str:
+        """Read the three-layer memory files and return a formatted section."""
+        try:
+            from ppt_agent.context.memory_layers import build_memory_context
+            ctx = build_memory_context(self.workspace.root)
+            if ctx:
+                return f"\n## Memory (Cross-Session Context)\n\n{ctx}\n"
+        except Exception:
+            pass
+        return ""
 
     def build_system_prompt(self) -> str:
         cat = self._phase_category
@@ -380,6 +490,8 @@ class WorkerAgent(AgentLoop):
         if self.instructions:
             extra = f"\n\n## Additional Instructions\n\n{self.instructions}"
 
+        memory_section = self._build_memory_section()
+
         return f"""You are a WorkerAgent executing the '{self.phase}' phase.
 
 ## Identity
@@ -408,7 +520,7 @@ Your output artifact is: {output}
 
 ## Workspace: {self.workspace.root}
 ## Force: {self.force}
-{prompt_section}{skill_section}{extra}
+{memory_section}{prompt_section}{skill_section}{extra}
 """
 
     def _build_operation_prompt(self) -> str:
@@ -430,14 +542,55 @@ Your output artifact is: {output}
 """
         elif self.phase == "ppt_assembly":
             operation_guide = """
-## Your Workflow
-1. READ slide_contents to check the review_status.
-2. If not approved and force is False, signal that user review is needed.
-3. ASSEMBLE the PPTX by calling assemble_pptx with the correct workspace path.
-4. CHECK that final.pptx exists and has reasonable size.
-5. VALIDATE the output.
-6. DONE.
+## Your Role — Content Adaptation Specialist
+
+You have ONE job: make sure the text FITS in its template zone.
+
+The heavy lifting is already done:
+- content_mapping assigned every piece of content to a zone_id
+- The tool auto-builds mappings from slide_contents
+
+Your job:
+1. Call **assemble_pptx** (no arguments needed on first call)
+2. Read the result — if it contains **overflow_zones**, those need fixing
+3. For each overflow zone, shorten or merge the content so it fits:
+   - Title/subtitle too long → shorten while keeping the key message
+   - Too many bullets → merge related ones, drop the least important
+   - Bullet too long → compress to the core point
+4. Call **assemble_pptx** again with:
+   ```json
+   {"adaptations": {slide_index: {content_type: {content: ...}}}}
+   ```
+5. Check the result — repeat if overflow_zones still present
+
+## CRITICAL RULES
+- ONLY change **content** — zone_id is immutable and auto-assigned
+- NEVER invent or change zone_id, formatting, or position
+- adaptations format: `{slide_index: {"title"|"bullets": {content: ...}}}`
+- Keep slide_index as an integer, content_type as a string
+- If content fits, pass nothing — the tool handles the happy path
+
+## Example
+Tool returns overflow: slide 3 bullets zone has 5 items, capacity is 3 lines.
+Your adaptation:
+```json
+{
+  "adaptations": {
+    "3": {
+      "bullets": {
+        "content": [
+          "AI智能推荐引擎与实时处理",
+          "用户画像个性化推送",
+          "百万级并发分布式架构"
+        ]
+      }
+    }
+  }
+}
+```
 """
+
+
 
         skill_section = ""
         if self.skill_content:
@@ -446,6 +599,8 @@ Your output artifact is: {output}
         extra = ""
         if self.instructions:
             extra = f"\n\n## Additional Instructions\n\n{self.instructions}"
+
+        memory_section = self._build_memory_section()
 
         return f"""You are a WorkerAgent executing the '{self.phase}' phase.
 
@@ -456,7 +611,7 @@ Your output artifact is: {output}
 {operation_guide}
 ## Workspace: {self.workspace.root}
 ## Force: {self.force}
-{skill_section}{extra}
+{memory_section}{skill_section}{extra}
 """
 
     def _build_skill_autonomous_prompt(self) -> str:
@@ -477,6 +632,8 @@ how to accomplish the task.
         extra = ""
         if self.instructions:
             extra = f"\n\n## Additional Instructions\n\n{self.instructions}"
+
+        memory_section = self._build_memory_section()
 
         return f"""You are a WorkerAgent executing the '{self.phase}' phase.
 
@@ -500,7 +657,7 @@ You operate EXACTLY like CatPaw's host agent:
 ## Phase: {self.phase}
 ## Workspace: {self.workspace.root}
 ## Force: {self.force}
-{skill_doc}{extra}
+{memory_section}{skill_doc}{extra}
 """
 
     # ── Tool definitions ──
@@ -612,10 +769,25 @@ You operate EXACTLY like CatPaw's host agent:
             tools.append({
                 "name": "assemble_pptx",
                 "description": (
-                    "Assemble the final PowerPoint file from slide_contents. "
-                    "Reads slide_contents.json and produces final.pptx in the workspace."
+                    "Assemble the final PowerPoint file using zone_id precise matching. "
+                    "Base mappings are built automatically from slide_contents zone_ids. "
+                    "Pass optional 'adaptations' to shorten or merge content that "
+                    "overflows its template zone — ONLY 'content' can be changed, "
+                    "zone_id and formatting are immutable. "
+                    "The result includes overflow_zones if any content may not fit."
                 ),
-                "parameters": {},
+                "parameters": {
+                    "adaptations": (
+                        "Optional: {slide_index: {content_type: {content: ...}}}. "
+                        "Only change 'content' values — zone_id is auto-assigned "
+                        "and cannot be overridden. Example: "
+                        '{"3": {"bullets": {"content": ["短标题1", "短标题2"]}}}'
+                    ),
+                    "image_mappings": (
+                        "Optional: {slide_index: {zone_id: image_path}} "
+                        "override image placements"
+                    ),
+                },
             })
             tools.append({
                 "name": "check_file",
@@ -705,7 +877,10 @@ You operate EXACTLY like CatPaw's host agent:
             "write_artifact": lambda: self._write_artifact(args.get("name", ""), args.get("payload", {})),
             "validate_output": lambda: self._validate_output(),
             "search_templates": lambda: self._search_templates(args.get("query", ""), int(args.get("top_k", 3))),
-            "assemble_pptx": lambda: self._assemble_pptx(),
+            "assemble_pptx": lambda: self._assemble_pptx(
+                adaptations=args.get("adaptations"),
+                image_mappings=args.get("image_mappings"),
+            ),
             "check_file": lambda: self._check_file_exists(args.get("path", "")),
             "run_shell_command": lambda: self._run_shell_command(args.get("command", ""), int(args.get("timeout", 120)), args.get("cwd")),
             "check_file_exists": lambda: self._check_file_exists(args.get("path", "")),
@@ -916,49 +1091,128 @@ You operate EXACTLY like CatPaw's host agent:
     # ── Operation-phase tools ──
 
     def _search_templates(self, query_text: str, top_k: int = 3) -> ToolResult:
-        """Search the template index — LLM decides the query terms."""
+        """Search templates using 3-layer chunking + weighted aggregation."""
         try:
             from ppt_agent.retrieval.query_router import query
-            from ppt_agent.retrieval.template_index import load_template_index
+            from ppt_agent.retrieval.template_index import load_template_chunks
 
-            templates = load_template_index()
+            chunks = load_template_chunks()
             items = [
-                {"id": t["template_id"], "template_id": t["template_id"],
-                 "text": t.get("retrieval_text", ""), **t}
-                for t in templates
+                {"id": c["chunk_id"], "template_id": c["template_id"],
+                 "text": c["text"], "chunk_type": c["chunk_type"],
+                 "weight": c.get("weight", 0.33)}
+                for c in chunks
             ]
-            ranked = query(items, query_text, ["bm25"], top_k)
+            ranked = query(items, query_text, top_k=max(30, len(items)))
+
+            # Weighted aggregation per template
+            tpl_scores: dict[str, float] = {}
+            for r in ranked:
+                tid = r.get("template_id", "")
+                if not tid: continue
+                w = r.get("weight", 0.33)
+                tpl_scores[tid] = tpl_scores.get(tid, 0.0) + r.get("score", 0) * w
+            sorted_tpl = sorted(tpl_scores.items(), key=lambda x: -x[1])
+            results = [{"template_id": tid, "score": round(s, 4)} for tid, s in sorted_tpl[:top_k]]
 
             return ToolResult(
                 call_id="", success=True,
                 output={
                     "query": query_text,
-                    "result_count": len(ranked),
-                    "results": ranked[:top_k],
+                    "result_count": len(results),
+                    "results": results,
                 },
             )
         except Exception as e:
             return ToolResult(call_id="", output=None, success=False, error=str(e))
 
-    def _assemble_pptx(self) -> ToolResult:
-        """Assemble the final PPTX — LLM decides when to call this."""
+    def _assemble_pptx(self, adaptations: dict | None = None,
+                       image_mappings: dict | None = None) -> ToolResult:
+        """Assemble the final PPTX with zone_id precise matching + LLM adaptations.
+
+        1. Builds base mappings from slide_contents zone_ids (content_mapping's work).
+        2. Computes overflow report — zones where text exceeds template shape capacity.
+        3. Merges LLM *adaptations* (content-only changes, zone_id is immutable).
+        4. Assembles via ``write_pptx_from_mapping``.
+        5. Returns overflow info so the LLM can do a second pass if needed.
+        """
         try:
-            from ppt_agent.assembly.ppt_writer import write_pptx
+            from ppt_agent.assembly.ppt_writer import write_pptx, write_pptx_from_mapping
             from ppt_agent.coordinator.phase_state import load_artifact
+            from ppt_agent.workers.ppt_assembler import (
+                _build_mappings_from_slide_contents,
+                _build_overflow_report,
+                _find_template_pptx,
+                _merge_adaptations,
+            )
 
             slide_contents = load_artifact(self.workspace, "slide_contents")
             output_path = self.workspace.root / "final.pptx"
-            write_pptx(slide_contents, output_path, workspace_root=self.workspace.root)
+            template_path = _find_template_pptx(self.workspace)
+
+            if template_path:
+                template_zones = load_artifact(self.workspace, "template_zones")
+
+                # Layer 1: deterministic base mappings (zone_id immutable)
+                base_mappings, auto_images = _build_mappings_from_slide_contents(slide_contents)
+                if image_mappings is None:
+                    image_mappings = auto_images
+
+                # Layer 2: compute overflow before merging
+                overflow = _build_overflow_report(slide_contents, template_zones)
+
+                # Layer 3: merge LLM adaptations (content only)
+                mappings = _merge_adaptations(
+                    {k: dict(v) for k, v in base_mappings.items()},
+                    adaptations,
+                )
+
+                logger.info(
+                    "Agent assembly: template=%s, %d slides, %d overflow zones, "
+                    "adaptations=%s",
+                    template_path.name, len(mappings), len(overflow),
+                    "provided" if adaptations else "none",
+                )
+
+                write_pptx_from_mapping(
+                    template_path=template_path,
+                    template_zones=template_zones,
+                    mappings=mappings,
+                    image_mappings=image_mappings or {},
+                    slide_contents=slide_contents,
+                    output_path=output_path,
+                    workspace_root=self.workspace.root,
+                )
+
+                result_output = {
+                    "assembled": True,
+                    "path": str(output_path),
+                    "size_bytes": output_path.stat().st_size,
+                    "mode": "zone_id_precise",
+                    "slides_mapped": len(mappings),
+                }
+
+                if overflow:
+                    result_output["overflow_zones"] = overflow
+                    result_output["overflow_count"] = len(overflow)
+                    result_output["hint"] = (
+                        f"{len(overflow)} zone(s) may have content overflow. "
+                        "Call assemble_pptx again with 'adaptations' to shorten "
+                        "or merge overflowing content. Only 'content' can be "
+                        "changed — zone_id and formatting are immutable."
+                    )
+            else:
+                logger.info("No template PPTX found — blank assembly")
+                write_pptx(slide_contents, output_path, workspace_root=self.workspace.root)
+                result_output = {
+                    "assembled": True,
+                    "path": str(output_path),
+                    "size_bytes": output_path.stat().st_size,
+                    "mode": "blank_slides",
+                }
 
             if output_path.exists():
-                return ToolResult(
-                    call_id="", success=True,
-                    output={
-                        "assembled": True,
-                        "path": str(output_path),
-                        "size_bytes": output_path.stat().st_size,
-                    },
-                )
+                return ToolResult(call_id="", success=True, output=result_output)
             return ToolResult(
                 call_id="", success=False, output={"assembled": False},
                 error="write_pptx completed but final.pptx not found",

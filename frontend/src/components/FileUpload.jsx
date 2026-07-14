@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 
 export default function FileUpload({ onClose, onCreated }) {
   const [files, setFiles] = useState([])
+  const [prompt, setPrompt] = useState('')
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
   const inputRef = useRef()
@@ -19,6 +20,7 @@ export default function FileUpload({ onClose, onCreated }) {
 
     const formData = new FormData()
     files.forEach((f) => formData.append('files', f))
+    if (prompt.trim()) formData.append('user_prompt', prompt.trim())
 
     try {
       const res = await fetch('/api/jobs', { method: 'POST', body: formData })
@@ -36,6 +38,18 @@ export default function FileUpload({ onClose, onCreated }) {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
         <h2 className="text-lg font-semibold text-white mb-4">新建 PPT 生成任务</h2>
+
+        {/* User prompt */}
+        <div className="mb-4">
+          <label className="block text-sm text-gray-400 mb-1">生成要求（可选）</label>
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="例如：做成投资路演风格，重点突出技术优势和市场规模，面向C端投资人..."
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 resize-none focus:outline-none focus:border-blue-500 transition-colors"
+            rows={3}
+          />
+        </div>
 
         {/* Drop zone */}
         <div

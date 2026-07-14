@@ -15,6 +15,7 @@ class ProviderCapabilities:
 
     supports_vision: bool = False
     supports_json_mode: bool = False
+    supports_json_schema: bool = False   # response_format: json_schema (strict)
     supports_tool_use: bool = False
     supports_streaming: bool = False
     max_context_tokens: int = 128_000
@@ -47,6 +48,14 @@ class BaseLLMProvider(ABC):
         temperature: float | None = None,
         max_tokens: int | None = None,
         json_mode: bool = False,
+        json_schema: dict | None = None,
+        schema_name: str = "",
     ) -> LLMResult:
-        """Send messages to the model and return a result."""
+        """Send messages to the model and return a result.
+
+        When *json_schema* is provided, the provider uses structured output
+        mode (``response_format: json_schema``) to guarantee the response
+        matches the schema.  *schema_name* is a short identifier for the
+        schema (e.g. "source_summary", "outline").
+        """
         ...

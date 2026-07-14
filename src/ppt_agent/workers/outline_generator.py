@@ -63,9 +63,11 @@ def _fallback_outline(summary: dict) -> dict:
     ).to_dict()
 
 
-def _llm_outline(llm_client, summary: dict) -> dict:
+def _llm_outline(llm_client, summary: dict, user_prompt: str = "") -> dict:
     """Use LLM to generate an intelligent outline."""
     prompt = _load_prompt()
+    if user_prompt:
+        prompt += f"\n\n## 用户要求\n{user_prompt}"
 
     context = {
         "project_name": summary.get("project_name", ""),
@@ -76,6 +78,7 @@ def _llm_outline(llm_client, summary: dict) -> dict:
         "product_capabilities": summary.get("product_capabilities", []),
         "evidence_items": summary.get("evidence_items", []),
         "core_pain_points": summary.get("core_pain_points", []),
+        "user_prompt": user_prompt,
         "image_inventory": [
             {"image_id": img.get("image_id", ""), "detected_usage": img.get("detected_usage", ""), "summary": img.get("summary", "")}
             for img in summary.get("image_inventory", [])
@@ -85,12 +88,16 @@ def _llm_outline(llm_client, summary: dict) -> dict:
 
     fallback = _fallback_outline(summary)
 
+    from ppt_agent.llm.schemas import OUTLINE_SCHEMA
+
     result = llm_client.generate_json(
         prompt=prompt,
         context=context,
         system="You are a PPT outline architect. Output only valid JSON.",
         phase="outline_generation",
         fallback=fallback,
+        json_schema=OUTLINE_SCHEMA,
+        schema_name="outline",
     )
 
     # Validate and fix the result
@@ -138,9 +145,20 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
 
     summary = load_artifact(workspace, "source_summary")
 
+    # Read user prompt from job.json
+    user_prompt = ""
+    job_json = workspace.root / "job.json"
+    if job_json.exists():
+        try:
+            import json as _json
+            job_meta = _json.loads(job_json.read_text(encoding="utf-8"))
+            user_prompt = job_meta.get("user_prompt", "").strip()
+        except Exception:
+            pass
+
     if llm_client is not None:
         logger.info("Using LLM for outline generation")
-        outline = _llm_outline(llm_client, summary)
+        outline = _llm_outline(llm_client, summary, user_prompt)
     else:
         logger.info("No LLM client, using fallback outline")
         outline = _fallback_outline(summary)
