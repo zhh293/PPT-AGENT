@@ -6,6 +6,29 @@
   "required": ["template_id", "slides"],
   "properties": {
     "template_id": {"type": "string", "minLength": 1},
+    "assembly_policy": {
+      "type": "object",
+      "properties": {
+        "mode": {"type": "string", "enum": ["text_replace_only", "legacy_overlay"]},
+        "allow_overlay": {"type": "boolean"},
+        "allow_resize": {"type": "boolean"},
+        "allow_font_change": {"type": "boolean"},
+        "allow_position_change": {"type": "boolean"},
+        "require_all_text_zones_actioned": {"type": "boolean"},
+        "require_nonempty_text": {"type": "boolean"},
+        "allow_clear_text": {"type": "boolean"},
+        "match_original_length": {"type": "boolean"},
+        "target_length_ratio": {
+          "type": "array",
+          "prefixItems": [{"type": "number"}, {"type": "number"}],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "require_render_validation": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
     "review_status": {"type": "string", "enum": ["draft", "edited", "approved", "needs_review"], "default": "draft"},
     "slides": {
       "type": "array",
@@ -21,6 +44,8 @@
           "review_status": {"type": "string", "enum": ["draft", "edited", "approved", "needs_review"], "default": "draft"},
           "source_refs": {"type": "array", "items": {"type": "string"}},
           "fallback_flags": {"type": "array", "items": {"type": "string"}},
+          "template_slide_index": {"type": "integer", "minimum": 0},
+          "template_selection": {"type": "object", "additionalProperties": true},
           "zones": {
             "type": "array",
             "minItems": 1,
@@ -50,6 +75,10 @@
                   ]
                 },
                 "editable": {"type": "boolean"},
+                "action": {"type": "string", "enum": ["replace_text", "clear_text", "preserve", "replace_image"], "default": "preserve"},
+                "placement_reason": {"type": "string"},
+                "source_block_ids": {"type": "array", "items": {"type": "string"}},
+                "transformation": {"type": "string", "enum": ["none", "summarize", "split", "merge", "rewrite"], "default": "none"},
                 "source": {"type": "string", "enum": ["user_upload", "generated", "template", "placeholder", "none"], "default": "none"},
                 "image_ref": {"type": "string"},
                 "image_prompt": {"type": "string"},

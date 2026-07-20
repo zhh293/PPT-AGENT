@@ -96,8 +96,7 @@ def _llm_outline(llm_client, summary: dict, user_prompt: str = "") -> dict:
         system="You are a PPT outline architect. Output only valid JSON.",
         phase="outline_generation",
         fallback=fallback,
-        json_schema=OUTLINE_SCHEMA,
-        schema_name="outline",
+        schema=OUTLINE_SCHEMA,
     )
 
     # Validate and fix the result

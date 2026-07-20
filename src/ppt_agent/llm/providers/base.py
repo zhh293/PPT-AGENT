@@ -17,6 +17,8 @@ class ProviderCapabilities:
     supports_json_mode: bool = False
     supports_json_schema: bool = False   # response_format: json_schema (strict)
     supports_tool_use: bool = False
+    supports_strict_tools: bool = False
+    supports_forced_tool_choice: bool = False
     supports_streaming: bool = False
     max_context_tokens: int = 128_000
 

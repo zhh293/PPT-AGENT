@@ -114,3 +114,23 @@ python -m ppt_agent.cli validate-artifacts \
 Expected result:
 
 - `source_summary.json`, `outline.json`, `selected_template.json`, `slide_design_plan.json`, `slide_contents.json`, `template_meta.json`, `image_generation_config.json`, `image_generation_report.json`, and `validation_report.json` conform to their contracts.
+# Context-Aware Mapping Validation
+
+Run the focused contract and behavior tests:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests/unit/test_contextual_zone_mapping.py tests/contract/test_slide_contents_contract.py tests/integration/test_us1_generate_editable_presentation.py -q
+```
+
+Expected: all tests pass; multiple body zones remain distinct, native shape
+identity resolves directly, and text replacement preserves font and geometry.
+Then run a real job through content review, inspect that every editable text zone
+has an action, approve it, assemble, render, and reject any geometry/font
+fingerprint drift or visible overflow.
+
+# DeepSeek Validation
+
+After a DeepSeek-backed run, inspect `model_calls.jsonl`. JSON artifact phases
+must complete without strict-tool schema errors. If any phase uses deterministic
+fallback, `history.jsonl` contains an `llm_fallback` event and the server job
+status is `completed_with_fallbacks`, not `completed`.

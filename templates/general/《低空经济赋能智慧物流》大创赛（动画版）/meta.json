@@ -1,0 +1,3107 @@
+{
+  "template_id": "general.《低空经济赋能智慧物流》大创赛（动画版）",
+  "domain": "general",
+  "scene": [
+    "report"
+  ],
+  "style": "professional",
+  "slide_count": 16,
+  "color_scheme": {
+    "primary": "#1F4E79",
+    "secondary": "#70AD47",
+    "accent": "#F4B183",
+    "background": "#FFFFFF"
+  },
+  "slides": [
+    {
+      "index": 0,
+      "layout": "cover",
+      "zones": [
+        {
+          "zone_id": "s0_shape4",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3565,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape5",
+          "type": "image",
+          "position": [
+            0.6828,
+            0.0,
+            0.3172,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape6",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3294,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape7",
+          "type": "image",
+          "position": [
+            0.7383,
+            0.0,
+            0.2617,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape9",
+          "type": "title",
+          "position": [
+            0.1675,
+            0.0,
+            0.6651,
+            1.0
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape10",
+          "type": "decoration",
+          "position": [
+            0.0396,
+            0.0712,
+            0.3759,
+            0.0583
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape11",
+          "type": "decoration",
+          "position": [
+            0.71,
+            0.1089,
+            0.29,
+            0.6446
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape12",
+          "type": "decoration",
+          "position": [
+            0.6585,
+            0.4356,
+            0.3415,
+            0.5644
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape13",
+          "type": "decoration",
+          "position": [
+            0.28,
+            0.1645,
+            0.4114,
+            0.214
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape14",
+          "type": "decoration",
+          "position": [
+            0.1542,
+            0.3393,
+            0.7327,
+            0.24
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape15",
+          "type": "body",
+          "position": [
+            0.2946,
+            0.5764,
+            0.411,
+            0.0628
+          ],
+          "text": "解决“最后一公里”配送环节难题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape16",
+          "type": "image",
+          "position": [
+            0.7696,
+            0.4019,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape17",
+          "type": "image",
+          "position": [
+            0.0,
+            0.397,
+            0.3305,
+            0.603
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape18",
+          "type": "image",
+          "position": [
+            0.0008,
+            0.6266,
+            0.2654,
+            0.3734
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape19",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape20",
+          "type": "decoration",
+          "position": [
+            0.2849,
+            0.7362,
+            0.4307,
+            0.1466
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s0_shape21",
+          "type": "image",
+          "position": [
+            0.1747,
+            0.4019,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s1_shape4",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3565,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape5",
+          "type": "image",
+          "position": [
+            0.6828,
+            0.0,
+            0.3172,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape6",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3294,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape7",
+          "type": "image",
+          "position": [
+            0.7383,
+            0.0,
+            0.2617,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape9",
+          "type": "title",
+          "position": [
+            0.1675,
+            0.0,
+            0.6651,
+            1.0
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape10",
+          "type": "decoration",
+          "position": [
+            0.8808,
+            0.0846,
+            0.077,
+            0.0289
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape11",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape12",
+          "type": "decoration",
+          "position": [
+            0.38,
+            0.1076,
+            0.2399,
+            0.1807
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape13",
+          "type": "image",
+          "position": [
+            0.6477,
+            0.0,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape14",
+          "type": "image",
+          "position": [
+            0.299,
+            0.0,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape15",
+          "type": "decoration",
+          "position": [
+            0.1232,
+            0.2804,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape16",
+          "type": "decoration",
+          "position": [
+            0.1232,
+            0.454,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape17",
+          "type": "decoration",
+          "position": [
+            0.1232,
+            0.6276,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape18",
+          "type": "decoration",
+          "position": [
+            0.5326,
+            0.2804,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape19",
+          "type": "decoration",
+          "position": [
+            0.5326,
+            0.454,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape20",
+          "type": "decoration",
+          "position": [
+            0.5326,
+            0.6276,
+            0.3448,
+            0.1204
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape21",
+          "type": "image",
+          "position": [
+            0.0,
+            0.5571,
+            0.2427,
+            0.4429
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape22",
+          "type": "image",
+          "position": [
+            0.0008,
+            0.7428,
+            0.1879,
+            0.2572
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape23",
+          "type": "decoration",
+          "position": [
+            0.7711,
+            0.6299,
+            0.2289,
+            0.3701
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s1_shape24",
+          "type": "image",
+          "position": [
+            0.3693,
+            0.6987,
+            0.2567,
+            0.3013
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s2_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape4",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.1649,
+            0.9204,
+            0.0904
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape5",
+          "type": "decoration",
+          "position": [
+            0.0423,
+            0.2845,
+            0.9155,
+            0.6127
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape6",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape7",
+          "type": "decoration",
+          "position": [
+            0.0429,
+            0.3302,
+            0.2785,
+            0.4991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape8",
+          "type": "decoration",
+          "position": [
+            0.6756,
+            0.328,
+            0.2856,
+            0.5013
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s2_shape9",
+          "type": "decoration",
+          "position": [
+            0.0139,
+            0.7571,
+            0.9723,
+            0.1979
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s3_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape4",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.1649,
+            0.9204,
+            0.0904
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape5",
+          "type": "decoration",
+          "position": [
+            0.4758,
+            0.2886,
+            0.4844,
+            0.2711
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape6",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape7",
+          "type": "decoration",
+          "position": [
+            0.4737,
+            0.5322,
+            0.4857,
+            0.3937
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s3_shape8",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.2886,
+            0.4168,
+            0.7079
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s4_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape4",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.1649,
+            0.9204,
+            0.0904
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape5",
+          "type": "decoration",
+          "position": [
+            0.026,
+            0.6809,
+            0.2398,
+            0.1314
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape6",
+          "type": "decoration",
+          "position": [
+            0.7326,
+            0.6809,
+            0.2398,
+            0.1314
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape7",
+          "type": "decoration",
+          "position": [
+            0.497,
+            0.6809,
+            0.2398,
+            0.1314
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape8",
+          "type": "decoration",
+          "position": [
+            0.2615,
+            0.6809,
+            0.2398,
+            0.1314
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape9",
+          "type": "decoration",
+          "position": [
+            0.0256,
+            0.2805,
+            0.9322,
+            0.418
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape10",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s4_shape11",
+          "type": "decoration",
+          "position": [
+            0.0139,
+            0.7678,
+            0.9723,
+            0.1979
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s5_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape4",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.3904,
+            1.0,
+            0.6096
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape5",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.1649,
+            0.9204,
+            0.0904
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape6",
+          "type": "decoration",
+          "position": [
+            0.0406,
+            0.2868,
+            0.2975,
+            0.3302
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape7",
+          "type": "decoration",
+          "position": [
+            0.663,
+            0.2868,
+            0.2975,
+            0.3302
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape8",
+          "type": "decoration",
+          "position": [
+            0.3518,
+            0.2868,
+            0.2975,
+            0.3302
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s5_shape9",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s6_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape4",
+          "type": "decoration",
+          "position": [
+            0.3743,
+            0.3904,
+            0.181,
+            0.536
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape5",
+          "type": "decoration",
+          "position": [
+            0.7771,
+            0.3904,
+            0.181,
+            0.536
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape6",
+          "type": "decoration",
+          "position": [
+            0.5757,
+            0.3904,
+            0.181,
+            0.536
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape7",
+          "type": "decoration",
+          "position": [
+            0.3747,
+            0.1284,
+            0.5975,
+            0.3466
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape8",
+          "type": "decoration",
+          "position": [
+            0.0155,
+            0.0361,
+            0.3339,
+            0.897
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s6_shape9",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s7_shape3",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape4",
+          "type": "decoration",
+          "position": [
+            0.0398,
+            0.1649,
+            0.9204,
+            0.0904
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape5",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.2878,
+            0.3054,
+            0.6368
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape6",
+          "type": "decoration",
+          "position": [
+            0.3127,
+            0.2878,
+            0.3407,
+            0.6368
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape7",
+          "type": "decoration",
+          "position": [
+            0.6259,
+            0.2878,
+            0.3401,
+            0.6368
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s7_shape8",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s8_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape4",
+          "type": "title",
+          "position": [
+            0.4947,
+            0.1604,
+            0.4384,
+            0.7793
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape5",
+          "type": "title",
+          "position": [
+            0.4615,
+            0.111,
+            0.496,
+            0.8819
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape6",
+          "type": "decoration",
+          "position": [
+            0.069,
+            0.1703,
+            0.4129,
+            0.1294
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape7",
+          "type": "decoration",
+          "position": [
+            0.5278,
+            0.2153,
+            0.3705,
+            0.658
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape8",
+          "type": "image",
+          "position": [
+            0.443,
+            0.1133,
+            0.499,
+            0.8456
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape9",
+          "type": "body",
+          "position": [
+            0.3526,
+            0.3698,
+            0.3416,
+            0.1829
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape10",
+          "type": "body",
+          "position": [
+            0.3518,
+            0.4602,
+            0.3416,
+            0.1829
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape11",
+          "type": "body",
+          "position": [
+            0.3873,
+            0.6052,
+            0.3083,
+            0.165
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape12",
+          "type": "decoration",
+          "position": [
+            0.0662,
+            0.332,
+            0.2825,
+            0.2734
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape13",
+          "type": "decoration",
+          "position": [
+            0.0662,
+            0.6372,
+            0.2825,
+            0.2734
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape14",
+          "type": "title",
+          "position": [
+            0.0794,
+            0.1888,
+            0.174,
+            0.0941
+          ],
+          "text": "你的文本",
+          "formatting": {
+            "font_name": "演示流云楷",
+            "font_size_pt": 36.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape15",
+          "type": "title",
+          "position": [
+            0.3056,
+            0.1888,
+            0.1828,
+            0.0941
+          ],
+          "text": "你的文本",
+          "formatting": {
+            "font_name": "演示流云楷",
+            "font_size_pt": 36.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s8_shape16",
+          "type": "decoration",
+          "position": [
+            0.2496,
+            0.1901,
+            0.046,
+            0.0819
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "layout": "two_column",
+      "zones": [
+        {
+          "zone_id": "s9_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape4",
+          "type": "body",
+          "position": [
+            0.2677,
+            0.5721,
+            0.7321,
+            0.4278
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape5",
+          "type": "body",
+          "position": [
+            0.416,
+            0.492,
+            0.5838,
+            0.28
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape6",
+          "type": "body",
+          "position": [
+            0.172,
+            0.4122,
+            0.828,
+            0.5877
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape7",
+          "type": "body",
+          "position": [
+            0.175,
+            0.4181,
+            0.824,
+            0.5818
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape8",
+          "type": "body",
+          "position": [
+            0.1798,
+            0.424,
+            0.82,
+            0.5758
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape9",
+          "type": "body",
+          "position": [
+            0.3159,
+            0.4525,
+            0.684,
+            0.5473
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape10",
+          "type": "body",
+          "position": [
+            0.6856,
+            0.5452,
+            0.0707,
+            0.1302
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape11",
+          "type": "body",
+          "position": [
+            0.5166,
+            0.5954,
+            0.0707,
+            0.1503
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape13",
+          "type": "body",
+          "position": [
+            0.5873,
+            0.5826,
+            0.033,
+            0.1631
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape14",
+          "type": "body",
+          "position": [
+            0.7563,
+            0.5386,
+            0.033,
+            0.1367
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape16",
+          "type": "decoration",
+          "position": [
+            0.053,
+            0.1749,
+            0.0389,
+            0.0692
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape17",
+          "type": "decoration",
+          "position": [
+            0.1803,
+            0.595,
+            0.2661,
+            0.3385
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape18",
+          "type": "decoration",
+          "position": [
+            0.2967,
+            0.2837,
+            0.2661,
+            0.3385
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape19",
+          "type": "decoration",
+          "position": [
+            0.4969,
+            0.2028,
+            0.2661,
+            0.3385
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape20",
+          "type": "decoration",
+          "position": [
+            0.7083,
+            0.1475,
+            0.2661,
+            0.3385
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s9_shape22",
+          "type": "image",
+          "position": [
+            0.6642,
+            0.4994,
+            0.2503,
+            0.4706
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "layout": "content",
+      "zones": [
+        {
+          "zone_id": "s10_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape4",
+          "type": "title",
+          "position": [
+            0.2896,
+            0.1877,
+            0.4207,
+            0.1143
+          ],
+          "text": "项目拥有的核心发明专利和相关论文\n一作均为团队核心成员",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": 24.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape5",
+          "type": "decoration",
+          "position": [
+            0.0,
+            0.5957,
+            1.0,
+            0.4043
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape6",
+          "type": "decoration",
+          "position": [
+            0.8194,
+            0.5339,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape7",
+          "type": "decoration",
+          "position": [
+            0.0613,
+            0.5339,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape8",
+          "type": "decoration",
+          "position": [
+            0.0613,
+            0.4228,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape9",
+          "type": "decoration",
+          "position": [
+            0.0613,
+            0.3116,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape10",
+          "type": "decoration",
+          "position": [
+            0.0613,
+            0.2004,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape11",
+          "type": "decoration",
+          "position": [
+            0.8194,
+            0.4228,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape12",
+          "type": "decoration",
+          "position": [
+            0.8194,
+            0.3116,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape13",
+          "type": "decoration",
+          "position": [
+            0.8194,
+            0.2004,
+            0.124,
+            0.0796
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s10_shape14",
+          "type": "decoration",
+          "position": [
+            0.2637,
+            0.3438,
+            0.4726,
+            0.1818
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s11_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape4",
+          "type": "decoration",
+          "position": [
+            0.488,
+            0.3878,
+            0.2081,
+            0.1896
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape5",
+          "type": "decoration",
+          "position": [
+            0.7042,
+            0.3858,
+            0.2081,
+            0.1896
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape6",
+          "type": "decoration",
+          "position": [
+            0.4648,
+            0.3101,
+            0.4703,
+            0.0562
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape7",
+          "type": "title",
+          "position": [
+            0.1632,
+            0.6536,
+            0.1384,
+            0.0615
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 24.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape9",
+          "type": "title",
+          "position": [
+            0.6885,
+            0.6536,
+            0.1384,
+            0.0615
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 24.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape11",
+          "type": "decoration",
+          "position": [
+            0.6729,
+            0.194,
+            0.046,
+            0.0819
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape12",
+          "type": "title",
+          "position": [
+            0.4447,
+            0.1717,
+            0.2238,
+            0.121
+          ],
+          "text": "你的文本",
+          "formatting": {
+            "font_name": "演示流云楷",
+            "font_size_pt": 48.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape13",
+          "type": "title",
+          "position": [
+            0.7347,
+            0.1706,
+            0.2238,
+            0.121
+          ],
+          "text": "你的文本",
+          "formatting": {
+            "font_name": "演示流云楷",
+            "font_size_pt": 48.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape14",
+          "type": "decoration",
+          "position": [
+            0.1022,
+            0.1869,
+            0.3616,
+            0.4273
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape15",
+          "type": "decoration",
+          "position": [
+            0.3711,
+            0.7377,
+            0.2521,
+            0.2623
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape16",
+          "type": "image",
+          "position": [
+            0.3787,
+            0.5306,
+            0.2224,
+            0.3731
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s11_shape17",
+          "type": "image",
+          "position": [
+            0.138,
+            0.2571,
+            0.2932,
+            0.2861
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s12_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape4",
+          "type": "title",
+          "position": [
+            0.0496,
+            0.162,
+            0.9007,
+            0.3113
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": "086CDA",
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape5",
+          "type": "decoration",
+          "position": [
+            0.3353,
+            0.2908,
+            0.3294,
+            0.1873
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape6",
+          "type": "decoration",
+          "position": [
+            0.0455,
+            0.6184,
+            0.9091,
+            0.2451
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape7",
+          "type": "decoration",
+          "position": [
+            0.2913,
+            0.5279,
+            0.1792,
+            0.0897
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape8",
+          "type": "decoration",
+          "position": [
+            0.5295,
+            0.5279,
+            0.1792,
+            0.0897
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape9",
+          "type": "decoration",
+          "position": [
+            0.053,
+            0.5279,
+            0.1792,
+            0.0897
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape10",
+          "type": "decoration",
+          "position": [
+            0.7678,
+            0.5279,
+            0.1792,
+            0.0897
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape11",
+          "type": "decoration",
+          "position": [
+            0.3329,
+            0.1944,
+            0.3341,
+            0.0943
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape12",
+          "type": "decoration",
+          "position": [
+            0.0735,
+            0.1867,
+            0.853,
+            0.2644
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s12_shape13",
+          "type": "image",
+          "position": [
+            0.3298,
+            0.2029,
+            0.3437,
+            0.1642
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s13_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape4",
+          "type": "image",
+          "position": [
+            0.5425,
+            0.2514,
+            0.4186,
+            0.4991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape5",
+          "type": "image",
+          "position": [
+            0.3461,
+            0.1007,
+            0.6539,
+            0.8625
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape6",
+          "type": "decoration",
+          "position": [
+            0.0459,
+            0.3964,
+            0.1517,
+            0.539
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape7",
+          "type": "decoration",
+          "position": [
+            0.2166,
+            0.3964,
+            0.1517,
+            0.539
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape8",
+          "type": "decoration",
+          "position": [
+            0.3872,
+            0.3964,
+            0.1517,
+            0.539
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape9",
+          "type": "title",
+          "position": [
+            0.0931,
+            0.1341,
+            0.2634,
+            0.0853
+          ],
+          "text": "各大媒体争相报道",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 32.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": false,
+            "italic": false,
+            "alignment": "CENTER",
+            "line_spacing": 7.874015748031496e-05
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape10",
+          "type": "decoration",
+          "position": [
+            0.0445,
+            0.137,
+            0.0389,
+            0.0692
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape11",
+          "type": "decoration",
+          "position": [
+            0.0489,
+            0.2401,
+            0.2324,
+            0.1149
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape12",
+          "type": "decoration",
+          "position": [
+            0.3012,
+            0.2401,
+            0.2324,
+            0.1149
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s13_shape13",
+          "type": "decoration",
+          "position": [
+            0.7573,
+            0.047,
+            0.1748,
+            0.22
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "layout": "full_image",
+      "zones": [
+        {
+          "zone_id": "s14_shape3",
+          "type": "decoration",
+          "position": [
+            0.0347,
+            0.0354,
+            0.9653,
+            0.1468
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape8",
+          "type": "image",
+          "position": [
+            0.0,
+            0.3037,
+            0.1761,
+            0.0742
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape9",
+          "type": "image",
+          "position": [
+            0.1947,
+            0.5303,
+            0.1761,
+            0.0742
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape10",
+          "type": "image",
+          "position": [
+            0.411,
+            0.3738,
+            0.1761,
+            0.0742
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape11",
+          "type": "image",
+          "position": [
+            0.6269,
+            0.5767,
+            0.1761,
+            0.0742
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape12",
+          "type": "image",
+          "position": [
+            0.8449,
+            0.4357,
+            0.1551,
+            0.0742
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape13",
+          "type": "title",
+          "position": [
+            0.1081,
+            0.2079,
+            0.1393,
+            0.0853
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 32.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "CENTER",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape14",
+          "type": "title",
+          "position": [
+            0.3271,
+            0.2079,
+            0.1393,
+            0.0853
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 32.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "CENTER",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape15",
+          "type": "title",
+          "position": [
+            0.546,
+            0.2079,
+            0.1393,
+            0.0853
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 32.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "CENTER",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape16",
+          "type": "title",
+          "position": [
+            0.765,
+            0.2079,
+            0.1393,
+            0.0853
+          ],
+          "text": "输入标题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": 32.0,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "CENTER",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape21",
+          "type": "decoration",
+          "position": [
+            0.0985,
+            0.2785,
+            0.1599,
+            0.1134
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape22",
+          "type": "decoration",
+          "position": [
+            0.3149,
+            0.2785,
+            0.1599,
+            0.1134
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape23",
+          "type": "decoration",
+          "position": [
+            0.53,
+            0.2785,
+            0.1599,
+            0.1134
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape24",
+          "type": "decoration",
+          "position": [
+            0.7466,
+            0.2785,
+            0.1599,
+            0.1134
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape25",
+          "type": "image",
+          "position": [
+            0.0527,
+            0.6961,
+            0.1974,
+            0.1991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape26",
+          "type": "image",
+          "position": [
+            0.2945,
+            0.6861,
+            0.1974,
+            0.1991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape27",
+          "type": "image",
+          "position": [
+            0.5138,
+            0.695,
+            0.1974,
+            0.1991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s14_shape28",
+          "type": "image",
+          "position": [
+            0.7512,
+            0.6951,
+            0.1974,
+            0.1991
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "layout": "content_with_image",
+      "zones": [
+        {
+          "zone_id": "s15_shape4",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3565,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape5",
+          "type": "image",
+          "position": [
+            0.6828,
+            0.0,
+            0.3172,
+            0.9856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape6",
+          "type": "image",
+          "position": [
+            0.0,
+            0.0,
+            0.3294,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape7",
+          "type": "image",
+          "position": [
+            0.7383,
+            0.0,
+            0.2617,
+            0.5856
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape9",
+          "type": "title",
+          "position": [
+            0.1675,
+            0.0,
+            0.6651,
+            1.0
+          ],
+          "text": "",
+          "formatting": {
+            "font_name": null,
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": "RIGHT",
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape10",
+          "type": "decoration",
+          "position": [
+            0.0396,
+            0.0712,
+            0.3759,
+            0.0583
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape11",
+          "type": "decoration",
+          "position": [
+            0.71,
+            0.1089,
+            0.29,
+            0.6446
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape12",
+          "type": "decoration",
+          "position": [
+            0.6585,
+            0.4356,
+            0.3415,
+            0.5644
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape13",
+          "type": "decoration",
+          "position": [
+            0.28,
+            0.1645,
+            0.4114,
+            0.214
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape14",
+          "type": "decoration",
+          "position": [
+            0.1542,
+            0.3393,
+            0.7327,
+            0.24
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape15",
+          "type": "body",
+          "position": [
+            0.2946,
+            0.5764,
+            0.411,
+            0.0628
+          ],
+          "text": "解决“最后一公里”配送环节难题",
+          "formatting": {
+            "font_name": "优设标题黑",
+            "font_size_pt": null,
+            "font_color": null,
+            "fill_color": null,
+            "bold": null,
+            "italic": null,
+            "alignment": null,
+            "line_spacing": null
+          },
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape16",
+          "type": "image",
+          "position": [
+            0.7696,
+            0.4019,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape17",
+          "type": "image",
+          "position": [
+            0.0,
+            0.397,
+            0.3305,
+            0.603
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape18",
+          "type": "image",
+          "position": [
+            0.0008,
+            0.6266,
+            0.2654,
+            0.3734
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape19",
+          "type": "image",
+          "position": [
+            0.0,
+            0.775,
+            1.0,
+            0.225
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape20",
+          "type": "decoration",
+          "position": [
+            0.2849,
+            0.7362,
+            0.4307,
+            0.1466
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        },
+        {
+          "zone_id": "s15_shape21",
+          "type": "image",
+          "position": [
+            0.1747,
+            0.4019,
+            0.0547,
+            0.4164
+          ],
+          "text": "",
+          "formatting": {},
+          "confidence": 100.0,
+          "source": "pptx_shape"
+        }
+      ]
+    }
+  ],
+  "design_audit": {
+    "aggregate_score": 76.1,
+    "font_issues": 0,
+    "overflow_issues": 21,
+    "contrast_issues": 0,
+    "recommendations": [
+      "修复 21 处文字溢出问题"
+    ]
+  }
+}

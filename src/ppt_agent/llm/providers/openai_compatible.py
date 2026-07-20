@@ -80,8 +80,13 @@ class OpenAICompatibleProvider(BaseLLMProvider):
         return ProviderCapabilities(
             supports_vision=self.config.supports_vision,
             supports_json_mode=True,
-            supports_json_schema=bool(self.config.beta_endpoint),
+            # DeepSeek's Beta endpoint provides strict *tool calls*, not
+            # OpenAI response_format=json_schema structured output.
+            supports_json_schema=False,
             supports_tool_use=True,
+            supports_strict_tools=bool(self.config.beta_endpoint),
+            # Thinking mode supports tools but rejects forced tool_choice.
+            supports_forced_tool_choice=False,
             supports_streaming=True,
             max_context_tokens=128_000,
         )
@@ -176,10 +181,9 @@ class OpenAICompatibleProvider(BaseLLMProvider):
                     "parameters": json_schema,
                 },
             }]
-            # NOTE: tool_choice is NOT set because DeepSeek thinking models
-            # (v4-pro / r1) do not support forced tool_choice.  The model
-            # will still call the tool because (a) it's the only tool
-            # available, and (b) the prompt asks for structured output.
+            # Do not force tool_choice: DeepSeek thinking mode supports tool
+            # calls but rejects forced selection. Structured artifact output
+            # uses JSON Mode and never enters this branch.
         elif json_mode:
             kwargs["response_format"] = {"type": "json_object"}
 

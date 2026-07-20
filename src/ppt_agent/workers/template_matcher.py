@@ -15,7 +15,6 @@ from pathlib import Path
 
 from ppt_agent.coordinator.phase_state import load_artifact, write_artifact
 from ppt_agent.models.artifacts import JobWorkspace
-from ppt_agent.models.selected_template import fallback_selection
 from ppt_agent.models.template_meta import (
     build_template_meta_from_ingest,
     default_template_meta,
@@ -26,9 +25,59 @@ from ppt_agent.retrieval.template_index import (
     get_slide_zones,
     load_template_chunks,
     load_template_meta,
+    resolve_template_dir,
 )
 
 logger = logging.getLogger(__name__)
+
+MIN_TEMPLATE_MATCH_SCORE = 0.30
+MIN_TEMPLATE_MATCH_MARGIN = 0.03
+
+
+def _has_confident_template_match(ranked_templates: list[tuple[str, float]]) -> bool:
+    """Reject weak or effectively tied retrieval results."""
+    if not ranked_templates or ranked_templates[0][1] < MIN_TEMPLATE_MATCH_SCORE:
+        return False
+    if len(ranked_templates) == 1:
+        return True
+    return (ranked_templates[0][1] - ranked_templates[1][1]) >= MIN_TEMPLATE_MATCH_MARGIN
+
+
+def _choose_required_real_template(
+    ranked_templates: list[tuple[str, float]],
+    entries: list[dict],
+) -> tuple[dict, float, list[tuple[str, float]]]:
+    """Choose the best usable real template; never return the blank fallback."""
+    usable_by_id: dict[str, dict] = {}
+    for entry in entries:
+        template_id = entry.get("template_id", "")
+        template_path = entry.get("path", "")
+        if not template_id or template_id == "fallback.default" or not template_path:
+            continue
+        pptx_path = Path("templates") / template_path / "template.pptx"
+        if pptx_path.exists():
+            usable_by_id[template_id] = entry
+
+    usable_ranked = [
+        (template_id, score)
+        for template_id, score in ranked_templates
+        if template_id in usable_by_id
+    ]
+    if usable_ranked:
+        template_id, score = usable_ranked[0]
+        return usable_by_id[template_id], score, usable_ranked
+
+    # Retrieval can be empty for sparse/legacy metadata. The hard template
+    # requirement still applies, so select the first deterministic usable
+    # library entry and surface the zero-confidence risk.
+    if usable_by_id:
+        template_id = sorted(usable_by_id)[0]
+        return usable_by_id[template_id], 0.0, [(template_id, 0.0)]
+
+    raise RuntimeError(
+        "A real PowerPoint template is required, but no indexed template with "
+        "an existing template.pptx is available. Add/ingest a template before running."
+    )
 
 
 def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> list[Path]:
@@ -137,55 +186,57 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> list[P
     from ppt_agent.retrieval.template_index import load_template_index as _load_idx
     _all_entries = _load_idx()
 
-    best_match = None
-    if ranked_templates and ranked_templates[0][1] > 0:
-        best_id = ranked_templates[0][0]
-        for entry in _all_entries:
-            if entry["template_id"] == best_id:
-                best_match = entry
-                break
+    best_match, selected_score, usable_ranked = _choose_required_real_template(
+        ranked_templates, _all_entries
+    )
+    confident_match = _has_confident_template_match(usable_ranked)
+    margin = (
+        usable_ranked[0][1] - usable_ranked[1][1]
+        if len(usable_ranked) > 1 else usable_ranked[0][1]
+    )
+    warnings = []
+    if not confident_match:
+        warnings.append(
+            "A real template was required, so the best available template was "
+            "selected despite low retrieval confidence. Page-level selection and "
+            "manual review are required."
+        )
+    selected = {
+        "template_id": best_match["template_id"],
+        "selection_status": "matched" if confident_match else "matched_low_confidence",
+        "score": round(selected_score, 4),
+        "reason": (
+            f"Selected required real template '{best_match['template_id']}' via "
+            "3-layer retrieval; confidence controls risk handling, not template usage."
+        ),
+        "template_path": best_match.get("path", ""),
+        "color_scheme": best_match.get("color_scheme", ""),
+        "ranking": ranking,
+        "warnings": warnings,
+        "template_required": True,
+        "confidence_gate": {
+            "passed": confident_match,
+            "minimum_score": MIN_TEMPLATE_MATCH_SCORE,
+            "minimum_margin": MIN_TEMPLATE_MATCH_MARGIN,
+            "actual_score": round(selected_score, 4),
+            "actual_margin": round(margin, 4),
+        },
+    }
 
-    if best_match and best_match["template_id"] != "fallback.default":
-        selected = {
-            "template_id": best_match["template_id"],
-            "selection_status": "matched",
-            "score": round(ranked_templates[0][1], 4),
-            "reason": f"Matched template '{best_match['template_id']}' via 3-layer chunk retrieval (overview+design+slides).",
-            "template_path": best_match.get("path", ""),
-            "color_scheme": best_match.get("color_scheme", ""),
-            "ranking": ranking,
-            "warnings": [],
-        }
-
-        # Load real template meta
-        try:
-            ingest_meta = load_template_meta(best_match)
-            meta = build_template_meta_from_ingest(ingest_meta)
-        except FileNotFoundError:
-            logger.warning("Template meta not found for '%s', using default", best_match["template_id"])
-            meta = default_template_meta(slide_count)
-
-        # Build template zones mapping (slide images + zones for downstream)
-        template_zones = _build_template_zones(best_match, meta)
-
-    else:
-        # Fallback
-        selected = fallback_selection()
-        if ranked_templates:
-            selected["ranking"] = [
-                {
-                    "template_id": tid,
-                    "score": round(score, 4),
-                    "rank": rank,
-                    "domain_fit": 0.6,
-                    "layout_fit": 0.7,
-                    "tone_fit": 0.6,
-                    "notes": f"3-layer chunk retrieval (fallback): {len(template_chunk_hits.get(tid, []))} chunks",
-                }
-                for rank, (tid, score) in enumerate(ranked_templates[:3], start=1)
-            ]
-        meta = default_template_meta(slide_count)
-        template_zones = _build_fallback_zones(slide_count)
+    # A required template must have real ingested metadata. Substituting
+    # fallback zones here would pretend to use a template while bypassing it.
+    ingest_meta = load_template_meta(best_match)
+    if (
+        ingest_meta.get("meta_schema_version") != "2.0"
+        or ingest_meta.get("parser_strategy") != "pptx_xml_recursive"
+    ):
+        template_dir = resolve_template_dir(best_match)
+        if (template_dir / "template.pptx").exists():
+            from ppt_agent.templates.ingest import refresh_template_meta
+            logger.info("Refreshing legacy selected-template metadata: %s", template_dir)
+            ingest_meta = refresh_template_meta(template_dir, run_ocr=False)
+    meta = build_template_meta_from_ingest(ingest_meta)
+    template_zones = _build_template_zones(best_match, meta)
 
     outputs = [
         write_artifact(workspace, "selected_template", selected),

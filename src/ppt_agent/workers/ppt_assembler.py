@@ -3,11 +3,69 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from ppt_agent.assembly.ppt_writer import write_pptx, write_pptx_from_mapping
+from ppt_agent.assembly.ppt_writer import write_pptx_from_mapping
 from ppt_agent.coordinator.phase_state import load_artifact
 from ppt_agent.models.artifacts import JobWorkspace
 
 logger = logging.getLogger(__name__)
+
+
+def _strict_content_mapping_issues(
+    slide_contents: dict,
+    expected_slide_indices: list[int] | None = None,
+) -> list[str]:
+    """Return hard text-quality issues that ``force`` may not bypass."""
+    issues: list[str] = []
+    text_types = {"title", "subtitle", "bullets", "body", "footer", "decorative"}
+    actual_indices = [
+        int(slide.get("slide_index", -1)) for slide in slide_contents.get("slides", [])
+    ]
+    if len(set(actual_indices)) != len(actual_indices):
+        issues.append("duplicate_slide_index")
+    if expected_slide_indices is not None and actual_indices != expected_slide_indices:
+        issues.append(
+            f"slide_index_mismatch:expected={expected_slide_indices}:actual={actual_indices}"
+        )
+    for slide in slide_contents.get("slides", []):
+        slide_index = int(slide.get("slide_index", 0))
+        for zone in slide.get("zones", []):
+            if zone.get("type") not in text_types or not zone.get("editable", True):
+                continue
+            zone_id = zone.get("zone_id", "")
+            action = zone.get("action", "")
+            content = zone.get("content")
+            if action == "clear_text":
+                issues.append(f"slide_{slide_index}:clear_text_forbidden:{zone_id}")
+            if action == "replace_text" and (
+                content is None or content == "" or content == []
+            ):
+                issues.append(f"slide_{slide_index}:empty_text:{zone_id}")
+            if zone.get("fit_status") == "overflow":
+                issues.append(f"slide_{slide_index}:overflow:{zone_id}")
+            rendered = str(content or "").strip().lower()
+            if action == "replace_text" and rendered in {"u", "v", "w", "•", "●"}:
+                issues.append(f"slide_{slide_index}:orphan_bullet:{zone_id}")
+        for flag in slide.get("fallback_flags", []):
+            if str(flag).startswith((
+                "length_mismatch:", "clear_text_forbidden:",
+                "missing_replacement_text:", "content_eligibility_violation:",
+                "llm_constraint_unresolved:", "missing_zone_unresolved:",
+                "missing_llm_slide:", "template_sample_preserved:",
+                "orphan_bullet_or_glyph:",
+            )):
+                issues.append(f"slide_{slide_index}:{flag}")
+    generation = slide_contents.get("generation_stats")
+    if (
+        slide_contents.get("mapping_mode") == "llm_first"
+        and isinstance(generation, dict)
+        and not generation.get("passed", False)
+    ):
+        issues.append(
+            "llm_text_ratio_below_minimum:"
+            f"{generation.get('llm_text_ratio', 0)}<"
+            f"{generation.get('minimum_llm_text_ratio', 0.85)}"
+        )
+    return sorted(set(issues))
 
 
 def run(workspace: JobWorkspace, force: bool = False) -> Path:
@@ -15,6 +73,27 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
     if output.exists() and not force:
         return output
     slide_contents = load_artifact(workspace, "slide_contents")
+    selected_template = load_artifact(workspace, "selected_template")
+    if selected_template.get("template_id") == "fallback.default":
+        raise ValueError(
+            "Real-template assembly is required; fallback.default is not allowed. "
+            "Re-run template_matching with at least one ingested real template."
+        )
+    outline = load_artifact(workspace, "outline")
+    expected_slide_indices = [
+        int(slide.get("slide_index", index))
+        for index, slide in enumerate(outline.get("slides", []))
+    ]
+    mapping_issues = _strict_content_mapping_issues(
+        slide_contents, expected_slide_indices
+    )
+    deterministic_draft = slide_contents.get("mapping_mode") == "deterministic_fallback"
+    if mapping_issues and not (force and deterministic_draft):
+        raise ValueError(
+            "Cannot assemble PPT: strict text mapping gate failed. "
+            "force=True only regenerates artifacts and cannot bypass empty text, "
+            f"clear_text, or overflow. Issues: {mapping_issues[:20]}"
+        )
 
     review_status = slide_contents.get("review_status")
     logger.info("slide_contents review_status: %s", review_status or "<not set>")
@@ -48,8 +127,10 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
             workspace_root=workspace.root,
         )
     else:
-        logger.info("No template PPTX found, falling back to blank assembly")
-        write_pptx(slide_contents, output, workspace_root=workspace.root)
+        raise FileNotFoundError(
+            "Real-template assembly is required, but selected_template does not "
+            "resolve to an existing template.pptx."
+        )
 
     return output
 
@@ -89,6 +170,20 @@ def assemble_with_mapping(
         )
 
     slide_contents = load_artifact(workspace, "slide_contents")
+    outline = load_artifact(workspace, "outline")
+    expected_slide_indices = [
+        int(slide.get("slide_index", index))
+        for index, slide in enumerate(outline.get("slides", []))
+    ]
+    mapping_issues = _strict_content_mapping_issues(
+        slide_contents, expected_slide_indices
+    )
+    deterministic_draft = slide_contents.get("mapping_mode") == "deterministic_fallback"
+    if mapping_issues and not (force and deterministic_draft):
+        raise ValueError(
+            "Cannot assemble PPT: strict text mapping gate failed. "
+            f"Issues: {mapping_issues[:20]}"
+        )
 
     review_status = slide_contents.get("review_status")
     if review_status != "approved" and not force:
@@ -138,8 +233,15 @@ def _build_mappings_from_slide_contents(slide_contents: dict) -> tuple[dict, dic
 
             if ztype in ("title", "subtitle", "bullets", "body", "footer"):
                 content = zone.get("content")
-                if zid and content is not None:
-                    mappings[idx][ztype] = {"zone_id": zid, "content": content}
+                if zid:
+                    mappings[idx][zid] = {
+                        "zone_id": zid,
+                        "type": ztype,
+                        "action": zone.get(
+                            "action", "replace_text" if content is not None else "preserve"
+                        ),
+                        "content": content,
+                    }
             elif ztype == "image":
                 if zid:
                     # Prefer user-uploaded → generated → explicit image_path
@@ -167,7 +269,8 @@ def _build_overflow_report(
 
     for slide in slide_contents.get("slides", []):
         idx: int = slide["slide_index"]
-        tpl_slide = tpl_slides.get(idx, {})
+        template_index = int(slide.get("template_slide_index", idx))
+        tpl_slide = tpl_slides.get(template_index, {})
         if not tpl_slide:
             continue
 
@@ -204,8 +307,8 @@ def _build_overflow_report(
             font_pt = max(int(font_pt), 8)
             w, h = pos[2], pos[3]
 
-            chars_per_line = max(5, int(w * 10 * (10 / max(font_pt, 10))))
-            max_lines = max(1, int(h * 720 / max(font_pt, 10)))
+            chars_per_line = max(5, int(w * 650 / max(font_pt, 10)))
+            max_lines = max(1, int(h * 900 / max(font_pt, 10)))
 
             overflow = False
             details: dict = {"overflow_type": "", "current_size": "", "capacity": ""}

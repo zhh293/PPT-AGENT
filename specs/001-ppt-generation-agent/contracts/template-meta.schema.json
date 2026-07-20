@@ -5,6 +5,9 @@
   "type": "object",
   "required": ["template_id", "style", "slide_count", "slides"],
   "properties": {
+    "meta_schema_version": {"type": "string"},
+    "parser_strategy": {"type": "string", "enum": ["pptx_xml_recursive", "legacy"]},
+    "template_sha256": {"type": "string"},
     "template_id": {"type": "string", "minLength": 1},
     "domain_tags": {"type": "array", "items": {"type": "string"}},
     "audience_tags": {"type": "array", "items": {"type": "string"}},
@@ -34,6 +37,21 @@
           "layout": {"type": "string", "minLength": 1},
           "visual_density": {"type": "string", "enum": ["low", "medium", "high"], "default": "medium"},
           "supports_generated_background": {"type": "boolean", "default": true},
+          "ocr_text": {"type": "string"},
+          "baked_text_regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["position", "editable", "source"],
+              "properties": {
+                "position": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}},
+                "text": {"type": "string"},
+                "editable": {"const": false},
+                "source": {"const": "ocr_audit"}
+              },
+              "additionalProperties": true
+            }
+          },
           "zones": {
             "type": "array",
             "items": {
@@ -41,7 +59,14 @@
               "required": ["type", "position"],
               "properties": {
                 "zone_id": {"type": "string"},
-                "type": {"type": "string", "enum": ["title", "subtitle", "bullets", "image", "chart", "footer", "decorative"]},
+                "legacy_zone_id": {"type": "string"},
+                "native_shape_id": {"type": "integer", "minimum": 0},
+                "shape_path": {"type": "string"},
+                "shape_name": {"type": "string"},
+                "shape_type": {"type": "string"},
+                "shape_depth": {"type": "integer", "minimum": 0},
+                "parent_group_ids": {"type": "array", "items": {"type": "integer"}},
+                "type": {"type": "string", "enum": ["title", "subtitle", "body", "bullets", "image", "chart", "footer", "decoration", "decorative"]},
                 "position": {
                   "type": "array",
                   "prefixItems": [
@@ -55,6 +80,22 @@
                   "maxItems": 4
                 },
                 "font_size": {"type": "number"},
+                "original_text": {"type": "string"},
+                "editable": {"type": "boolean"},
+                "semantic_role": {"type": "string"},
+                "shape_rotation_deg": {"type": "number"},
+                "text_rotation_deg": {"type": "number"},
+                "parent_rotation_deg": {"type": "number"},
+                "effective_rotation_deg": {"type": "number"},
+                "vertical_mode": {"type": "string"},
+                "content_eligibility": {"type": "string", "enum": ["title", "body", "short_label", "decorative", "forbidden"]},
+                "supports_long_text": {"type": "boolean"},
+                "max_chars_hint": {"type": "integer", "minimum": 0},
+                "max_lines_hint": {"type": "integer", "minimum": 0},
+                "aspect_ratio": {"type": "number", "minimum": 0},
+                "is_narrow": {"type": "boolean"},
+                "geometry_fingerprint": {"type": "string"},
+                "formatting_fingerprint": {"type": "string"},
                 "capacity_hint": {"type": "string"},
                 "style_hint": {"type": "string"}
               },

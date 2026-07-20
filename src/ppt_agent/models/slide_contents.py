@@ -23,6 +23,10 @@ class SlideZoneContent:
     fit_status: str = "unknown"
     semantic_label: str = ""            # AI-assigned content label (e.g. "数据引用", "核心论点")
     formatting: dict | None = None     # template formatting: {font_name, font_size_pt, font_color, alignment, ...}
+    action: str = "preserve"           # replace_text | clear_text | preserve | replace_image
+    placement_reason: str = ""
+    source_block_ids: list[str] = field(default_factory=list)
+    transformation: str = "none"      # none | summarize | split | merge | rewrite
 
     # Convenience alias
     @property
@@ -46,6 +50,8 @@ class SlideContent:
     source_refs: list[str] = field(default_factory=list)
     fallback_flags: list[str] = field(default_factory=list)
     template_image: str | None = None  # Path to template slide image for img2img
+    template_slide_index: int | None = None
+    template_selection: dict | None = None
 
     def to_dict(self) -> dict:
         data = asdict(self)

@@ -19,6 +19,7 @@ ARTIFACT_NAMES = {
     "validation_report": "validation_report.json",
     "layer_analysis_report": "layer_analysis_report.json",
     "template_zones": "template_zones.json",
+    "mapping_diagnostics": "mapping_diagnostics.json",
 }
 
 

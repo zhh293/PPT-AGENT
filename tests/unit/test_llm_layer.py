@@ -8,6 +8,8 @@ import json
 import os
 import tempfile
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -17,6 +19,8 @@ from ppt_agent.llm.json_repair import extract_json_object, repair_json
 from ppt_agent.llm.response_parser import parse_json_response
 from ppt_agent.llm.audit import log_model_call
 from ppt_agent.llm.providers.fake import FakeProvider
+from ppt_agent.llm.providers.openai_compatible import OpenAICompatibleProvider
+from ppt_agent.llm.providers.base import BaseLLMProvider, ProviderCapabilities
 from ppt_agent.llm.client import LLMClient, _create_provider
 
 
@@ -260,6 +264,123 @@ class TestLLMClient:
         config = ProviderConfig(name="bad", protocol="unknown_protocol", text_model="x")
         with pytest.raises(ValueError, match="Unknown protocol"):
             _create_provider(config)
+
+    def test_deepseek_json_generation_does_not_advertise_json_schema_tools(self):
+        config = ProviderConfig(
+            name="deepseek", protocol="openai_chat_completions",
+            endpoint="https://api.deepseek.com/v1",
+            beta_endpoint="https://api.deepseek.com/beta",
+            text_model="deepseek-v4-pro",
+        )
+        provider = OpenAICompatibleProvider(config)
+
+        caps = provider.capabilities()
+
+        assert caps.supports_json_mode is True
+        assert caps.supports_json_schema is False
+        assert caps.supports_strict_tools is True
+        assert caps.supports_forced_tool_choice is False
+
+    def test_deepseek_json_mode_sends_no_tools_or_tool_choice(self):
+        config = ProviderConfig(
+            name="deepseek", protocol="openai_chat_completions",
+            endpoint="https://api.deepseek.com/v1",
+            beta_endpoint="https://api.deepseek.com/beta",
+            text_model="deepseek-v4-pro",
+        )
+        provider = OpenAICompatibleProvider(config)
+        create = MagicMock(return_value=SimpleNamespace(
+            choices=[SimpleNamespace(message=SimpleNamespace(content='{"ok": true}'))],
+            usage=None,
+        ))
+        provider._client = SimpleNamespace(chat=SimpleNamespace(
+            completions=SimpleNamespace(create=create)
+        ))
+
+        result = provider.generate(
+            [LLMMessage.user("Return json")], json_mode=True
+        )
+
+        assert result.success
+        kwargs = create.call_args.kwargs
+        assert kwargs["response_format"] == {"type": "json_object"}
+        assert "tools" not in kwargs
+        assert "tool_choice" not in kwargs
+
+    def test_generate_json_with_schema_still_uses_deepseek_json_mode(self):
+        config = ProviderConfig(
+            name="deepseek", protocol="openai_chat_completions",
+            endpoint="https://api.deepseek.com/v1",
+            beta_endpoint="https://api.deepseek.com/beta",
+            text_model="deepseek-v4-pro",
+        )
+        provider = OpenAICompatibleProvider(config)
+        create = MagicMock(return_value=SimpleNamespace(
+            choices=[SimpleNamespace(message=SimpleNamespace(content='{"value": "ok"}'))],
+            usage=None,
+        ))
+        provider._client = SimpleNamespace(chat=SimpleNamespace(
+            completions=SimpleNamespace(create=create)
+        ))
+        client = LLMClient.from_provider(provider)
+
+        result = client.generate_json(
+            prompt="Return json", schema={
+                "type": "object",
+                "properties": {"value": {"type": "string"}},
+                "required": ["value"],
+                "additionalProperties": False,
+            },
+        )
+
+        assert result == {"value": "ok"}
+        kwargs = create.call_args.kwargs
+        assert kwargs["response_format"] == {"type": "json_object"}
+        assert "tools" not in kwargs
+        assert "tool_choice" not in kwargs
+
+    def test_fallback_is_audited_and_queryable(self, tmp_path: Path):
+        config = ProviderConfig(name="fake", protocol="fake", text_model="fake")
+        provider = FakeProvider(config, simulate_error="provider rejected request", simulate_latency_ms=0)
+        client = LLMClient.from_provider(provider, job_root=tmp_path)
+
+        result = client.generate_json(
+            prompt="Return json", phase="content_mapping_0",
+            fallback={"slides": []},
+        )
+
+        assert result == {"slides": []}
+        assert client.was_fallback("content_mapping_0")
+        calls = [json.loads(line) for line in (tmp_path / "model_calls.jsonl").read_text().splitlines()]
+        assert [item["status"] for item in calls] == ["error", "fallback"]
+        events = [json.loads(line) for line in (tmp_path / "history.jsonl").read_text().splitlines()]
+        assert events[-1]["type"] == "llm_fallback"
+
+
+class _EmptyThenJsonProvider(BaseLLMProvider):
+    def __init__(self) -> None:
+        super().__init__(ProviderConfig(name="sequence", protocol="fake", text_model="sequence"))
+        self.calls = 0
+
+    def capabilities(self) -> ProviderCapabilities:
+        return ProviderCapabilities(supports_json_mode=True)
+
+    def generate(self, messages, **kwargs):
+        self.calls += 1
+        text = "" if self.calls == 1 else '{"value": "recovered"}'
+        return LLMResult(text=text, provider=self.name, model="sequence")
+
+
+def test_empty_json_mode_response_is_retried() -> None:
+    provider = _EmptyThenJsonProvider()
+    client = LLMClient.from_provider(provider)
+
+    result = client.generate_json(
+        prompt="Return json", schema={"required": ["value"]}
+    )
+
+    assert result == {"value": "recovered"}
+    assert provider.calls == 2
 
 
 class TestAudit:

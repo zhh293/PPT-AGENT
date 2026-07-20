@@ -332,3 +332,52 @@ Represents quality findings for one slide.
 - `text_editable` must be `true` for slides containing user-approved title, subtitle, or bullet text.
 - A slide may pass with `text_editable: false` only when it has no user-approved text zones, such as a purely visual divider slide.
 - `design_score` should flag slides with excessive text density, weak hierarchy, inconsistent spacing, poor image fit, or style inconsistency.
+# Mapping Model Amendment (2026-07-18)
+
+## TemplateZone
+
+Adds canonical `zone_id`, `legacy_zone_id`, `native_shape_id`, `shape_path`,
+`shape_name`, `original_text`, `editable`, `geometry_fingerprint`, and
+`formatting_fingerprint`. OCR text is supplemental evidence and never makes an
+image region editable.
+
+Schema 2.0 additionally records `shape_depth`, `parent_group_ids`,
+`shape_rotation_deg`, `text_rotation_deg`, `parent_rotation_deg`,
+`effective_rotation_deg`, `vertical_mode`, `semantic_role`,
+`content_eligibility`, `supports_long_text`, `max_chars_hint`,
+`max_lines_hint`, `aspect_ratio`, and `is_narrow`. Stable `shape_path` values
+include every parent group. Slide-level `baked_text_regions` are OCR audit
+findings with `editable: false`, never mapping targets.
+
+## ZoneAction
+
+Each output zone declares `action`, `content`, `placement_reason`,
+`source_block_ids`, `transformation`, and `fit_status`. Valid text actions are
+`replace_text`, `clear_text`, and `preserve`; valid image actions are
+`replace_image` and `preserve`.
+
+## AssemblyPolicy
+
+The default mode is `text_replace_only`, with overlays, resize, position change,
+font change, and post-approval rewriting disabled. All editable text zones must
+be actioned and rendered output must be validated.
+
+The complete-fill policy additionally sets `require_nonempty_text: true`,
+`allow_clear_text: false`, `match_original_length: true`, and
+`target_length_ratio: [0.55, 1.35]`. `clear_text` remains in the historical
+action enum for artifact compatibility but is invalid under this policy.
+
+## MappingDiagnostics
+
+Records a slide-level status and issue list plus one entry per mapped zone:
+`zone_id`, `action`, `semantic_role`, `content_eligibility`, `original_text`,
+`mapped_text`, original/mapped character counts, target character range,
+`fit_status`, `formatting_fingerprint`, and `placement_reason`.
+
+## LLMExecutionState
+
+Model calls distinguish `success`, `error`, and `fallback`. A fallback appends
+an `llm_fallback` workflow event with phase, provider, model, and error. Mapping
+batches that fall back carry `llm_mapping_fallback:batch_<offset>` and remain in
+`needs_review`. Server jobs with any unresolved model fallback use
+`completed_with_fallbacks`; a clean run alone uses `completed`.

@@ -15,6 +15,7 @@ are dynamic (template-dependent) — it falls back to ``json_object`` mode.
 # ── document_analysis → source_summary ──────────────────────────────
 
 SOURCE_SUMMARY_SCHEMA: dict = {
+    "title": "source_summary",
     "type": "object",
     "properties": {
         "project_name":        {"type": "string"},
@@ -65,6 +66,7 @@ SOURCE_SUMMARY_SCHEMA: dict = {
 # ── outline_generation → outline ────────────────────────────────────
 
 OUTLINE_SCHEMA: dict = {
+    "title": "outline",
     "type": "object",
     "properties": {
         "meta": {
@@ -113,6 +115,7 @@ OUTLINE_SCHEMA: dict = {
 # ── design_planning → slide_design_plan ─────────────────────────────
 
 DESIGN_PLAN_SCHEMA: dict = {
+    "title": "slide_design_plan",
     "type": "object",
     "properties": {
         "theme_profile": {
@@ -233,6 +236,7 @@ DESIGN_PLAN_SCHEMA: dict = {
 # ── verification → validation_report ────────────────────────────────
 
 VERIFICATION_SCHEMA: dict = {
+    "title": "validation_report",
     "type": "object",
     "properties": {
         "content_completeness": {
@@ -279,6 +283,7 @@ VERIFICATION_SCHEMA: dict = {
 # anyOf to accept both the value type and null.
 
 SLIDE_CONTENTS_SCHEMA: dict = {
+    "title": "slide_contents",
     "type": "object",
     "properties": {
         "template_id": {"type": "string"},
@@ -287,10 +292,8 @@ SLIDE_CONTENTS_SCHEMA: dict = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "slide_index":    {"type": "integer"},
-                    "layout":         {"type": "string"},
-                    "layout_id":      {"type": "string"},
-                    "visual_density": {"type": "string"},
+                    "slide_index": {"type": "integer"},
+                    "template_slide_index": {"type": "integer"},
                     "zones": {
                         "type": "array",
                         "items": {
@@ -298,22 +301,28 @@ SLIDE_CONTENTS_SCHEMA: dict = {
                             "properties": {
                                 "zone_id":          {"type": "string"},
                                 "type":             {"type": "string"},
-                                "position":         {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
-                                "editable":         {"type": "boolean"},
-                                "content":          {"type": "array", "items": {"type": "string"}},
-                                "source":           {"type": "string"},
-                                "fit_status":       {"type": "string"},
+                                "content": {
+                                    "anyOf": [
+                                        {"type": "string"},
+                                        {"type": "array", "items": {"type": "string"}},
+                                        {"type": "null"},
+                                    ]
+                                },
+                                "action":           {"type": "string", "enum": ["replace_text", "clear_text", "preserve", "replace_image"]},
                                 "placement_reason": {"type": "string"},
+                                "source_block_ids": {"type": "array", "items": {"type": "string"}},
+                                "transformation":   {"type": "string"},
+                                "fit_status":       {"type": "string", "enum": ["fits", "tight", "overflow", "unknown"]},
                             },
                             "required": [
-                                "zone_id", "type", "position", "editable",
-                                "content", "source", "fit_status", "placement_reason",
+                                "zone_id", "type", "content", "placement_reason",
+                                "action", "source_block_ids", "transformation", "fit_status",
                             ],
                             "additionalProperties": False,
                         },
                     },
                 },
-                "required": ["slide_index", "layout", "layout_id", "visual_density", "zones"],
+                "required": ["slide_index", "template_slide_index", "zones"],
                 "additionalProperties": False,
             },
         },

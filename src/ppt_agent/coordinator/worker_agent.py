@@ -540,6 +540,26 @@ Your output artifact is: {output}
 6. VALIDATE both outputs.
 7. DONE.
 """
+        elif self.phase == "content_mapping":
+            operation_guide = """
+## Your Workflow: Context-aware Mapping
+1. READ outline, source_summary, slide_design_plan, selected_template, and
+   template_zones. Consider the current page together with neighboring pages.
+2. Inspect EVERY zone's original template text, position, typography, capacity,
+   editability, and stable native shape identity. Infer cards, steps, metrics,
+   comparisons, labels, and hierarchy from the whole template page.
+3. Decide the page's semantic content blocks. You may summarize, split, merge,
+   and rewrite expressive wording, but may not invent facts, metrics, dates,
+   names, capabilities, or claims.
+4. Map content to ANY NUMBER of editable zones. There is no three-zone limit.
+   zone_id is only the final address and must be copied exactly.
+5. Emit exactly one action for every editable text zone: replace_text,
+   clear_text, or preserve. Image zones use replace_image or preserve.
+6. Include placement_reason, source_block_ids, transformation, and fit_status.
+7. Do not create overlays or request changes to geometry, fonts, or font sizes.
+   If the page cannot fit truthfully, flag template_slide_incompatible.
+8. WRITE and VALIDATE slide_contents. This is the user review boundary.
+"""
         elif self.phase == "ppt_assembly":
             operation_guide = """
 ## Your Role — Content Adaptation Specialist
@@ -588,6 +608,17 @@ Your adaptation:
   }
 }
 ```
+"""
+            operation_guide = """
+## Your Role: Strict MappingPlan Executor
+1. READ the approved slide_contents and template_zones artifacts.
+2. Call assemble_pptx once using the approved mapping plan.
+3. Never rewrite, shorten, merge, drop, or otherwise adapt approved text.
+4. Never create overlays or modify shape position, dimensions, fonts, or font
+   sizes. Resolve shapes through stable native identity; legacy jobs may use
+   deterministic positional compatibility matching.
+5. If a zone is missing, non-editable, or overflowing, report it for Mapping
+   revision/template reselection. Do not repair it during assembly.
 """
 
 
@@ -1147,6 +1178,20 @@ You operate EXACTLY like CatPaw's host agent:
             )
 
             slide_contents = load_artifact(self.workspace, "slide_contents")
+            strict_text_replace = (
+                slide_contents.get("assembly_policy", {}).get("mode", "text_replace_only")
+                == "text_replace_only"
+            )
+            if strict_text_replace and adaptations:
+                return ToolResult(
+                    call_id="",
+                    output=None,
+                    success=False,
+                    error=(
+                        "Approved text cannot be adapted during strict assembly; "
+                        "return overflow to content_mapping for revision"
+                    ),
+                )
             output_path = self.workspace.root / "final.pptx"
             template_path = _find_template_pptx(self.workspace)
 

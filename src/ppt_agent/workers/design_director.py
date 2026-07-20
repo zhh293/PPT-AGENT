@@ -58,8 +58,7 @@ def _llm_design(llm_client, outline: dict, template_meta: dict | None) -> dict:
         system="You are a presentation design director. Output only valid JSON.",
         phase="design_planning",
         fallback=fallback,
-        json_schema=DESIGN_PLAN_SCHEMA,
-        schema_name="slide_design_plan",
+        schema=DESIGN_PLAN_SCHEMA,
     )
 
     # Validate and fix

@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from ppt_agent.context.compression import compress_context
-from ppt_agent.llm.audit import log_model_call
+from ppt_agent.llm.audit import log_llm_fallback, log_model_call
 from ppt_agent.llm.config import ModelConfig, ProviderConfig, load_model_config
 from ppt_agent.llm.json_repair import repair_json
 from ppt_agent.llm.messages import LLMMessage, LLMResult
@@ -21,6 +21,29 @@ from ppt_agent.llm.providers.base import BaseLLMProvider, ProviderCapabilities
 from ppt_agent.llm.response_parser import parse_json_response
 
 logger = logging.getLogger(__name__)
+
+
+def _json_example_from_schema(schema: dict | None) -> dict:
+    """Build a compact example so DeepSeek JSON Mode sees the desired shape."""
+    if not schema:
+        return {}
+    if "anyOf" in schema:
+        return _json_example_from_schema(schema["anyOf"][0])
+    kind = schema.get("type")
+    if kind == "object":
+        properties = schema.get("properties", {})
+        required = schema.get("required", list(properties)[:6])
+        return {
+            key: _json_example_from_schema(properties.get(key, {}))
+            for key in required[:10]
+            if key in properties
+        }
+    if kind == "array":
+        return [_json_example_from_schema(schema.get("items", {}))]
+    if schema.get("enum"):
+        return schema["enum"][0]
+    return {"string": "example", "integer": 0, "number": 0.0,
+            "boolean": True}.get(kind, "example")
 
 
 def _create_provider(config: ProviderConfig) -> BaseLLMProvider:
@@ -76,6 +99,15 @@ class LLMClient:
         self.job_root = job_root
         self._capabilities = provider.capabilities()
         self._context_window = context_window or self._DEFAULT_CONTEXT_WINDOW
+        self._fallback_phases: set[str] = set()
+
+    def was_fallback(self, phase: str) -> bool:
+        return phase in self._fallback_phases
+
+    def _mark_fallback(self, phase: str, result: LLMResult) -> None:
+        self._fallback_phases.add(phase)
+        if self.job_root:
+            log_llm_fallback(self.job_root, phase, result)
 
     @classmethod
     def from_config(
@@ -160,8 +192,17 @@ class LLMClient:
         Returns the parsed dict. Falls back to `fallback` if provided
         and parsing fails. Raises RuntimeError if no fallback.
         """
-        # Add JSON instruction to system prompt
+        effective_schema = schema or json_schema
+
+        # DeepSeek JSON Mode requires the prompt to mention JSON and benefits
+        # from a concrete example of the desired structure.
         json_system = (system or "") + "\n\nYou MUST respond with ONLY a valid JSON object. No markdown, no explanation, no code fences."
+        if effective_schema:
+            example = json.dumps(
+                _json_example_from_schema(effective_schema),
+                ensure_ascii=False,
+            )
+            json_system += f"\nExpected JSON shape example: {example[:4000]}"
         json_system = json_system.strip()
 
         messages = self._build_messages(prompt, context, json_system)
@@ -181,22 +222,26 @@ class LLMClient:
             schema_name=schema_name if _use_schema else "",
         )
 
-        schema_name = schema.get("title", "") if schema else ""
+        _audit_schema_name = (
+            schema_name
+            or (effective_schema.get("title", "") if effective_schema else "")
+        )
         if self.job_root:
             log_model_call(
                 self.job_root, phase, result,
                 prompt_summary=prompt[:200],
-                schema_name=schema_name,
+                schema_name=_audit_schema_name,
             )
 
         if not result.success:
             logger.warning("LLM call failed: %s", result.error)
             if fallback is not None:
+                self._mark_fallback(phase, result)
                 return fallback
             raise RuntimeError(f"LLM call failed: {result.error}")
 
         # Parse and validate
-        data, warnings = parse_json_response(result, schema)
+        data, warnings = parse_json_response(result, effective_schema)
 
         if data is not None:
             if warnings:
@@ -205,18 +250,18 @@ class LLMClient:
 
         # Repair attempt: ask the model to fix its own output
         logger.warning("JSON parse failed, attempting repair. Warnings: %s", warnings)
-        repair_result = self._attempt_repair(result.text, messages, schema)
+        repair_result = self._attempt_repair(result.text, messages, effective_schema)
 
         if self.job_root and repair_result:
             repair_result.repaired = True
             log_model_call(
                 self.job_root, phase, repair_result,
                 prompt_summary="[repair]",
-                schema_name=schema_name,
+                schema_name=_audit_schema_name,
             )
 
         if repair_result and repair_result.success:
-            repair_data, repair_warnings = parse_json_response(repair_result, schema)
+            repair_data, repair_warnings = parse_json_response(repair_result, effective_schema)
             if repair_data is not None:
                 logger.info("JSON repair succeeded. Warnings: %s", repair_warnings)
                 return repair_data
@@ -224,6 +269,12 @@ class LLMClient:
         # All attempts failed
         logger.warning("JSON repair failed. Using fallback.")
         if fallback is not None:
+            fallback_result = LLMResult(
+                provider=result.provider,
+                model=result.model,
+                error="Model returned invalid or empty JSON and repair failed",
+            )
+            self._mark_fallback(phase, fallback_result)
             return fallback
         raise RuntimeError(
             f"Failed to get valid JSON from LLM after repair. "

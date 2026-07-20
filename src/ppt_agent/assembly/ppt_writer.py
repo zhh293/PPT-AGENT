@@ -89,6 +89,10 @@ def _add_text_overlay(slide, zone: dict) -> None:
     if not content:
         return
 
+    # Normalize: content may be a list (e.g. LLM assigned bullets to a title zone)
+    if isinstance(content, list):
+        content = content[0] if len(content) == 1 else "\n".join(str(c) for c in content)
+
     left, top, width, height = _emu_rect(position)
     txbox = slide.shapes.add_textbox(Emu(left), Emu(top), Emu(width), Emu(height))
     tf = txbox.text_frame
@@ -441,7 +445,11 @@ def _build_slide_with_background(
         elif zone_type == "image":
             # Add separate images in ALL modes — independently editable layer
             # on top of the background image (or solid-color fallback)
-            _add_image_zone(slide, zone, workspace_root)
+            # ``preserve`` only has meaning when a source template shape
+            # exists.  In blank fallback mode it must not manufacture a gray
+            # placeholder that was never requested.
+            if zone.get("action") != "preserve":
+                _add_image_zone(slide, zone, workspace_root)
         elif zone_type == "chart":
             _add_chart_zone(slide, zone)
         elif zone_type == "shape":
@@ -520,7 +528,8 @@ def _build_slide_legacy(
         elif zone_type in ("bullets", "body"):
             _add_bullets_zone(slide, zone)
         elif zone_type == "image":
-            _add_image_zone(slide, zone, workspace_root)
+            if zone.get("action") != "preserve":
+                _add_image_zone(slide, zone, workspace_root)
         elif zone_type == "chart":
             _add_chart_zone(slide, zone)
         elif zone_type == "shape":
@@ -647,17 +656,37 @@ def _inject_zone_ids(slide, tpl_slide: dict) -> dict[str, object]:
     if not all_zones:
         return {}
 
-    # Collect shapes with valid positions
+    # Resolve stable XML paths first, including descendants of group shapes.
+    path_map: dict[str, object] = {}
+
+    def collect_paths(shapes, prefix: str) -> None:
+        for ordinal, shape in enumerate(shapes):
+            native_id = getattr(shape, "shape_id", ordinal)
+            if hasattr(shape, "shapes"):
+                collect_paths(shape.shapes, f"{prefix}/group-{native_id}")
+            else:
+                path_map[f"{prefix}/shape-{native_id}"] = shape
+
+    collect_paths(slide.shapes, f"slide-{tpl_slide.get('index', 0) + 1}")
+
+    # Collect all leaf shapes for legacy geometric fallback.
     shape_candidates: list[tuple[float, float, float, float, object]] = []
-    for shape in slide.shapes:
-        try:
-            sx = (shape.left or 0) / SLIDE_W
-            sy = (shape.top or 0) / SLIDE_H
-            sw = (shape.width or 0) / SLIDE_W
-            sh = (shape.height or 0) / SLIDE_H
-            shape_candidates.append((sx, sy, sw, sh, shape))
-        except Exception:
-            continue
+
+    def collect_candidates(shapes) -> None:
+        for shape in shapes:
+            if hasattr(shape, "shapes"):
+                collect_candidates(shape.shapes)
+                continue
+            try:
+                sx = (shape.left or 0) / SLIDE_W
+                sy = (shape.top or 0) / SLIDE_H
+                sw = (shape.width or 0) / SLIDE_W
+                sh = (shape.height or 0) / SLIDE_H
+                shape_candidates.append((sx, sy, sw, sh, shape))
+            except Exception:
+                continue
+
+    collect_candidates(slide.shapes)
 
     # For each zone, find the BEST matching shape (then remove it from pool)
     zone_id_map: dict[str, object] = {}
@@ -670,6 +699,33 @@ def _inject_zone_ids(slide, tpl_slide: dict) -> dict[str, object]:
         zid = zone.get("zone_id", "")
         if not zid:
             continue
+        shape_path = zone.get("shape_path") or zid
+        path_shape = path_map.get(shape_path)
+        if path_shape is not None:
+            direct_idx = next(
+                (i for i, candidate in enumerate(shape_candidates)
+                 if i not in assigned_shape_indices and candidate[4] is path_shape),
+                None,
+            )
+            if direct_idx is not None:
+                zone_id_map[zid] = path_shape
+                assigned_shape_indices.add(direct_idx)
+                continue
+        native_shape_id = zone.get("native_shape_id")
+        if native_shape_id is not None:
+            direct_idx = next(
+                (
+                    i for i, (_sx, _sy, _sw, _sh, candidate) in enumerate(shape_candidates)
+                    if i not in assigned_shape_indices
+                    and getattr(candidate, "shape_id", None) == native_shape_id
+                ),
+                None,
+            )
+            if direct_idx is not None:
+                _sx, _sy, _sw, _sh, shape = shape_candidates[direct_idx]
+                zone_id_map[zid] = shape
+                assigned_shape_indices.add(direct_idx)
+                continue
         zx, zy, zw, zh = pos[0], pos[1], pos[2], pos[3]
         zone_area = zw * zh
 
@@ -766,18 +822,24 @@ def write_pptx_from_mapping(
 
     invalid_zone_ids: list[str] = []
     skipped_slides: list[int] = []
+    selected_template_indices: list[int] = []
 
     for idx, slide_data in enumerate(slides):
-        tpl_idx = idx % n_template
+        tpl_idx = int(slide_data.get("template_slide_index", idx % n_template))
         if tpl_idx >= len(prs.slides):
             logger.warning("Slide %d: template only has %d slides — skipping", idx, n_template)
             continue
 
+        selected_template_indices.append(tpl_idx)
         slide = prs.slides[tpl_idx]
         tpl_zone_data = tpl_slides_by_index.get(tpl_idx, {})
 
         # Inject zone_ids into shapes by position overlap
         zone_id_map = _inject_zone_ids(slide, tpl_zone_data)
+        strict_text_replace = (
+            slide_contents.get("assembly_policy", {}).get("mode", "text_replace_only")
+            == "text_replace_only"
+        )
 
         if not zone_id_map:
             logger.warning(
@@ -785,8 +847,9 @@ def write_pptx_from_mapping(
                 "falling back to heuristic overlay",
                 idx,
             )
-            _overlay_text_on_slide(slide, slide_data, workspace_root)
-            _replace_images_on_slide(slide, slide_data, workspace_root)
+            if not strict_text_replace:
+                _overlay_text_on_slide(slide, slide_data, workspace_root)
+                _replace_images_on_slide(slide, slide_data, workspace_root)
             continue
 
         slide_mappings = mappings.get(idx, {})
@@ -794,37 +857,98 @@ def write_pptx_from_mapping(
 
         if not slide_mappings and not img_mappings:
             skipped_slides.append(idx)
-            _overlay_text_on_slide(slide, slide_data, workspace_root)
-            _replace_images_on_slide(slide, slide_data, workspace_root)
+            if not strict_text_replace:
+                _overlay_text_on_slide(slide, slide_data, workspace_root)
+                _replace_images_on_slide(slide, slide_data, workspace_root)
             continue
 
         matched_zone_ids: set[str] = set()
 
         # ── Text replacement: zone_id → precise shape ──
-        for content_type, entry in slide_mappings.items():
+        for mapping_key, entry in slide_mappings.items():
             if not isinstance(entry, dict):
                 continue
 
             zid = entry.get("zone_id", "")
+            content_type = entry.get("type", mapping_key)
+            action = entry.get("action", "replace_text")
             content = entry.get("content")
             if not zid:
+                continue
+            if action == "preserve":
+                matched_zone_ids.add(zid)
+                continue
+
+            # _overlay_ prefixed zone_ids mean "add a new text box" —
+            # the template has no matching shape for this content type.
+            if zid.startswith("_overlay_"):
+                if strict_text_replace:
+                    invalid_zone_ids.append(zid)
+                    logger.warning("Slide %d: overlay zone '%s' rejected by strict policy", idx, zid)
+                elif content is not None:
+                    # Determine position from slide_data zones
+                    slide_zones = slide_data.get("zones", [])
+                    overlay_zone = _find_zone_by_id(slide_zones, zid)
+                    if overlay_zone:
+                        _add_text_overlay(slide, overlay_zone)
+                    else:
+                        # Fallback: use a sensible position
+                        if content_type == "title":
+                            _add_text_overlay(slide, {
+                                "type": "title", "content": content,
+                                "position": [0.08, 0.08, 0.84, 0.16],
+                            })
+                        elif content_type in ("bullets", "body"):
+                            _add_text_overlay(slide, {
+                                "type": "bullets", "content": content,
+                                "position": [0.10, 0.28, 0.56, 0.54],
+                            })
+                matched_zone_ids.add(zid)
                 continue
 
             shape = zone_id_map.get(zid)
             if shape is None:
-                invalid_zone_ids.append(zid)
-                logger.warning(
-                    "Slide %d: zone_id='%s' does not exist on the template slide "
-                    "(valid: %s) — skipping",
-                    idx, zid, sorted(zone_id_map.keys())[:10],
-                )
+                if strict_text_replace:
+                    invalid_zone_ids.append(zid)
+                    logger.warning(
+                        "Slide %d: zone_id='%s' does not exist on the template slide "
+                        "(valid: %s) — skipping",
+                        idx, zid, sorted(zone_id_map.keys())[:10],
+                    )
+                else:
+                    slide_zones = slide_data.get("zones", [])
+                    overlay_zone = _find_zone_by_id(slide_zones, zid)
+                    if overlay_zone:
+                        _add_text_overlay(slide, overlay_zone)
+                        matched_zone_ids.add(zid)
                 continue
 
-            if content is not None:
-                _apply_text_to_shape(
-                    shape,
-                    {"type": content_type, "content": content},
-                )
+            if action == "clear_text":
+                _clear_shape_text(shape)
+            elif content is not None:
+                # If the matched shape is a decoration / image / non-text
+                # element (no text_frame), create an overlay text box at
+                # the zone's position instead of silently failing.
+                if not (hasattr(shape, "has_text_frame") and shape.has_text_frame):
+                    if strict_text_replace:
+                        invalid_zone_ids.append(zid)
+                        logger.warning("Slide %d: zone '%s' is not an editable text shape", idx, zid)
+                        continue
+                    slide_zones = slide_data.get("zones", [])
+                    overlay_zone = _find_zone_by_id(slide_zones, zid)
+                    if overlay_zone:
+                        _add_text_overlay(slide, overlay_zone)
+                    else:
+                        _add_text_overlay(slide, {
+                            "type": content_type, "content": content,
+                            "position": [0.08, 0.08, 0.84, 0.16] if content_type == "title"
+                            else [0.10, 0.28, 0.56, 0.54],
+                        })
+                else:
+                    _apply_text_to_shape(
+                        shape,
+                        {"type": content_type, "content": content},
+                    )
             matched_zone_ids.add(zid)
 
         # ── Image replacement ──
@@ -843,26 +967,33 @@ def write_pptx_from_mapping(
 
         # ── Clear unmatched text shapes ──
         # 1) Shapes that matched a zone but got no content → clear.
-        for zid, shape in zone_id_map.items():
-            if zid not in matched_zone_ids:
-                _clear_shape_text(shape)
+        if not strict_text_replace:
+            for zid, shape in zone_id_map.items():
+                if zid not in matched_zone_ids:
+                    _clear_shape_text(shape)
 
         # 2) Shapes that didn't match ANY zone (page numbers,
         #    designer credits, decorative text) → clear to prevent
         #    old template placeholder text from leaking into output.
         #    Compare by .name (zone_id) — NOT by id(), because
         #    python-pptx creates new wrapper objects on each iteration.
-        matched_names = {s.name for s in zone_id_map.values()}
-        for shape in slide.shapes:
-            if shape.name not in matched_names:
-                _clear_shape_text(shape)
+        if not strict_text_replace:
+            matched_names = {s.name for s in zone_id_map.values()}
+            for shape in slide.shapes:
+                if shape.name not in matched_names:
+                    _clear_shape_text(shape)
 
     # ── Remove unused template slides (when outline < template) ──
-    n_outline = len(slides)
-    if n_outline < n_template:
-        # Delete slides from the end, working backwards so indices stay valid
-        for del_idx in range(n_template - 1, n_outline - 1, -1):
-            _delete_slide_by_index(prs, del_idx)
+    if len(set(selected_template_indices)) == len(selected_template_indices):
+        keep = set(selected_template_indices)
+        for del_idx in range(n_template - 1, -1, -1):
+            if del_idx not in keep:
+                _delete_slide_by_index(prs, del_idx)
+    else:
+        logger.warning(
+            "Template slide selection contains duplicates; source pages cannot "
+            "be reused safely in strict in-place assembly"
+        )
 
     # ── Summary ──
     if invalid_zone_ids:
@@ -1010,6 +1141,19 @@ def _overlay_text_on_slide(slide, slide_data: dict, workspace_root: Path | None)
     # Collect text shapes and classify by visual role (font-based)
     text_shapes = [s for s in slide.shapes if s.has_text_frame]
 
+    # No text shapes on this slide (e.g. cover with only images/decoration)
+    # → add new text boxes directly instead of trying to match template shapes.
+    if not text_shapes:
+        for zone in content_zones:
+            ztype = zone.get("type", "")
+            if ztype == "title":
+                _add_title_zone(slide, zone)
+            elif ztype in ("bullets", "body"):
+                _add_bullets_zone(slide, zone)
+            elif ztype == "subtitle":
+                _add_text_overlay(slide, zone)
+        return
+
     # Group shapes by inferred type role
     shape_groups: dict[str, list[int]] = {"title": [], "subtitle": [], "bullets": [], "body": [], "other": []}
     for si, shape in enumerate(text_shapes):
@@ -1140,19 +1284,33 @@ def _apply_text_to_shape(shape, zone: dict) -> None:
     else:
         items = [str(content)]
 
-    para_count = len(tf.paragraphs)
+    paragraphs = list(tf.paragraphs)
+    if not paragraphs:
+        return
 
-    # Write content to existing paragraphs
-    for i, item in enumerate(items):
-        if i < para_count:
-            p = tf.paragraphs[i]
-        else:
-            p = tf.add_paragraph()
-        p.text = str(item)
+    # Strict replacement does not add paragraphs, because doing so creates
+    # new paragraph/run properties.  Extra logical items become line breaks
+    # inside the last existing paragraph.
+    if len(items) > len(paragraphs):
+        keep = items[: len(paragraphs) - 1]
+        keep.append("\n".join(items[len(paragraphs) - 1 :]))
+        items = keep
 
-    # Clear leftover paragraphs (remove old template text)
-    for i in range(len(items), para_count):
-        tf.paragraphs[i].text = ""
+    for index, paragraph in enumerate(paragraphs):
+        value = items[index] if index < len(items) else ""
+        _replace_paragraph_text_preserving_runs(paragraph, value)
+
+
+def _replace_paragraph_text_preserving_runs(paragraph, text: str) -> None:
+    """Change characters while retaining the paragraph's existing run XML."""
+    runs = list(paragraph.runs)
+    if runs:
+        runs[0].text = str(text)
+        for run in runs[1:]:
+            run.text = ""
+        return
+    run = paragraph.add_run()
+    run.text = str(text)
 
 
 def _clear_shape_text(shape) -> None:
@@ -1161,9 +1319,17 @@ def _clear_shape_text(shape) -> None:
         return
     try:
         for p in shape.text_frame.paragraphs:
-            p.text = ""
+            _replace_paragraph_text_preserving_runs(p, "")
     except AttributeError:
         pass  # shape claims has_text_frame but has no text_frame (rare edge case)
+
+
+def _find_zone_by_id(slide_zones: list[dict], zone_id: str) -> dict | None:
+    """Return the zone dict with the given *zone_id*, or None."""
+    for z in slide_zones:
+        if z.get("zone_id") == zone_id:
+            return z
+    return None
 
 
 def _replace_images_on_slide(slide, slide_data: dict, workspace_root: Path | None) -> None:

@@ -382,3 +382,35 @@ Task: "T106 Implement GPTImage2 adapter in src/ppt_agent/skills/adapters/gptimag
 - Keep generated skills small and phase-specific; do not create one giant PPT skill.
 - Do not duplicate the GPTImage2 API logic; call the existing `gptimage2-generator` skill through an adapter.
 - Add new vector database support through `src/ppt_agent/retrieval/vector/` plus config, not through Worker rewrites.
+# Context-Aware Mapping Increment (2026-07-18)
+
+- [X] T200 Add native shape identity and compatibility metadata during template ingestion.
+- [X] T201 Extend slide-content contracts with explicit zone actions, traceability, and strict assembly policy.
+- [X] T202 Remove the deterministic three-zone/title-body bottleneck and preserve multiple same-type mappings.
+- [X] T203 Make strict assembly reject overlays and preserve existing run formatting and shape geometry.
+- [X] T204 Give the Mapping Agent source context, template original text, all zones, and fact-safe rewriting rules.
+- [X] T205 Add deterministic MappingPlan completeness, duplicate-assignment, source-traceability, and capacity validation.
+- [X] T206 Add template-slide incompatibility response and cross-page template slide reselection.
+- [X] T207 Add render-preview tools and a bounded Mapping Agent revise loop.
+- [X] T208 Compare geometry/format fingerprints after assembly and fail strict validation on drift.
+- [ ] T209 Run a real-model workflow evaluation and compare mapping coverage and rendered quality against the baseline deck.
+- [X] T210 Rebuild template zones recursively from the native PPTX/XML shape tree and retain group-aware stable paths.
+- [X] T211 Record shape/text rotation, vertical mode, capacity, and content eligibility so narrow or rotated zones cannot receive prose.
+- [X] T212 Make OCR audit-only and report unmatched visible text as non-editable baked-text regions.
+- [X] T213 Resolve grouped child shapes during assembly and verify displayed geometry/formatting by stable shape path.
+- [X] T214 Add a non-destructive in-place meta refresh operation and refresh the selected real template to schema 2.0.
+- [X] T215 Fill every editable template text zone and forbid `clear_text` or empty replacements in the default assembly policy.
+- [X] T216 Fit source-grounded replacement copy to the original character count, XML capacity hints, geometry, and text eligibility without resizing or font changes.
+- [X] T217 Repair incomplete or unsafe Agent mappings deterministically and add an assembly hard gate that `--force` cannot bypass.
+- [X] T218 Synchronize overlapping duplicate/shadow text layers so visually stacked template typography receives identical copy.
+- [X] T219 Emit `mapping_diagnostics.json` and remove non-text formatting false positives from strict verification.
+
+# DeepSeek Structured Output Compatibility Increment (2026-07-19)
+
+- [X] T220 Add provider tests proving DeepSeek JSON generation uses JSON Mode without `tools` or forced `tool_choice`.
+- [X] T221 Separate JSON Mode, strict Tool Calls, and forced-tool capabilities in the LLM provider abstraction.
+- [X] T222 Make structured artifact generation use JSON Mode with schema-derived examples and empty-content retry/repair.
+- [X] T223 Simplify `SLIDE_CONTENTS_SCHEMA` to DeepSeek-supported types and deterministic mapping fields.
+- [X] T224 Record LLM fallback use in model/history logs and mark affected mapping batches for review.
+- [X] T225 Refresh legacy selected-template metadata and make mapping diagnostics treat legacy text zones as editable.
+- [X] T226 Add an atomic server job-run lock and expose `completed_with_fallbacks` instead of silent success.

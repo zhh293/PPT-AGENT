@@ -22,6 +22,7 @@ Usage::
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import shutil
@@ -31,6 +32,7 @@ from pathlib import Path
 
 from PIL import Image
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pptx.util import Emu
 
 from ppt_agent.tools.ocr import classify_zones, ocr_slide_image
@@ -132,14 +134,16 @@ def ingest_template(
         # Also extract shape-level info for richer zone data
         pptx_zones = _zones_from_pptx_shapes(prs.slides[idx], idx)
 
-        # Merge: prefer OCR zones for text, supplement with shape zones
+        # XML shapes are the only writable zones. OCR is audit evidence only.
         merged_zones = _merge_zone_sources(zones, pptx_zones)
+        baked_text_regions = _unmatched_ocr_zones(zones, pptx_zones)
 
         slide_meta = {
             "index": idx,
             "image_path": str(image_path.relative_to(template_dir)) if image_path and image_path.exists() else None,
             "zones": merged_zones,
             "ocr_text": ocr_text,
+            "baked_text_regions": baked_text_regions,
         }
         slides_meta.append(slide_meta)
 
@@ -155,6 +159,9 @@ def ingest_template(
 
     # 6. Write meta.json
     meta = {
+        "meta_schema_version": "2.0",
+        "parser_strategy": "pptx_xml_recursive",
+        "template_sha256": hashlib.sha256(pptx_path.read_bytes()).hexdigest(),
         "template_id": template_id,
         "style": f"{color_scheme} {domain} template",
         "slide_count": slide_count,
@@ -429,7 +436,7 @@ def _is_template_noise(text: str, x: float, y: float, w: float, h: float) -> boo
     return False
 
 
-def _zones_from_pptx_shapes(slide, slide_index: int,
+def _zones_from_pptx_shapes_legacy(slide, slide_index: int,
                              slide_w: int | None = None,
                              slide_h: int | None = None) -> list[dict]:
     """Extract zone information from python-pptx shape objects.
@@ -498,17 +505,20 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
                 else:
                     zone_type = "body"
             else:
-                # Non-placeholder text box
-                # Only classify as content zone if it's in the main content area
-                if y < 0.25 and w > 0.15 and h > 0.03:
+                # ── Non-placeholder text box with actual text ──
+                # Classify by position AND area rather than strict y/w
+                # thresholds that miss edge cases (e.g. full-image slides
+                # where text is placed outside the conventional y<0.25 zone).
+                area = w * h
+                if area < 0.002:
+                    # Too tiny to hold readable text → skip
+                    continue
+                if y < 0.35 and area > 0.003:
                     zone_type = "title"
-                elif 0.20 < y < 0.80 and w > 0.15:
-                    zone_type = "body"
-                elif y > 0.85:
+                elif y > 0.80 and w < 0.95:
                     zone_type = "footer"
                 else:
-                    # Narrow or edge text — skip as decoration
-                    continue
+                    zone_type = "body"
 
         elif hasattr(shape, "image"):
             try:
@@ -523,16 +533,280 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
         # ── Refine zone type using font size ──
         zone_type = _refine_zone_type(zone_type, formatting, y, w, h)
 
+        native_shape_id = getattr(shape, "shape_id", i)
+        shape_path = f"slide-{slide_index + 1}/shape-{native_shape_id}"
+        geometry_payload = ":".join(
+            str(value) for value in (shape.left, shape.top, shape.width, shape.height)
+        )
+        formatting_payload = json.dumps(formatting, sort_keys=True, ensure_ascii=False)
+
         zones.append({
-            "zone_id": f"s{slide_index}_shape{i}",
+            "zone_id": shape_path,
+            "legacy_zone_id": f"s{slide_index}_shape{i}",
+            "native_shape_id": native_shape_id,
+            "shape_path": shape_path,
+            "shape_name": getattr(shape, "name", ""),
             "type": zone_type,
             "position": [round(x, 4), round(y, 4), round(w, 4), round(h, 4)],
             "text": text_content,
+            "original_text": text_content,
+            "editable": bool(shape.has_text_frame),
             "formatting": formatting,
-            "confidence": 100.0,
+            "geometry_fingerprint": hashlib.sha256(
+                geometry_payload.encode("utf-8")
+            ).hexdigest()[:16],
+            "formatting_fingerprint": hashlib.sha256(
+                formatting_payload.encode("utf-8")
+            ).hexdigest()[:16],
+            "confidence": 0.85 if text_content else 0.65,
             "source": "pptx_shape",
         })
 
+    return zones
+
+
+def _group_child_transform(group, displayed: tuple[float, float, float, float]):
+    """Return an affine transform from group child coordinates to the slide."""
+    gx, gy, gw, gh = displayed
+    try:
+        xfrm = group._element.grpSpPr.xfrm
+        ch_off_x = float(xfrm.chOff.x)
+        ch_off_y = float(xfrm.chOff.y)
+        ch_ext_x = float(xfrm.chExt.cx) or 1.0
+        ch_ext_y = float(xfrm.chExt.cy) or 1.0
+    except Exception:
+        ch_off_x = float(group.left or 0)
+        ch_off_y = float(group.top or 0)
+        ch_ext_x = float(group.width or 1)
+        ch_ext_y = float(group.height or 1)
+    scale_x = gw / ch_ext_x
+    scale_y = gh / ch_ext_y
+    return (
+        gx - ch_off_x * scale_x,
+        gy - ch_off_y * scale_y,
+        scale_x,
+        scale_y,
+    )
+
+
+def _iter_shapes_recursive(shapes, slide_index: int):
+    """Yield all leaf shapes with group-aware identity and displayed geometry."""
+
+    def walk(collection, parent_ids, prefix, transform, parent_rotation, depth):
+        offset_x, offset_y, scale_x, scale_y = transform
+        for ordinal, shape in enumerate(collection):
+            raw_x = float(shape.left or 0)
+            raw_y = float(shape.top or 0)
+            raw_w = float(shape.width or 0)
+            raw_h = float(shape.height or 0)
+            displayed = (
+                offset_x + raw_x * scale_x,
+                offset_y + raw_y * scale_y,
+                raw_w * scale_x,
+                raw_h * scale_y,
+            )
+            native_id = int(getattr(shape, "shape_id", ordinal))
+            rotation = float(getattr(shape, "rotation", 0.0) or 0.0)
+            if getattr(shape, "shape_type", None) == MSO_SHAPE_TYPE.GROUP:
+                yield from walk(
+                    shape.shapes,
+                    [*parent_ids, native_id],
+                    f"{prefix}/group-{native_id}",
+                    _group_child_transform(shape, displayed),
+                    (parent_rotation + rotation) % 360,
+                    depth + 1,
+                )
+                continue
+            yield {
+                "shape": shape,
+                "shape_path": f"{prefix}/shape-{native_id}",
+                "parent_group_ids": parent_ids,
+                "shape_depth": depth,
+                "displayed_geometry": displayed,
+                "parent_rotation": parent_rotation,
+            }
+
+    yield from walk(
+        shapes, [], f"slide-{slide_index + 1}",
+        (0.0, 0.0, 1.0, 1.0), 0.0, 0,
+    )
+
+
+def _text_direction(shape, parent_rotation: float) -> dict:
+    shape_rotation = float(getattr(shape, "rotation", 0.0) or 0.0) % 360
+    text_rotation = 0.0
+    vertical_mode = "horizontal"
+    try:
+        body_pr = shape.text_frame._txBody.bodyPr
+        vertical_attr = body_pr.get("vert")
+        if vertical_attr and vertical_attr != "horz":
+            vertical_mode = vertical_attr
+        raw_text_rotation = body_pr.get("rot")
+        if raw_text_rotation:
+            text_rotation = float(raw_text_rotation) / 60000.0
+    except Exception:
+        pass
+    effective = (parent_rotation + shape_rotation + text_rotation) % 360
+    return {
+        "shape_rotation_deg": round(shape_rotation, 3),
+        "text_rotation_deg": round(text_rotation, 3),
+        "parent_rotation_deg": round(parent_rotation % 360, 3),
+        "effective_rotation_deg": round(effective, 3),
+        "vertical_mode": vertical_mode,
+    }
+
+
+def _content_constraints(zone_type: str, position: list[float],
+                         direction: dict, is_noise: bool) -> dict:
+    _x, _y, width, height = position
+    aspect_ratio = width / height if height else 0.0
+    effective = direction["effective_rotation_deg"]
+    rotated = min(abs(effective - 90), abs(effective - 270)) <= 10
+    vertical = direction["vertical_mode"] != "horizontal" or rotated
+    narrow = width < 0.08 or aspect_ratio < 0.4
+    if is_noise or zone_type == "footer":
+        eligibility = "decorative"
+    elif vertical or narrow:
+        eligibility = "short_label"
+    elif zone_type in ("title", "subtitle"):
+        eligibility = "title"
+    else:
+        eligibility = "body"
+    max_lines = max(1, int(height / 0.035))
+    max_chars = min(600, max_lines * max(2, int(width / 0.018)))
+    if eligibility == "short_label":
+        max_chars = min(max_chars, 12)
+    return {
+        "content_eligibility": eligibility,
+        "supports_long_text": eligibility == "body" and max_chars >= 40,
+        "max_chars_hint": max_chars,
+        "max_lines_hint": max_lines,
+        "aspect_ratio": round(aspect_ratio, 3),
+        "is_narrow": narrow,
+    }
+
+
+def _zones_from_pptx_shapes(slide, slide_index: int,
+                            slide_w: int | None = None,
+                            slide_h: int | None = None) -> list[dict]:
+    """Build zones exclusively from the complete native PPTX/XML shape tree."""
+    if slide_w is None:
+        try:
+            slide_w = slide.part.slide_layout.part.package.presentation_part.presentation.slide_width
+        except AttributeError:
+            slide_w = 12192000
+    if slide_h is None:
+        try:
+            slide_h = slide.part.slide_layout.part.package.presentation_part.presentation.slide_height
+        except AttributeError:
+            slide_h = 6858000
+
+    zones: list[dict] = []
+    for item_index, item in enumerate(_iter_shapes_recursive(slide.shapes, slide_index)):
+        shape = item["shape"]
+        left, top, width, height = item["displayed_geometry"]
+        x = max(0.0, min(1.0, left / slide_w if left else 0.0))
+        y = max(0.0, min(1.0, top / slide_h if top else 0.0))
+        width_n = max(0.0, min(1.0 - x, width / slide_w if width else 0.0))
+        height_n = max(0.0, min(1.0 - y, height / slide_h if height else 0.0))
+        has_text = bool(getattr(shape, "has_text_frame", False))
+        if width_n > 0.95 and height_n > 0.95 and not has_text:
+            continue
+        if width_n < 0.01 and height_n < 0.01 and not has_text:
+            continue
+
+        zone_type = "decorative"
+        text_content = ""
+        is_placeholder = False
+        if has_text:
+            text_content = "\n".join(
+                paragraph.text for paragraph in shape.text_frame.paragraphs
+                if paragraph.text.strip()
+            )
+            try:
+                placeholder = shape.placeholder_format
+            except ValueError:
+                placeholder = None
+            if placeholder is not None:
+                is_placeholder = True
+                placeholder_type = placeholder.type
+                if placeholder_type in (1, 3, 15):
+                    zone_type = "title"
+                elif placeholder_type in (2, 4):
+                    zone_type = "subtitle"
+                else:
+                    zone_type = "body"
+            else:
+                area = width_n * height_n
+                if area < 0.002:
+                    zone_type = "decorative"
+                elif y < 0.35 and area > 0.003:
+                    zone_type = "title"
+                elif y > 0.80 and width_n < 0.95:
+                    zone_type = "footer"
+                else:
+                    zone_type = "body"
+        elif hasattr(shape, "image"):
+            try:
+                _ = shape.image
+                zone_type = "image"
+            except Exception:
+                pass
+
+        is_text_box = getattr(shape, "shape_type", None) == MSO_SHAPE_TYPE.TEXT_BOX
+        editable = has_text and bool(text_content or is_placeholder or is_text_box)
+        if not editable and zone_type not in ("image", "chart"):
+            continue
+
+        formatting = _extract_shape_formatting(shape) if editable else {}
+        zone_type = _refine_zone_type(
+            zone_type, formatting, y, width_n, height_n
+        )
+        position = [
+            round(x, 4), round(y, 4), round(width_n, 4), round(height_n, 4)
+        ]
+        is_noise = editable and _is_template_noise(
+            text_content, x, y, width_n, height_n
+        )
+        direction = _text_direction(shape, item["parent_rotation"])
+        constraints = (
+            _content_constraints(zone_type, position, direction, is_noise)
+            if editable else {}
+        )
+        native_shape_id = int(getattr(shape, "shape_id", item_index))
+        geometry_payload = ":".join(
+            str(round(value, 3)) for value in (left, top, width, height)
+        )
+        formatting_payload = json.dumps(
+            formatting, sort_keys=True, ensure_ascii=False
+        )
+        zones.append({
+            "zone_id": item["shape_path"],
+            "legacy_zone_id": f"s{slide_index}_shape{item_index}",
+            "native_shape_id": native_shape_id,
+            "shape_path": item["shape_path"],
+            "shape_name": getattr(shape, "name", ""),
+            "shape_type": str(getattr(shape, "shape_type", "unknown")),
+            "shape_depth": item["shape_depth"],
+            "parent_group_ids": item["parent_group_ids"],
+            "type": zone_type,
+            "position": position,
+            "text": text_content,
+            "original_text": text_content,
+            "editable": editable,
+            "semantic_role": "template_noise" if is_noise else zone_type,
+            "formatting": formatting,
+            **direction,
+            **constraints,
+            "geometry_fingerprint": hashlib.sha256(
+                geometry_payload.encode("utf-8")
+            ).hexdigest()[:16],
+            "formatting_fingerprint": hashlib.sha256(
+                formatting_payload.encode("utf-8")
+            ).hexdigest()[:16],
+            "confidence": 1.0,
+            "source": "pptx_xml",
+        })
     return zones
 
 
@@ -549,9 +823,10 @@ def _refine_zone_type(zone_type: str, fmt: dict,
     font_name = fmt.get("font_name", "")
 
     if font_pt is None:
-        # No font data + no text = decorative, not a content slot
-        if zone_type in ("title", "subtitle", "body") and w < 0.15:
-            return "decoration"
+        # Font data may be inherited from slide master.  Don't demote the
+        # zone type — the original classification (from placeholder type or
+        # position heuristic) is more trustworthy than the absence of
+        # explicit font data.
         return zone_type
 
     # ── Strong title signals ──
@@ -674,6 +949,27 @@ def _extract_shape_formatting(shape) -> dict:
             if fmt["font_color"]:
                 break
 
+    # ── Last resort: try paragraph-level (may expose inherited formatting
+    #     that run-level font does not) ──
+    if fmt["font_name"] is None:
+        for p in tf.paragraphs:
+            if p.font.name:
+                fmt["font_name"] = p.font.name
+                break
+    if fmt["font_size_pt"] is None:
+        for p in tf.paragraphs:
+            if p.font.size:
+                fmt["font_size_pt"] = round(p.font.size / 12700, 1)
+                break
+    if fmt["font_color"] is None:
+        for p in tf.paragraphs:
+            try:
+                if p.font.color and p.font.color.type is not None:
+                    fmt["font_color"] = str(p.font.color.rgb)
+                    break
+            except Exception:
+                pass
+
     return fmt
 
 
@@ -681,19 +977,13 @@ def _merge_zone_sources(
     ocr_zones: list[dict],
     shape_zones: list[dict],
 ) -> list[dict]:
-    """Merge OCR-detected zones with python-pptx shape zones.
-
-    OCR zones have visual text positions; shape zones have structural info.
-    We keep all shape zones and supplement with OCR zones that don't overlap.
-    """
-    if not ocr_zones:
+    """Annotate XML zones from OCR without creating writable OCR zones."""
+    if not ocr_zones or not shape_zones:
         return shape_zones
-    if not shape_zones:
-        return ocr_zones
 
     merged = list(shape_zones)  # Start with shape zones (structural truth)
 
-    # Add OCR zones that don't significantly overlap with any shape zone
+    # OCR may confirm rendered text, but it never becomes an execution address.
     for ocr_z in ocr_zones:
         overlaps = False
         for shape_z in shape_zones:
@@ -703,11 +993,26 @@ def _merge_zone_sources(
                     shape_z["ocr_text"] = ocr_z["text"]
                 overlaps = True
                 break
-        if not overlaps:
-            ocr_z["source"] = "ocr"
-            merged.append(ocr_z)
-
     return merged
+
+
+def _unmatched_ocr_zones(ocr_zones: list[dict], shape_zones: list[dict]) -> list[dict]:
+    """Return visible OCR regions that cannot be addressed as PPTX text shapes."""
+    unmatched: list[dict] = []
+    for zone in ocr_zones:
+        if any(
+            _zones_overlap(zone.get("position", [0, 0, 0, 0]),
+                           shape.get("position", [0, 0, 0, 0]), threshold=0.3)
+            for shape in shape_zones if shape.get("editable")
+        ):
+            continue
+        unmatched.append({
+            "position": zone.get("position", [0, 0, 0, 0]),
+            "text": zone.get("text", ""),
+            "source": "ocr_audit",
+            "editable": False,
+        })
+    return unmatched
 
 
 def _zones_overlap(
@@ -741,6 +1046,75 @@ def _zones_overlap(
         return False
 
     return (intersection / min_area) > threshold
+
+
+def refresh_template_meta(template_dir: str | Path, *, run_ocr: bool = False) -> dict:
+    """Safely rebuild ``meta.json`` for an existing template in place.
+
+    Unlike ``auto_ingest(..., force=True)``, this operation never deletes the
+    template directory. Native PPTX/XML zones are always rebuilt; OCR is an
+    optional rendered-text audit and cannot create editable zones.
+    """
+    template_dir = Path(template_dir).resolve()
+    pptx_path = template_dir / "template.pptx"
+    meta_path = template_dir / "meta.json"
+    if not pptx_path.exists():
+        raise FileNotFoundError(f"Template PPTX not found: {pptx_path}")
+    previous = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    previous_slides = {
+        int(slide.get("index", index)): slide
+        for index, slide in enumerate(previous.get("slides", []))
+    }
+    presentation = Presentation(str(pptx_path))
+    slides_meta: list[dict] = []
+    for index, slide in enumerate(presentation.slides):
+        old_slide = previous_slides.get(index, {})
+        shape_zones = _zones_from_pptx_shapes(
+            slide, index, presentation.slide_width, presentation.slide_height
+        )
+        ocr_text = old_slide.get("ocr_text", "")
+        baked_text_regions = old_slide.get("baked_text_regions", [])
+        if run_ocr:
+            candidates = []
+            if old_slide.get("image_path"):
+                candidates.append(template_dir / old_slide["image_path"])
+            candidates.extend([
+                template_dir / "preview" / f"slide_{index:02d}.png",
+                template_dir / "slides" / f"slide_{index:02d}.png",
+            ])
+            image_path = next((path for path in candidates if path.exists()), None)
+            if image_path is not None:
+                regions = ocr_slide_image(image_path)
+                ocr_zones = classify_zones(regions, slide_index=index)
+                ocr_text = " ".join(region.text for region in regions)
+                shape_zones = _merge_zone_sources(ocr_zones, shape_zones)
+                baked_text_regions = _unmatched_ocr_zones(ocr_zones, shape_zones)
+        slides_meta.append({
+            **old_slide,
+            "index": index,
+            "layout": _infer_layout(shape_zones, index),
+            "zones": shape_zones,
+            "ocr_text": ocr_text,
+            "baked_text_regions": baked_text_regions,
+        })
+
+    refreshed = {
+        **previous,
+        "meta_schema_version": "2.0",
+        "parser_strategy": "pptx_xml_recursive",
+        "template_sha256": hashlib.sha256(pptx_path.read_bytes()).hexdigest(),
+        "slide_count": len(slides_meta),
+        "slides": slides_meta,
+    }
+    if not refreshed.get("template_id"):
+        refreshed["template_id"] = template_dir.name
+    if not refreshed.get("style"):
+        refreshed["style"] = "PPTX template"
+    meta_path.write_text(
+        json.dumps(refreshed, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return refreshed
 
 
 def _update_index(templates_root: Path, entry: dict) -> None:
@@ -888,6 +1262,7 @@ def auto_ingest(
         image_path = slide_images.get(idx)
 
         ocr_text = ""
+        baked_text_regions: list[dict] = []
         if image_path and image_path.exists():
             try:
                 regions = ocr_slide_image(image_path)
@@ -895,6 +1270,7 @@ def auto_ingest(
                 ocr_text = " ".join(r.text for r in regions)
                 all_ocr_text.append(ocr_text)
                 merged_zones = _merge_zone_sources(ocr_zones, shape_zones)
+                baked_text_regions = _unmatched_ocr_zones(ocr_zones, shape_zones)
             except Exception:
                 merged_zones = shape_zones
         else:
@@ -918,10 +1294,15 @@ def auto_ingest(
             "index": idx,
             "layout": layout,
             "zones": merged_zones,
+            "ocr_text": ocr_text,
+            "baked_text_regions": baked_text_regions,
         })
 
     # ── Write meta.json ────────────────────────────────────────────
     meta = {
+        "meta_schema_version": "2.0",
+        "parser_strategy": "pptx_xml_recursive",
+        "template_sha256": hashlib.sha256(pptx_path.read_bytes()).hexdigest(),
         "template_id": template_id,
         "domain": domain,
         "scene": scene,

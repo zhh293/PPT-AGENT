@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import shutil
 import threading
 from pathlib import Path
@@ -45,6 +46,38 @@ app.add_middleware(
 # In-memory event queues per job, subscribers get async queue
 _event_subscribers: dict[str, list[asyncio.Queue]] = {}
 _lock = threading.Lock()
+
+
+def _acquire_job_run_lock(job_path: Path) -> bool:
+    """Atomically claim a job so duplicate HTTP requests cannot run it twice."""
+    lock_path = Path(job_path) / ".run.lock"
+    try:
+        fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        return False
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        handle.write(str(os.getpid()))
+    return True
+
+
+def _release_job_run_lock(job_path: Path) -> None:
+    (Path(job_path) / ".run.lock").unlink(missing_ok=True)
+
+
+def _fallbacks_since(log_path: Path, start_offset: int) -> list[dict]:
+    if not log_path.exists():
+        return []
+    with log_path.open("r", encoding="utf-8") as handle:
+        handle.seek(start_offset)
+        records: list[dict] = []
+        for line in handle:
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if record.get("status") == "fallback":
+                records.append(record)
+        return records
 
 
 def _broadcast_event(job_id: str, event: dict) -> None:
@@ -135,15 +168,20 @@ def _get_job_status(job_path: Path) -> JobInfo:
                     current = p
                     break
 
-    # Try to read job.json for created_at
+    # Preserve explicit failure/fallback states instead of deriving a false
+    # clean success solely from artifact existence.
     created_at = None
+    declared_status = None
     job_json = job_path / "job.json"
     if job_json.exists():
         try:
             data = json.loads(job_json.read_text())
             created_at = data.get("created_at")
+            declared_status = data.get("status")
         except Exception:
             pass
+    if declared_status in {"failed", "completed_with_fallbacks"}:
+        status = declared_status
 
     return JobInfo(
         job_id=job_id,
@@ -223,6 +261,11 @@ async def create_new_job(
 async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTasks) -> dict:
     """Start running a job in the background."""
     job_path = _get_job_path(job_id)
+    if not _acquire_job_run_lock(job_path):
+        return {"status": "already_running", "job_id": job_id}
+
+    model_log = job_path / "model_calls.jsonl"
+    model_log_offset = model_log.stat().st_size if model_log.exists() else 0
 
     def _run():
         try:
@@ -235,7 +278,25 @@ async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTask
             )
             job_json = job_path / "job.json"
             meta = json.loads(job_json.read_text()) if job_json.exists() else {}
-            meta["status"] = "completed"
+            fallbacks = _fallbacks_since(model_log, model_log_offset)
+            preserve_prior_fallback = (
+                meta.get("status") == "completed_with_fallbacks" and not req.force
+            )
+            meta["status"] = (
+                "completed_with_fallbacks"
+                if fallbacks or preserve_prior_fallback
+                else "completed"
+            )
+            prior_count = int(meta.get("llm_fallback_count", 0) or 0)
+            meta["llm_fallback_count"] = (
+                (prior_count if preserve_prior_fallback else 0) + len(fallbacks)
+            )
+            if fallbacks:
+                prior_phases = meta.get("llm_fallback_phases", []) if preserve_prior_fallback else []
+                meta["llm_fallback_phases"] = sorted({
+                    *[str(item) for item in prior_phases],
+                    *[str(item.get("phase", "")) for item in fallbacks],
+                })
             job_json.write_text(json.dumps(meta, indent=2))
         except Exception as e:
             job_json = job_path / "job.json"
@@ -243,6 +304,8 @@ async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTask
             meta["status"] = "failed"
             meta["error"] = str(e)
             job_json.write_text(json.dumps(meta, indent=2))
+        finally:
+            _release_job_run_lock(job_path)
 
     background_tasks.add_task(_run)
     return {"status": "started", "job_id": job_id}

@@ -1,14 +1,126 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import logging
 from pathlib import Path
+
+from pptx import Presentation
 
 from ppt_agent.coordinator.phase_state import load_artifact, write_artifact
 from ppt_agent.models.artifacts import JobWorkspace
 from ppt_agent.models.validation import validation_report
 
 logger = logging.getLogger(__name__)
+
+
+def _strict_assembly_invariants(
+    final_pptx: Path,
+    template_zones: dict,
+    slide_contents: dict,
+) -> dict:
+    """Verify that strict assembly changed text/image payloads only.
+
+    Geometry and formatting are compared with fingerprints captured during
+    template ingestion.  Slides in the output are aligned to the selected
+    template pages recorded by the mapper.
+    """
+    from ppt_agent.templates.ingest import _extract_shape_formatting, _iter_shapes_recursive
+
+    result = {"applicable": False, "passed": True, "checked_zones": 0, "issues": []}
+    if slide_contents.get("assembly_policy", {}).get("mode") != "text_replace_only":
+        return result
+    if not final_pptx.exists():
+        return result
+
+    template_by_index = {
+        int(slide.get("index", index)): slide
+        for index, slide in enumerate(template_zones.get("slides", []))
+    }
+    if not any(
+        zone.get("geometry_fingerprint") or zone.get("formatting_fingerprint")
+        for slide in template_by_index.values()
+        for zone in slide.get("all_zones", [])
+    ):
+        return result
+
+    result["applicable"] = True
+    presentation = Presentation(str(final_pptx))
+    for output_index, mapped_slide in enumerate(slide_contents.get("slides", [])):
+        if output_index >= len(presentation.slides):
+            result["issues"].append({
+                "slide_index": output_index,
+                "kind": "missing_output_slide",
+            })
+            continue
+        template_index = int(mapped_slide.get("template_slide_index", output_index))
+        template_slide = template_by_index.get(template_index, {})
+        shape_items = list(_iter_shapes_recursive(
+            presentation.slides[output_index].shapes, template_index
+        ))
+        shapes_by_path = {item["shape_path"]: item for item in shape_items}
+        shapes_by_id = {
+            int(item["shape"].shape_id): item for item in shape_items
+        }
+        for zone in template_slide.get("all_zones", []):
+            expected_geometry = zone.get("geometry_fingerprint")
+            # Font/paragraph formatting only applies to editable text shapes.
+            # Non-text zones store an empty-dict fingerprint during ingestion;
+            # comparing that to a text-format default dict creates false drift.
+            expected_formatting = (
+                zone.get("formatting_fingerprint") if zone.get("editable") else None
+            )
+            if not expected_geometry and not expected_formatting:
+                continue
+            result["checked_zones"] += 1
+            native_shape_id = zone.get("native_shape_id")
+            item = shapes_by_path.get(zone.get("shape_path") or zone.get("zone_id"))
+            if item is None and native_shape_id is not None:
+                item = shapes_by_id.get(int(native_shape_id))
+            if item is None:
+                result["issues"].append({
+                    "slide_index": output_index,
+                    "template_slide_index": template_index,
+                    "zone_id": zone.get("zone_id", ""),
+                    "kind": "missing_shape",
+                })
+                continue
+            shape = item["shape"]
+
+            geometry_payload = ":".join(
+                str(round(value, 3)) for value in item["displayed_geometry"]
+            )
+            actual_geometry = hashlib.sha256(
+                geometry_payload.encode("utf-8")
+            ).hexdigest()[:16]
+            if expected_geometry and actual_geometry != expected_geometry:
+                result["issues"].append({
+                    "slide_index": output_index,
+                    "template_slide_index": template_index,
+                    "zone_id": zone.get("zone_id", ""),
+                    "kind": "geometry_drift",
+                    "expected": expected_geometry,
+                    "actual": actual_geometry,
+                })
+
+            formatting_payload = json.dumps(
+                _extract_shape_formatting(shape), sort_keys=True, ensure_ascii=False
+            )
+            actual_formatting = hashlib.sha256(
+                formatting_payload.encode("utf-8")
+            ).hexdigest()[:16]
+            if expected_formatting and actual_formatting != expected_formatting:
+                result["issues"].append({
+                    "slide_index": output_index,
+                    "template_slide_index": template_index,
+                    "zone_id": zone.get("zone_id", ""),
+                    "kind": "formatting_drift",
+                    "expected": expected_formatting,
+                    "actual": actual_formatting,
+                })
+
+    result["passed"] = not result["issues"]
+    return result
 
 # ── Visual audit integration ──
 try:
@@ -90,8 +202,7 @@ def _fresh_eyes_validation(workspace: JobWorkspace, llm_client) -> dict:
         system=_FRESH_EYES_SYSTEM,
         phase="verification",
         fallback=fallback,
-        json_schema=VERIFICATION_SCHEMA,
-        schema_name="validation_report",
+        schema=VERIFICATION_SCHEMA,
     )
 
     # Ensure expected keys are present
@@ -122,8 +233,26 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
 
     report = validation_report(workspace.root.name, slide_contents, warnings)
 
-    # ── Visual audit (PPTX structural check, no image rendering needed) ──
+    # Strict text-only assembly must be mechanically provable: no shape
+    # movement/resizing and no typography drift relative to ingested zones.
     final_pptx = workspace.root / "final.pptx"
+    template_zones_path = workspace.artifact_path("template_zones")
+    if template_zones_path.exists():
+        invariant_report = _strict_assembly_invariants(
+            final_pptx,
+            load_artifact(workspace, "template_zones"),
+            slide_contents,
+        )
+        report["strict_assembly_invariants"] = invariant_report
+        if invariant_report["applicable"] and not invariant_report["passed"]:
+            report["status"] = "failed"
+            message = (
+                "Strict assembly invariant failure: "
+                f"{len(invariant_report['issues'])} geometry/format issue(s)."
+            )
+            report["manual_review_items"].append(message)
+
+    # ── Visual audit (PPTX structural check, no image rendering needed) ──
     if final_pptx.exists() and visual_audit_pptx is not None:
         try:
             visual_report = visual_audit_pptx(final_pptx)

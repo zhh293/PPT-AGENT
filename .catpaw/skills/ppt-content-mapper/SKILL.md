@@ -1,50 +1,88 @@
+---
+description: Strict LLM-first mapping of source-grounded presentation copy into exact template zones without resizing, hard truncation, missing slides, or preserved sample business text.
+---
+
 # PPT Content Mapper
 
-Map approved outline content into template zones to produce `slide_contents.json`.
+Produce a complete `slide_contents.json` by adapting approved outline content
+to the real editable zones of the selected PowerPoint template.
 
-## CRITICAL RULES — VIOLATING THESE WILL BREAK THE PIPELINE
+## Non-negotiable output contract
 
-### 1. Position — COPY, NEVER INVENT
+1. Return exactly the requested `expected_slide_indices`. Never renumber a
+   batch locally and never omit, duplicate, merge, or reorder a slide.
+2. Copy `template_slide_index` and every `zone_id` exactly. A zone ID is an
+   execution address, not a content decision rule.
+3. Do not request or imply overlays, new text boxes, geometry changes, font
+   changes, font-size changes, or position changes.
+4. Every editable business text zone must use `replace_text` with non-empty,
+   source-grounded copy. `preserve` is allowed only for intentional brand,
+   page-number, date, competition, or footer chrome. Never preserve template
+   sample business claims, metrics, names, categories, or financial data.
+5. Use as many editable zones as the template page contains. There is no
+   three-zone limit.
 
-Every zone in the output MUST use the exact `position` array from the matching template zone in `all_zones`. You are FORBIDDEN from calculating, guessing, estimating, or inventing positions. The coordinates come from the PPTX file's actual shape positions and are the ONLY values that will align text with the template design.
+## Think semantically before assigning zones
 
-```
-✅ CORRECT: "position": [0.0459, 0.1143, 0.200, 0.0628]   ← copied from template
-❌ WRONG:   "position": [0.1, 0.7, 0.8, 0.15]              ← invented, will misalign
-```
-
-### 2. zone_id — COPY, NEVER INVENT
-
-Every zone MUST use the exact `zone_id` from the template `all_zones`. If you invent an ID, the assembler cannot find the matching shape.
-
-### 3. Formatting — PRESERVE
-
-If the template zone has a `formatting` object, carry it through unchanged. The font name, font size, color, bold, italic, and alignment come from the original PPTX shape.
-
-### 4. Visual data — USE IT
-
-Each template zone has a `visual` object with:
-- `text_likeness`: how much this zone looks like a text area (0.0-1.0)
-- `suggested_type`: what the pixel analysis thinks this zone is (title/body/decoration)
-- `is_content_area`: whether this zone is in the main content region
-
-Use these to decide WHICH zones get content:
-- High text_likeness (>0.4) → good candidate for text content
-- is_content_area=true → primary content target
-- suggested_type="title" → prefer for title content
-- text_likeness < 0.05 → likely decoration, leave empty (content: null)
-
-### 5. Content assignment
-
-```
 For each slide:
-  1. Read all template zones from all_zones
-  2. Pick the best zone for the title (high text_likeness, wide, top area)
-  3. Pick the best zone(s) for body/bullets (body-like zones)
-  4. Leave decorative zones empty (content: null)
-  5. Leave image zones with their prompts
-```
 
-### 6. Output ONLY valid JSON
+1. State its narrative job from the outline.
+2. Read the original wording, role, geometry, typography, and neighboring
+   zones to infer components such as title/subtitle, card label/value/detail,
+   process step, metric, caption, comparison column, or footer.
+3. Build source-grounded content blocks from the slide title, bullets,
+   evidence, and source references.
+4. Assign blocks to components by meaning, emphasis, and capacity. Generate
+   new concise wording when needed; do not rotate or repeat bullets merely to
+   fill boxes.
+5. Keep every rewrite traceable with `source_block_ids` and an accurate
+   `transformation` value.
 
-No markdown, no comments outside the JSON. Output the complete slide_contents structure.
+## Exact fitting rules
+
+Every template text zone includes machine-computed `min_chars`, `max_chars`,
+and `max_lines`. These are hard acceptance constraints.
+
+- Count visible characters after removing whitespace.
+- Write natural copy within `min_chars <= visible_chars <= max_chars`.
+- A title or short label must express a complete idea, not a prefix.
+- Never cut a Chinese phrase, English word, identifier, number, percentage,
+  or unit to satisfy a limit.
+- Treat technical and metric tokens as atomic, including examples such as
+  `WebSocket`, `taskId`, `12000+ QPS`, `320ms`, `96%`, and `XSS/SQL`.
+- If a sentence is too long, rewrite it semantically: remove qualifiers,
+  choose a shorter synonym, or turn it into a concise label. Do not return a
+  substring such as `WebSo`, `320m`, or `服务治`.
+- Short, narrow, rotated, vertical, or decorative zones receive concise
+  labels only; never put prose in them.
+- If truthful copy cannot fit, return `fit_status: overflow` and a review flag.
+  Never claim `fits` for truncated or incomplete copy.
+
+## Self-check before returning JSON
+
+Verify all of the following:
+
+- The returned slide-index set exactly equals `expected_slide_indices`.
+- Every requested business text zone is present exactly once.
+- Every `replace_text` value is non-empty and within its exact range.
+- No content ends in a partial English token, partial number/unit, or broken
+  Chinese phrase.
+- No isolated bullet glyph such as `u`, `•`, or `●` is used as content.
+- No unsupported template metric or sample-project wording remains.
+- Repeated wording is intentional only for overlapping visual text layers.
+- Output is one valid JSON object with no Markdown or explanation around it.
+
+## Targeted repair protocol
+
+When the runtime supplies `repair_targets`, do not regenerate the slide or any
+already accepted zone. Each request contains at most four zones and uses a
+compact `repairs` response schema.
+
+- Return exactly one repair item for every requested `zone_id` and no others.
+- Rewrite by meaning; never shorten by character slicing.
+- Use only the supplied `allowed_source_block_ids`.
+- Obey each zone's exact `min_chars`, `max_chars`, and `max_lines` independently.
+- Keep the wording coherent with `neighboring_zone_copy`, the slide narrative,
+  the original template label, and adjacent slides.
+- If the runtime rejects one item, the next request contains only that zone;
+  return one new semantic rewrite rather than repeating the rejected wording.

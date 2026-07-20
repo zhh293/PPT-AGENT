@@ -9,3 +9,34 @@ build/
 .DS_Store
 *.pptx
 workspace/jobs/
+
+# Python environments, caches, and quality-tool output
+.venv/
+venv/
+.pytest_cache/
+.uv-cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local editor and agent settings
+.claude/settings.local.json
+.vscode/
+.idea/
+
+# Accidental test/runtime artifacts
+MagicMock/
+
+# Temporary files and logs
+tmp_*
+*.tmp
+*.bak
+*.log
+
+# Local source presentation library (large, non-distributable files)
+/meta/
+
+# Local image-generation credentials
+.catpaw/skills/gptimage2-generator/assets/accounts.json

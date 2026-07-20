@@ -88,8 +88,7 @@ def _llm_analysis(llm_client, full_text: str, files: list[Path], images: list[Im
         system="You are a document analyst for PPT generation. Output only valid JSON.",
         phase="document_analysis",
         fallback=fallback,
-        json_schema=SOURCE_SUMMARY_SCHEMA,
-        schema_name="source_summary",
+        schema=SOURCE_SUMMARY_SCHEMA,
     )
 
     # Ensure required fields exist and image_inventory is preserved

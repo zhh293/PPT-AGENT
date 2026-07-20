@@ -570,7 +570,16 @@ def _run_deterministic_workflow(
 
 
 def _create_llm_client(profile: str, job_root: Path):
-    """Create an LLM client from the model profile."""
+    """Create an LLM client from the model profile.
+
+    When the profile is ``"fake"`` the pipeline should run in pure
+    deterministic mode so that the real fallback analysis code processes
+    real inputs — the FakeProvider returns hardcoded dummy data that
+    completely ignores user content.
+    """
+    if profile == "fake":
+        logger.info("Profile is 'fake' — using deterministic mode (no LLM).")
+        return None
     try:
         from ppt_agent.llm.client import LLMClient
         client = LLMClient.from_config(profile=profile, job_root=job_root)

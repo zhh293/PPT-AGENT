@@ -58,7 +58,7 @@ def build_template_meta_from_ingest(ingest_meta: dict) -> dict:
         image_zones = []
         for z in slide.get("zones", []):
             ztype = z.get("type", "decoration")
-            if ztype in ("title", "subtitle", "body", "footer"):
+            if z.get("editable") or ztype in ("title", "subtitle", "body", "footer"):
                 text_zones.append(z)
             elif ztype == "image":
                 image_zones.append(z)
@@ -72,9 +72,13 @@ def build_template_meta_from_ingest(ingest_meta: dict) -> dict:
             "image_zones": image_zones,
             "image_path": slide.get("image_path"),
             "ocr_text": slide.get("ocr_text", ""),
+            "baked_text_regions": slide.get("baked_text_regions", []),
         })
 
     return {
+        "meta_schema_version": ingest_meta.get("meta_schema_version", "1.0"),
+        "parser_strategy": ingest_meta.get("parser_strategy", "legacy"),
+        "template_sha256": ingest_meta.get("template_sha256", ""),
         "template_id": ingest_meta.get("template_id", "unknown"),
         "domain_tags": ingest_meta.get("domain_tags", []),
         "audience_tags": ingest_meta.get("audience_tags", ["general"]),

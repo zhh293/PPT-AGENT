@@ -84,7 +84,9 @@ def _enrich_with_template_images(
     cwd = Path.cwd()  # Project root
 
     for slide in slide_contents.get("slides", []):
-        idx = slide.get("slide_index", slide.get("index", -1))
+        idx = slide.get(
+            "template_slide_index", slide.get("slide_index", slide.get("index", -1))
+        )
         tpl_slide = tpl_slides.get(idx, {})
         tpl_image = tpl_slide.get("template_image")
 

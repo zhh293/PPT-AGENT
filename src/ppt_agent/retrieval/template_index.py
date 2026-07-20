@@ -46,6 +46,23 @@ def load_template_index(path: Path | None = None) -> list[dict]:
         except Exception:
             logger.warning("Failed to read index.json, using auto-discovered only", exc_info=True)
 
+    # The built-in fallback is a real retrieval/selection invariant, not a
+    # filesystem template.  Keep it addressable even when index.json is empty
+    # or the user has only auto-discovered templates installed.
+    if path is None and not any(
+        entry.get("template_id") == "fallback.default" for entry in discovered
+    ):
+        discovered.append({
+            "template_id": "fallback.default",
+            "path": "",
+            "color_scheme": "blue",
+            "domain_tags": ["general", "business"],
+            "tone_tags": ["professional", "clear"],
+            "slide_count": 8,
+            "retrieval_text": "general professional presentation fallback",
+            "_auto": False,
+        })
+
     return discovered
 
 

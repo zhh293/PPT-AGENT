@@ -3,6 +3,13 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+# Load .env before any other imports so API keys are available
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
+except Exception:
+    pass
+
 from ppt_agent.coordinator.phase_state import create_job
 from ppt_agent.coordinator.workflow import run_workflow
 from ppt_agent.models.artifacts import JobWorkspace, atomic_write_json, read_json

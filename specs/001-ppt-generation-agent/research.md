@@ -122,3 +122,31 @@
 
 - Self-check inside the assembler: rejected because it is less likely to catch assumptions made during assembly.
 - No automated verification: rejected because the spec requires a validation report.
+# Context-Aware Mapping Decisions (2026-07-18)
+
+- **Decision**: Treat native PPT shape identity as the canonical zone address.
+  **Rationale**: positional overlap is ambiguous on layered and grouped slides.
+  **Alternatives considered**: enumeration ids and position-only matching.
+- **Decision**: Let the Mapping Agent see template copy and all zones, with no
+  per-slide zone-count limit. **Rationale**: template text reveals card, step,
+  comparison, metric, and hierarchy semantics. **Alternatives considered**:
+  fixed title/body/footer matching and role-only assignment.
+- **Decision**: Separate creative decisions from deterministic enforcement.
+  **Rationale**: Agent rewriting improves fit, while schema, source traceability,
+  capacity checks, and strict assembly prevent hallucination and layout damage.
+- **Decision**: Keep content-block planning inside Mapping for the first
+  increment. **Rationale**: it validates the main quality hypothesis without
+  adding a new workflow phase and dispatcher dependency.
+
+# DeepSeek Integration Decisions (2026-07-19)
+
+- **Decision**: Use JSON Mode for artifact generation and Tool Calls only for
+  real external actions. **Rationale**: DeepSeek documents
+  `response_format={"type":"json_object"}` for JSON output; strict Beta applies
+  to Function argument schemas rather than OpenAI JSON Schema response format.
+- **Decision**: Do not force `tool_choice` for thinking models. **Rationale**:
+  thinking mode supports tools, but the production API rejected forced function
+  selection and the official examples allow the model to select a tool.
+- **Decision**: Validate artifact schemas locally and expose fallback state.
+  **Rationale**: deterministic fallback is valuable but must not make an LLM
+  failure appear to be a clean completed job.

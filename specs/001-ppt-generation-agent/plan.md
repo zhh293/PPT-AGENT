@@ -582,3 +582,81 @@ See [data-model.md](./data-model.md), [contracts/](./contracts/), and [quickstar
 ## Complexity Tracking
 
 No architecture-document gate violations are present. Multi-agent orchestration is required by the supplied PPT-Agent architecture because the workflow contains independently verifiable phases with different tools, risk profiles, and context needs.
+
+## Context-Aware Mapping and Strict Assembly Amendment (2026-07-18)
+
+Content mapping is a semantic layout decision, not a type-to-zone lookup. The
+content-mapping Worker receives source facts, neighboring slide context, design
+intent, every template zone, original template wording, capacity, formatting,
+editability, and stable native shape identity. It may plan content blocks and
+rewrite expressive wording, but factual values must remain source-backed.
+
+`zone_id` is only the final execution address. Mapping may use any number of
+editable text zones. Every editable zone receives exactly one explicit action:
+`replace_text`, `clear_text`, or `preserve`; image zones use `replace_image` or
+`preserve`. Missing or incompatible zones trigger review/template reselection,
+never an implicit overlay.
+
+Stable addresses use the native PPT shape id and shape path, retaining legacy
+enumeration ids for existing artifacts. Assembly resolves the native identity
+first and positional compatibility matching second. Under the default
+`text_replace_only` policy, assembly cannot create text boxes, change geometry,
+change font properties, or rewrite approved text. It mutates existing run text
+while preserving run and paragraph XML properties.
+
+Content-block planning initially remains an internal reasoning step of the
+content-mapping Worker. It becomes a separate Worker only after mapping quality
+and cross-slide feedback demonstrate that an additional phase is warranted.
+
+## XML-Native Template Metadata Amendment (2026-07-18)
+
+Template metadata is produced from the complete PPTX/XML shape tree, recursively
+including text boxes inside groups. Each writable text surface has a stable
+group-aware `shape_path`, native shape id, parent group chain, displayed
+geometry, formatting fingerprints, rotation/text-direction attributes, and
+content-capacity constraints. Empty decorative AutoShapes are excluded from
+the mapping surface; empty native text boxes remain available.
+
+OCR is audit-only. It may annotate an XML zone with rendered text or report an
+unmatched `baked_text_region`, but it cannot create an editable zone or a
+`zone_id`. Mapping must respect `content_eligibility`, and assembly/verifier
+resolve and fingerprint grouped descendants by their stable path.
+
+## Complete Text-Fill Amendment (2026-07-18)
+
+The default mapping policy fills every editable native text zone. `clear_text`
+and empty replacement content are rejected. Non-empty template footers and
+noise may be preserved; an originally empty editable text box receives short,
+source-grounded copy. Replacement length targets 55%-135% of the original
+visible character count and is further bounded by XML capacity hints, geometry,
+font size, maximum lines, and content eligibility.
+
+Agent output remains the preferred semantic decision, but deterministic repair
+fills omitted zones and replaces unsafe content before assembly. Overlapping
+duplicate text layers with the same original text and geometry are synchronized
+to one replacement string. Assembly treats empty content, `clear_text`, hard
+fallback flags, and overflow as non-bypassable errors, including under force
+mode. `mapping_diagnostics.json` records the original and mapped character
+counts, target range, action, formatting fingerprint, and per-zone issue state.
+
+## DeepSeek Structured Output Compatibility (2026-07-19)
+
+Structured artifact generation and external tool execution are separate
+transports. `generate_json` uses DeepSeek JSON Mode on the normal endpoint with
+`response_format: {"type": "json_object"}` and validates the result locally.
+It never creates a synthetic function or sends `tool_choice`. The prompt must
+mention JSON and includes a compact schema-derived example; empty or invalid
+content receives one JSON repair request before deterministic fallback.
+
+Actual Agent tools continue to use Tool Calls. DeepSeek Beta `strict: true`
+describes strict function-argument validation, not OpenAI
+`response_format=json_schema`. Thinking-mode requests must not force
+`tool_choice`. Provider capabilities distinguish JSON Mode, OpenAI JSON Schema,
+tool use, strict tools, and forced tool selection.
+
+Fallback is observable: model and workflow logs record `llm_fallback`, mapping
+batches are marked `needs_review`, and the server reports
+`completed_with_fallbacks`. An atomic per-job run lock rejects duplicate backend
+starts. Selected legacy templates are refreshed to XML-native metadata before
+mapping, while diagnostics treat a missing legacy `editable` field as editable
+unless it is explicitly false.
