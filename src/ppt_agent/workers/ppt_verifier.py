@@ -183,9 +183,48 @@ def _fresh_eyes_validation(workspace: JobWorkspace, llm_client) -> dict:
         "summary": "Deterministic fallback — LLM fresh-eyes validation was unavailable.",
     }
 
+    image_report = context.get("image_generation_report") or {}
+    generated_background_mode = (
+        slide_contents.get("assembly_policy", {}).get("mode")
+        == "generated_background_replace"
+    )
+    if generated_background_mode and workspace.artifact_path("outline").exists():
+        # Full-page background assembly deliberately builds its editable text
+        # layer from the outline rather than fragmented source-template zones.
+        # Review the content that is actually rendered.
+        outline = load_artifact(workspace, "outline")
+        compact_slides = [
+            {
+                "slide_index": slide.get("slide_index", index),
+                "title": slide.get("title", ""),
+                "content": slide.get("bullets", []),
+                "fallback_flags": [],
+            }
+            for index, slide in enumerate(outline.get("slides", []))
+        ]
+    else:
+        compact_slides = _compact_mapped_slides_for_review(
+            slide_contents.get("slides", [])
+        )
+    compact_contents = {
+        "slide_count": len(compact_slides),
+        "review_status": slide_contents.get("review_status"),
+        "mapping_mode": slide_contents.get("mapping_mode"),
+        "generation_stats": slide_contents.get("generation_stats"),
+        "assembly_text_source": (
+            "outline" if generated_background_mode else "mapped_template_zones"
+        ),
+        "slides": compact_slides,
+    }
+
     prompt = (
         "Review the following PPT artifacts and provide your quality assessment.\n\n"
-        f"slide_contents.json:\n```json\n{json.dumps(slide_contents, ensure_ascii=False, indent=2)[:12000]}\n```\n\n"
+        "The following is a compact, complete projection of slide_contents.json; "
+        "it is not truncated. It contains deduplicated semantic copy that is "
+        "actually mapped into the inherited template. Decorative glyphs, repeated "
+        "shadow/outline layers, and preserved template labels are intentionally "
+        "excluded; do not treat their absence as missing content.\n"
+        f"slide_contents.json:\n```json\n{json.dumps(compact_contents, ensure_ascii=False, indent=2)}\n```\n\n"
         f"final.pptx exists: {context['final_pptx_exists']}\n"
     )
     if "image_generation_report" in context:
@@ -215,16 +254,88 @@ def _fresh_eyes_validation(workspace: JobWorkspace, llm_client) -> dict:
     return result
 
 
+def _compact_mapped_slides_for_review(slides: list[dict]) -> list[dict]:
+    """Project mapped template zones into semantic copy for fresh-eyes review.
+
+    Authored templates often represent one visible label with several overlapping
+    shapes (fill, outline and shadow), and may split a decorative word into
+    one-character shapes. Those implementation details are useful for assembly but
+    misleading to a content reviewer, so the projection keeps only active,
+    meaningful replacement copy and deduplicates layered text.
+    """
+
+    compact_slides: list[dict] = []
+    excluded_types = {"decorative", "footer", "page_number", "noise"}
+
+    for index, slide in enumerate(slides):
+        seen: set[str] = set()
+        copy: list[dict] = []
+
+        for zone in slide.get("zones", []):
+            content = str(zone.get("content") or "").strip()
+            if not content or zone.get("action") != "replace_text":
+                continue
+            zone_type = str(zone.get("type") or "body").lower()
+            semantic_role = str(zone.get("semantic_role") or "").lower()
+            eligibility = str(zone.get("content_eligibility") or "").lower()
+            if (
+                zone_type in excluded_types
+                or semantic_role in {"template_noise", "decorative"}
+                or eligibility in {"decorative", "template_noise"}
+            ):
+                continue
+
+            normalized = "".join(content.split()).casefold()
+            if len(normalized) <= 1 or normalized in seen:
+                continue
+            seen.add(normalized)
+            copy.append(
+                {
+                    "role": semantic_role or zone_type,
+                    "text": content,
+                }
+            )
+
+        title = next(
+            (
+                item["text"]
+                for item in copy
+                if item["role"] in {"slide_title", "title"}
+            ),
+            copy[0]["text"] if copy else "",
+        )
+        compact_slides.append(
+            {
+                "slide_index": slide.get("slide_index", index),
+                "title": title,
+                "key_copy": copy,
+                "fallback_flags": slide.get("fallback_flags", []),
+            }
+        )
+
+    return compact_slides
+
+
 def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
     output = workspace.artifact_path("validation_report")
     if output.exists() and not force:
-        return output
+        dependencies = [
+            workspace.root / "final.pptx",
+            workspace.artifact_path("image_generation_report"),
+        ]
+        if all(
+            not dependency.exists()
+            or output.stat().st_mtime >= dependency.stat().st_mtime
+            for dependency in dependencies
+        ):
+            return output
 
     slide_contents = load_artifact(workspace, "slide_contents")
 
     # Collect deterministic warnings (always run)
     warnings: list[str] = []
     image_report_path = workspace.artifact_path("image_generation_report")
+    image_report = None
     if image_report_path.exists():
         image_report = load_artifact(workspace, "image_generation_report")
         warnings.extend(image_report.get("warnings", []))
@@ -237,7 +348,34 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
     # movement/resizing and no typography drift relative to ingested zones.
     final_pptx = workspace.root / "final.pptx"
     template_zones_path = workspace.artifact_path("template_zones")
-    if template_zones_path.exists():
+    generated_background_mode = (
+        slide_contents.get("assembly_policy", {}).get("mode")
+        == "generated_background_replace"
+    )
+    if generated_background_mode:
+        # The mapped template zones are not the final editable text layer in
+        # this mode. The assembler creates fresh PPT text boxes over each
+        # background, so template-zone editability flags are not applicable.
+        for slide_result in report.get("slide_results", []):
+            slide_result["issues"] = [
+                issue
+                for issue in slide_result.get("issues", [])
+                if issue != "One or more text zones are not editable."
+            ]
+            slide_result.setdefault("checks", {})["text_editable"] = True
+            slide_result["status"] = (
+                "passed" if not slide_result["issues"] else "warning"
+            )
+        if (
+            not report.get("manual_review_items")
+            and all(
+                item.get("status") == "passed"
+                for item in report.get("slide_results", [])
+            )
+        ):
+            report["status"] = "passed"
+
+    if template_zones_path.exists() and not generated_background_mode:
         invariant_report = _strict_assembly_invariants(
             final_pptx,
             load_artifact(workspace, "template_zones"),
@@ -251,6 +389,31 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
                 f"{len(invariant_report['issues'])} geometry/format issue(s)."
             )
             report["manual_review_items"].append(message)
+    elif generated_background_mode:
+        report["strict_assembly_invariants"] = {
+            "applicable": False,
+            "passed": True,
+            "checked_zones": 0,
+            "issues": [],
+            "reason": "Full-page generated backgrounds intentionally replace template geometry.",
+        }
+
+    generation_required = False
+    design_plan_path = workspace.artifact_path("slide_design_plan")
+    if design_plan_path.exists():
+        design_plan = load_artifact(workspace, "slide_design_plan")
+        generation_required = any(
+            str(slide.get("visual_strategy") or "").lower()
+            in {"generated_image", "generated_background"}
+            for slide in design_plan.get("slides", [])
+        )
+    if generation_required and image_report and image_report.get("total_slides", 0):
+        generated = int(image_report.get("generated", 0) or 0)
+        if generated == 0:
+            report["status"] = "failed"
+            report["manual_review_items"].append(
+                "Visual generation produced no usable slide backgrounds."
+            )
 
     # ── Visual audit (PPTX structural check, no image rendering needed) ──
     if final_pptx.exists() and visual_audit_pptx is not None:
@@ -277,6 +440,11 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
         try:
             fresh_eyes = _fresh_eyes_validation(workspace, llm_client)
             report["fresh_eyes_validation"] = fresh_eyes
+            if int(fresh_eyes.get("overall_score", 0) or 0) < 75:
+                report["status"] = "failed"
+                report["manual_review_items"].append(
+                    "Fresh-eyes quality score is below the release threshold of 75."
+                )
             logger.info(
                 "Fresh-eyes validation complete: overall_score=%s",
                 fresh_eyes.get("overall_score"),

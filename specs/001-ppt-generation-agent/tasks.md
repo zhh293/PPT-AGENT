@@ -393,7 +393,7 @@ Task: "T106 Implement GPTImage2 adapter in src/ppt_agent/skills/adapters/gptimag
 - [X] T206 Add template-slide incompatibility response and cross-page template slide reselection.
 - [X] T207 Add render-preview tools and a bounded Mapping Agent revise loop.
 - [X] T208 Compare geometry/format fingerprints after assembly and fail strict validation on drift.
-- [ ] T209 Run a real-model workflow evaluation and compare mapping coverage and rendered quality against the baseline deck.
+- [X] T209 Run a real-model workflow evaluation and compare mapping coverage and rendered quality against the baseline deck.
 - [X] T210 Rebuild template zones recursively from the native PPTX/XML shape tree and retain group-aware stable paths.
 - [X] T211 Record shape/text rotation, vertical mode, capacity, and content eligibility so narrow or rotated zones cannot receive prose.
 - [X] T212 Make OCR audit-only and report unmatched visible text as non-editable baked-text regions.
@@ -414,3 +414,12 @@ Task: "T106 Implement GPTImage2 adapter in src/ppt_agent/skills/adapters/gptimag
 - [X] T224 Record LLM fallback use in model/history logs and mark affected mapping batches for review.
 - [X] T225 Refresh legacy selected-template metadata and make mapping diagnostics treat legacy text zones as editable.
 - [X] T226 Add an atomic server job-run lock and expose `completed_with_fallbacks` instead of silent success.
+
+# Coordinator Recovery Hardening Increment (2026-07-29)
+
+- [X] T227 Add regression tests for non-retryable LLM billing/authentication failures and shared-client circuit breaking.
+- [X] T228 Stop Coordinator and Worker model retries after a terminal 402 and route remaining LLM phases through deterministic recovery with explicit fallback audit records.
+- [X] T229 Add regression tests proving failed validation cannot be published as a clean CLI completion.
+- [X] T230 Derive CLI and server job quality metadata/status from `validation_report.json` plus recorded model fallbacks.
+- [X] T231 Add regression tests proving image-generation reports count presentation slides rather than repeated visual-zone jobs.
+- [X] T232 Exclude preserved template images from generation, report one result per slide, rerun the full Coordinator workflow, validate contracts, and visually inspect all rendered slides.

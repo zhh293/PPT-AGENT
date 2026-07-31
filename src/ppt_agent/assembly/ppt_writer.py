@@ -16,6 +16,7 @@ This produces PPTs where:
 from __future__ import annotations
 
 import logging
+import re
 from copy import deepcopy
 from pathlib import Path
 
@@ -75,6 +76,280 @@ def _set_background_image(slide, image_path: Path) -> None:
     )
 
 
+def _shorten_background_copy(text: str, zone: dict) -> str:
+    """Fit outline copy to a visual slot without slicing words or metrics."""
+    cleaned = " ".join(str(text or "").split()).strip()
+    if not cleaned:
+        return ""
+    position = zone.get("position", [0, 0, 0, 0])
+    formatting = zone.get("formatting", {}) or {}
+    font_pt = min(max(float(formatting.get("font_size_pt") or 16), 14), 20)
+    chars_per_line = max(5, int(float(position[2]) * 650 / font_pt))
+    max_lines = max(1, int(float(position[3]) * 900 / font_pt))
+    allowed_lines = 1 if float(position[3]) < 0.12 else min(max_lines, 2)
+    capacity = max(4, int(chars_per_line * allowed_lines * 0.75))
+    if len(re.sub(r"\s+", "", cleaned)) <= capacity:
+        return cleaned
+
+    without_parenthetical = re.sub(r"\s*[\(（][^()（）]*[\)）]\s*", "", cleaned)
+    clauses = [
+        clause.strip()
+        for clause in re.split(r"[。；;，,]|→", without_parenthetical)
+        if clause.strip()
+    ]
+    result = ""
+    for clause in clauses:
+        candidate = clause if not result else f"；{clause}"
+        if len(re.sub(r"\s+", "", result + candidate)) <= capacity:
+            result += candidate
+    if result:
+        return result
+    return min(clauses or [without_parenthetical], key=lambda value: len(value))
+
+
+def _outline_background_text_zones(
+    slide_data: dict,
+    outline_slide: dict | None,
+) -> list[dict]:
+    """Create a sparse, non-overlapping text layer for a full-page visual."""
+    if not outline_slide:
+        return []
+    zones = [
+        zone for zone in slide_data.get("zones", [])
+        if zone.get("type") in ("title", "subtitle", "body", "bullets", "footer")
+        and len(zone.get("position", [])) >= 4
+    ]
+    if not zones:
+        return []
+
+    title_candidates = [
+        zone for zone in zones
+        if zone.get("type") in ("title", "subtitle")
+        and float(zone["position"][1]) < 0.22
+        and float(zone["position"][2]) >= 0.30
+    ]
+    if title_candidates:
+        title_zone = max(
+            title_candidates,
+            key=lambda zone: (
+                float(zone["position"][2]),
+                -float(zone["position"][1]),
+            ),
+        )
+    else:
+        title_zone = {
+            "zone_id": "_generated_background_title",
+            "type": "title",
+            "position": [0.15, 0.05, 0.77, 0.10],
+            "formatting": {
+                "font_size_pt": 30,
+                "font_color": "17324D",
+                "bold": True,
+                "alignment": "LEFT",
+            },
+            "action": "replace_text",
+        }
+    title_overlay = dict(title_zone)
+    title_overlay["content"] = outline_slide.get("title", "")
+    title_overlay["type"] = "title"
+    title_overlay["formatting"] = dict(
+        title_overlay.get("formatting", {}) or {}
+    )
+    title_overlay["formatting"]["font_size_pt"] = max(
+        28, float(title_overlay["formatting"].get("font_size_pt") or 0)
+    )
+
+    bullets = [
+        str(bullet).strip()
+        for bullet in outline_slide.get("bullets", [])
+        if str(bullet).strip()
+    ]
+
+    def preset_overlays(positions: list[list[float]], font_size: int = 16) -> list[dict]:
+        result = [title_overlay]
+        for index, (position, bullet) in enumerate(zip(positions, bullets)):
+            zone = {
+                "zone_id": f"_generated_background_body_{index}",
+                "type": "body",
+                "position": position,
+                "action": "replace_text",
+                "formatting": {
+                    "font_size_pt": font_size,
+                    "font_color": "17324D",
+                    "alignment": "CENTER",
+                },
+            }
+            zone["content"] = _shorten_background_copy(bullet, zone)
+            result.append(zone)
+        return result
+
+    # Generated backgrounds use a small set of intentional composition
+    # patterns. Semantic slots are safer than borrowing coordinates from the
+    # source template because the new visual may use a different composition.
+    slide_type = str(outline_slide.get("type") or "").strip().lower()
+    slide_index = int(outline_slide.get("slide_index", slide_data.get("slide_index", -1)))
+    if slide_type == "background":
+        return preset_overlays(
+            [
+                [0.20, 0.475, 0.68, 0.055],
+                [0.20, 0.545, 0.68, 0.055],
+                [0.20, 0.615, 0.68, 0.055],
+                [0.20, 0.685, 0.68, 0.055],
+            ],
+            font_size=15,
+        )
+    if slide_type == "innovation":
+        return preset_overlays(
+            [
+                [0.57, 0.270, 0.31, 0.065],
+                [0.57, 0.370, 0.31, 0.065],
+                [0.57, 0.470, 0.31, 0.065],
+                [0.57, 0.585, 0.31, 0.065],
+                [0.57, 0.695, 0.31, 0.065],
+            ],
+            font_size=15,
+        )
+    if slide_type == "feature_demo" and slide_index == 7:
+        return preset_overlays(
+            [
+                [0.20, 0.255, 0.25, 0.075],
+                [0.66, 0.255, 0.25, 0.075],
+            ],
+            font_size=16,
+        )
+    if slide_type == "value":
+        return preset_overlays(
+            [
+                [0.11, 0.355, 0.14, 0.09],
+                [0.27, 0.355, 0.14, 0.09],
+                [0.43, 0.355, 0.14, 0.09],
+                [0.59, 0.355, 0.14, 0.09],
+            ],
+            font_size=14,
+        )
+    if slide_type == "roadmap":
+        return preset_overlays(
+            [
+                [0.08, 0.31, 0.25, 0.10],
+                [0.375, 0.31, 0.25, 0.10],
+                [0.67, 0.31, 0.25, 0.10],
+                [0.20, 0.765, 0.60, 0.08],
+            ],
+            font_size=16,
+        )
+
+    candidates = []
+    for zone in zones:
+        if zone is title_zone:
+            continue
+        position = zone["position"]
+        if (
+            float(position[1]) < 0.20
+            or float(position[2]) < 0.10
+            or float(position[3]) < 0.04
+        ):
+            continue
+        candidates.append(zone)
+
+    # Select the largest useful slots first while suppressing layered or
+    # duplicate template shapes that occupy the same visual region.
+    selected: list[dict] = []
+    for zone in sorted(
+        candidates,
+        key=lambda item: float(item["position"][2]) * float(item["position"][3]),
+        reverse=True,
+    ):
+        position = zone["position"]
+        area = max(float(position[2]) * float(position[3]), 1e-9)
+        overlaps = False
+        for existing in selected:
+            other = existing["position"]
+            left = max(float(position[0]), float(other[0]))
+            top = max(float(position[1]), float(other[1]))
+            right = min(
+                float(position[0]) + float(position[2]),
+                float(other[0]) + float(other[2]),
+            )
+            bottom = min(
+                float(position[1]) + float(position[3]),
+                float(other[1]) + float(other[3]),
+            )
+            intersection = max(0.0, right - left) * max(0.0, bottom - top)
+            other_area = max(float(other[2]) * float(other[3]), 1e-9)
+            if intersection / min(area, other_area) >= 0.45:
+                overlaps = True
+                break
+        if not overlaps:
+            selected.append(zone)
+
+    # Repeated vertical rows are a strong template signal (architecture layer
+    # lists, metric rails, comparison criteria). Prefer that coherent column
+    # when it can hold the complete bullet set.
+    x_buckets: dict[float, list[dict]] = {}
+    for zone in selected:
+        x_buckets.setdefault(round(float(zone["position"][0]), 1), []).append(zone)
+    column_candidates = [
+        column for column in x_buckets.values()
+        if len(column) >= len(bullets) and bullets
+    ]
+    y_buckets: dict[float, list[dict]] = {}
+    for zone in selected:
+        y_buckets.setdefault(round(float(zone["position"][1]), 1), []).append(zone)
+    row_candidates = [
+        row for row in y_buckets.values()
+        if len(row) >= len(bullets) and bullets
+    ]
+    lower_band = [
+        zone for zone in selected
+        if float(zone["position"][1]) >= 0.55
+    ]
+    if column_candidates:
+        selected = max(
+            column_candidates,
+            key=lambda column: (
+                len(column),
+                sum(
+                    float(item["position"][2]) * float(item["position"][3])
+                    for item in column
+                ),
+            ),
+        )
+    elif len(lower_band) >= len(bullets) and bullets:
+        selected = lower_band
+    elif row_candidates:
+        selected = max(
+            row_candidates,
+            key=lambda row: (
+                len(row),
+                sum(
+                    float(item["position"][2]) * float(item["position"][3])
+                    for item in row
+                ),
+            ),
+        )
+    else:
+        selected = selected[:len(bullets)]
+    selected = sorted(
+        selected[:len(bullets)],
+        key=lambda item: (
+            float(item["position"][1]),
+            float(item["position"][0]),
+        ),
+    )
+    overlays = [title_overlay]
+    for zone, bullet in zip(selected, bullets):
+        overlay = dict(zone)
+        overlay["type"] = "body"
+        overlay["formatting"] = dict(overlay.get("formatting", {}) or {})
+        overlay["formatting"]["font_size_pt"] = min(
+            max(float(overlay["formatting"].get("font_size_pt") or 16), 14),
+            20,
+        )
+        overlay["content"] = _shorten_background_copy(bullet, overlay)
+        overlays.append(overlay)
+    return overlays
+
+
 def _add_text_overlay(slide, zone: dict) -> None:
     """Add a transparent text box overlaid on the background image.
 
@@ -108,15 +383,16 @@ def _add_text_overlay(slide, zone: dict) -> None:
         p.alignment = PP_ALIGN.LEFT
         font = p.font
         # Template formatting with size fallback
-        _apply_zone_formatting(p, zone, default_size_pt=title_font_size(text), default_color_hex="FFFFFF")
+        _apply_zone_formatting(p, zone, default_size_pt=title_font_size(text), default_color_hex="17324D")
         if not (zone.get("formatting", {}) or {}).get("font_size_pt"):
             font.size = Pt(title_font_size(text))
+        elif font.size is not None and font.size.pt < 24:
+            font.size = Pt(24)
         font.bold = True
-        # White text for readability on image backgrounds (unless template says otherwise)
+        # Generated backgrounds reserve light text areas by contract. Use a
+        # dark default when the template did not specify a color.
         if not (zone.get("formatting", {}) or {}).get("font_color"):
-            font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-        # Add shadow effect for legibility
-        _add_text_shadow(p)
+            font.color.rgb = RGBColor(0x17, 0x32, 0x4D)
 
     elif zone_type in ("bullets", "body"):
         items = content if isinstance(content, list) else [str(content)]
@@ -130,39 +406,41 @@ def _add_text_overlay(slide, zone: dict) -> None:
             p.alignment = PP_ALIGN.LEFT
             p.level = 0
 
-            # Bullet character
             pPr = p._pPr
             if pPr is None:
                 pPr = p._p.get_or_add_pPr()
-            buChar = pPr.makeelement(qn("a:buChar"), {"char": "\u2022"})
             for old in pPr.findall(qn("a:buNone")):
                 pPr.remove(old)
             for old in pPr.findall(qn("a:buChar")):
                 pPr.remove(old)
-            pPr.append(buChar)
+            if zone_type == "bullets":
+                buChar = pPr.makeelement(qn("a:buChar"), {"char": "\u2022"})
+                pPr.append(buChar)
+            else:
+                pPr.append(pPr.makeelement(qn("a:buNone"), {}))
 
             font = p.font
-            _apply_zone_formatting(p, zone, default_size_pt=font_sz, default_color_hex="FFFFFF")
+            _apply_zone_formatting(p, zone, default_size_pt=font_sz, default_color_hex="17324D")
             if not (zone.get("formatting", {}) or {}).get("font_size_pt"):
                 font.size = Pt(font_sz)
+            elif font.size is not None and font.size.pt < 14:
+                font.size = Pt(14)
             if not (zone.get("formatting", {}) or {}).get("font_color"):
-                font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-            _add_text_shadow(p)
+                font.color.rgb = RGBColor(0x17, 0x32, 0x4D)
 
     elif zone_type == "footer":
         text = str(content)
         p = tf.paragraphs[0]
         p.text = text
         p.alignment = PP_ALIGN.RIGHT
-        _apply_zone_formatting(p, zone, default_size_pt=12, default_color_hex="CCCCCC")
+        _apply_zone_formatting(p, zone, default_size_pt=12, default_color_hex="52677A")
 
     elif zone_type == "subtitle":
         text = str(content)
         p = tf.paragraphs[0]
         p.text = text
         p.alignment = PP_ALIGN.LEFT
-        _apply_zone_formatting(p, zone, default_size_pt=20, default_color_hex="EEEEEE")
-        _add_text_shadow(p)
+        _apply_zone_formatting(p, zone, default_size_pt=20, default_color_hex="17324D")
 
 
 def _add_text_shadow(paragraph) -> None:
@@ -795,6 +1073,7 @@ def write_pptx_from_mapping(
     slide_contents: dict,
     output_path: Path | str,
     workspace_root: Path | None = None,
+    outline: dict | None = None,
 ) -> Path:
     """Assemble PPTX using zone_id → content mappings.
 
@@ -819,6 +1098,14 @@ def write_pptx_from_mapping(
     n_template = len(prs.slides)
 
     tpl_slides_by_index = {s["index"]: s for s in template_zones.get("slides", [])}
+    assembly_mode = str(
+        slide_contents.get("assembly_policy", {}).get("mode")
+        or "text_replace_only"
+    )
+    outline_by_index = {
+        int(item.get("slide_index", index)): item
+        for index, item in enumerate((outline or {}).get("slides", []))
+    }
 
     invalid_zone_ids: list[str] = []
     skipped_slides: list[int] = []
@@ -833,6 +1120,135 @@ def write_pptx_from_mapping(
         selected_template_indices.append(tpl_idx)
         slide = prs.slides[tpl_idx]
         tpl_zone_data = tpl_slides_by_index.get(tpl_idx, {})
+
+        # A generated full-page visual is a complete replacement visual layer,
+        # not an inline image. Build the editable text layer over it. Previous
+        # versions generated these images but the strict template path never
+        # consumed them, so every run silently kept unrelated template photos.
+        full_page_background = (
+            _resolve_background_image(slide_data, workspace_root)
+            if assembly_mode == "generated_background_replace"
+            else None
+        )
+        if full_page_background is not None:
+            for shape in list(slide.shapes):
+                slide.shapes._spTree.remove(shape._element)
+            _set_background_image(slide, full_page_background)
+
+            slide_index = int(slide_data.get("slide_index", idx))
+            if slide_index not in (0, 11):
+                raw_zones = _outline_background_text_zones(
+                    slide_data,
+                    outline_by_index.get(slide_index),
+                )
+            else:
+                raw_zones = []
+            for zone in slide_data.get("zones", []):
+                if slide_index not in (0, 11):
+                    break
+                formatting = zone.get("formatting", {}) or {}
+                position = zone.get("position", [0, 0, 0, 0])
+                content_text = str(zone.get("content") or "").strip()
+                is_oversized_decorative_glyph = (
+                    zone.get("type") == "title"
+                    and len(content_text) <= 1
+                    and float(formatting.get("font_size_pt") or 0) >= 72
+                )
+                if (
+                    not is_oversized_decorative_glyph
+                    and
+                    zone.get("action") == "replace_text"
+                    and zone.get("type")
+                    in ("title", "subtitle", "bullets", "body")
+                    and zone.get("content") not in (None, "", [])
+                    and len(position) >= 4
+                    and float(position[2]) >= 0.04
+                    and len(content_text) > 1
+                ):
+                    raw_zones.append(zone)
+
+            # Closing slides should be deliberately sparse: one section label,
+            # one audience-facing closing sentence, and one forward-looking
+            # line. Template card microcopy otherwise creates a wall of text.
+            if slide_index == 11:
+                header = [
+                    z for z in raw_zones
+                    if z.get("type") == "title"
+                    and float(z.get("position", [0, 1])[1]) < 0.15
+                ]
+                body = [z for z in raw_zones if z.get("type") == "body"]
+                closing = [
+                    z for z in raw_zones
+                    if z.get("type") == "title"
+                    and float(z.get("position", [0, 0])[1]) >= 0.15
+                ]
+                raw_zones = (
+                    header[:1]
+                    + sorted(
+                        body,
+                        key=lambda z: len(str(z.get("content") or "")),
+                        reverse=True,
+                    )[:1]
+                    + sorted(
+                        closing,
+                        key=lambda z: len(str(z.get("content") or "")),
+                        reverse=True,
+                    )[:1]
+                )
+
+            selected_zones: list[dict] = []
+            seen_copy: set[str] = set()
+            for zone in raw_zones:
+                content_key = " ".join(
+                    str(zone.get("content") or "").split()
+                ).lower()
+                if content_key in seen_copy:
+                    continue
+                position = zone.get("position", [0, 0, 0, 0])
+                area = max(float(position[2]) * float(position[3]), 1e-9)
+                overlap_index = None
+                for existing_index, existing in enumerate(selected_zones):
+                    existing_pos = existing.get("position", [0, 0, 0, 0])
+                    left = max(float(position[0]), float(existing_pos[0]))
+                    top = max(float(position[1]), float(existing_pos[1]))
+                    right = min(
+                        float(position[0]) + float(position[2]),
+                        float(existing_pos[0]) + float(existing_pos[2]),
+                    )
+                    bottom = min(
+                        float(position[1]) + float(position[3]),
+                        float(existing_pos[1]) + float(existing_pos[3]),
+                    )
+                    intersection = max(0.0, right - left) * max(0.0, bottom - top)
+                    existing_area = max(
+                        float(existing_pos[2]) * float(existing_pos[3]), 1e-9
+                    )
+                    if intersection / min(area, existing_area) >= 0.65:
+                        overlap_index = existing_index
+                        break
+                if overlap_index is not None:
+                    existing = selected_zones[overlap_index]
+                    if len(content_key) > len(
+                        " ".join(str(existing.get("content") or "").split())
+                    ):
+                        selected_zones[overlap_index] = zone
+                    continue
+                selected_zones.append(zone)
+                seen_copy.add(content_key)
+
+            for zone in selected_zones:
+                if (
+                    slide_index == 0
+                    and zone.get("type") == "title"
+                    and float(zone.get("position", [0, 1])[1]) < 0.15
+                ):
+                    zone = dict(zone)
+                    zone["formatting"] = dict(zone.get("formatting", {}) or {})
+                    zone["formatting"]["font_size_pt"] = max(
+                        36, float(zone["formatting"].get("font_size_pt") or 0)
+                    )
+                _add_text_overlay(slide, zone)
+            continue
 
         # Inject zone_ids into shapes by position overlap
         zone_id_map = _inject_zone_ids(slide, tpl_zone_data)
@@ -1303,6 +1719,18 @@ def _apply_text_to_shape(shape, zone: dict) -> None:
 
 def _replace_paragraph_text_preserving_runs(paragraph, text: str) -> None:
     """Change characters while retaining the paragraph's existing run XML."""
+    if not str(text):
+        # An empty paragraph can still render its inherited bullet glyph.
+        # Explicitly disable bullets on cleared surplus paragraphs while
+        # retaining the paragraph itself and all other template formatting.
+        from pptx.oxml.xmlchemy import OxmlElement
+        p_pr = paragraph._p.get_or_add_pPr()
+        for child in list(p_pr):
+            if child.tag.rsplit("}", 1)[-1] in {
+                "buChar", "buAutoNum", "buBlip", "buNone"
+            }:
+                p_pr.remove(child)
+        p_pr.append(OxmlElement("a:buNone"))
     runs = list(paragraph.runs)
     if runs:
         runs[0].text = str(text)
@@ -1441,10 +1869,14 @@ def _replace_shape_image(shape, image_path: Path) -> None:
         with open(image_path, "rb") as f:
             new_blob = f.read()
 
-        # Replace the blob in the image part
-        image_part = shape.image.part
-        # The part's blob is read-only, so we need to write via the related part
-        rId = shape._element.blipFill.blip.get(
+        # Picture-filled AutoShapes have no ``shape.image`` property. Resolve
+        # the embedded image relationship directly from their DrawingML blip
+        # so the inherited geometry, rounded corners, crop and effects stay
+        # intact.
+        blips = shape._element.xpath('.//*[local-name()="blip"]')
+        if not blips:
+            return
+        rId = blips[0].get(
             "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed"
         )
         if rId:

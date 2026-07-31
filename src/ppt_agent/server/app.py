@@ -10,12 +10,17 @@ Provides:
 from __future__ import annotations
 
 import asyncio
+import ctypes
 import json
+import logging
 import os
 import shutil
 import threading
+import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import AsyncGenerator
+from uuid import uuid4
 
 from fastapi import FastAPI, Form, HTTPException, UploadFile, File, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +32,8 @@ from ppt_agent.coordinator.event_bus import EventBus, EventConsumer, CallbackCon
 from ppt_agent.coordinator.phase_state import create_job
 from ppt_agent.coordinator.workflow import PHASES, run_workflow
 from ppt_agent.models.artifacts import JobWorkspace, read_json
+
+logger = logging.getLogger(__name__)
 
 # ─── Configuration ─────────────────────────────────────────────────────
 WORKSPACE_ROOT = Path("workspace/jobs")
@@ -48,20 +55,82 @@ _event_subscribers: dict[str, list[asyncio.Queue]] = {}
 _lock = threading.Lock()
 
 
-def _acquire_job_run_lock(job_path: Path) -> bool:
-    """Atomically claim a job so duplicate HTTP requests cannot run it twice."""
-    lock_path = Path(job_path) / ".run.lock"
+def _read_lock_pid(lock_path: Path) -> int | None:
     try:
-        fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    except FileExistsError:
+        raw = lock_path.read_text(encoding="utf-8").strip()
+        if raw.startswith("{"):
+            return int(json.loads(raw).get("pid"))
+        return int(raw)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+
+
+def _pid_is_running(pid: int) -> bool:
+    if pid <= 0:
         return False
-    with os.fdopen(fd, "w", encoding="utf-8") as handle:
-        handle.write(str(os.getpid()))
+    if pid == os.getpid():
+        return True
+    if os.name == "nt":
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        process_query_limited_information = 0x1000
+        handle = kernel32.OpenProcess(
+            process_query_limited_information, False, pid
+        )
+        if handle:
+            kernel32.CloseHandle(handle)
+            return True
+        # Access denied still means that the process exists.
+        return ctypes.get_last_error() == 5
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
     return True
+
+
+def _acquire_job_run_lock(job_path: Path) -> bool:
+    """Atomically claim a job and recover locks left by dead processes."""
+    lock_path = Path(job_path) / ".run.lock"
+    lock_payload = {
+        "pid": os.getpid(),
+        "job_id": Path(job_path).name,
+        "run_id": uuid4().hex,
+        "started_at": datetime.now(timezone.utc).isoformat(),
+    }
+    for _attempt in range(2):
+        try:
+            fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            existing_pid = _read_lock_pid(lock_path)
+            if existing_pid is not None and _pid_is_running(existing_pid):
+                return False
+            try:
+                lock_path.unlink()
+            except FileNotFoundError:
+                pass
+            continue
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(lock_payload, handle)
+        return True
+    return False
 
 
 def _release_job_run_lock(job_path: Path) -> None:
     (Path(job_path) / ".run.lock").unlink(missing_ok=True)
+
+
+def _append_job_error(job_path: Path, exc: Exception) -> None:
+    record = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "job_id": Path(job_path).name,
+        "error_type": type(exc).__name__,
+        "error": str(exc),
+        "traceback": traceback.format_exc(),
+    }
+    with (Path(job_path) / "errors.jsonl").open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
 def _fallbacks_since(log_path: Path, start_offset: int) -> list[dict]:
@@ -279,14 +348,29 @@ async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTask
             job_json = job_path / "job.json"
             meta = json.loads(job_json.read_text()) if job_json.exists() else {}
             fallbacks = _fallbacks_since(model_log, model_log_offset)
+            validation_path = job_path / "validation_report.json"
+            validation = (
+                json.loads(validation_path.read_text(encoding="utf-8"))
+                if validation_path.exists()
+                else {}
+            )
+            quality_status = str(validation.get("status") or "missing")
             preserve_prior_fallback = (
                 meta.get("status") == "completed_with_fallbacks" and not req.force
             )
             meta["status"] = (
                 "completed_with_fallbacks"
-                if fallbacks or preserve_prior_fallback
+                if (
+                    fallbacks
+                    or preserve_prior_fallback
+                    or quality_status != "passed"
+                )
                 else "completed"
             )
+            meta["quality_status"] = quality_status
+            if validation.get("summary"):
+                meta["quality_summary"] = validation["summary"]
+            meta.pop("error", None)
             prior_count = int(meta.get("llm_fallback_count", 0) or 0)
             meta["llm_fallback_count"] = (
                 (prior_count if preserve_prior_fallback else 0) + len(fallbacks)
@@ -299,6 +383,8 @@ async def run_job(job_id: str, req: RunRequest, background_tasks: BackgroundTask
                 })
             job_json.write_text(json.dumps(meta, indent=2))
         except Exception as e:
+            logger.exception("Job execution failed for %s", job_id)
+            _append_job_error(job_path, e)
             job_json = job_path / "job.json"
             meta = json.loads(job_json.read_text()) if job_json.exists() else {}
             meta["status"] = "failed"

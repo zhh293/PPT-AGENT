@@ -94,6 +94,7 @@ class AgentTurn:
     tool_results: list[ToolResult] = field(default_factory=list)
     duration_ms: int = 0
     stop_signal: bool = False
+    terminal_error: bool = False
 
 
 @dataclass
@@ -229,6 +230,11 @@ class AgentLoop(ABC):
                 turn = self._execute_turn(turn_num)
                 self.turns.append(turn)
 
+                if turn.terminal_error:
+                    stop_reason = StopReason.ERROR_BUDGET
+                    final_output = turn.thought
+                    break
+
                 # ── Phase 2: Persist new messages ────────────────
                 if self.conversation_store is not None:
                     for msg in self.messages[_last_count:]:
@@ -326,6 +332,8 @@ class AgentLoop(ABC):
         except Exception as e:
             logger.error("Agent %s LLM call failed on turn %d: %s", self.agent_id, turn_num, e)
             self._consecutive_errors += 1
+            from ppt_agent.llm.client import is_non_retryable_llm_error
+            turn.terminal_error = is_non_retryable_llm_error(str(e))
             self._emit(
                 EventType.ERROR,
                 message=f"LLM call failed: {e}",
@@ -402,23 +410,36 @@ class AgentLoop(ABC):
             try:
                 result = self.execute_tool(tc)
                 turn.tool_results.append(result)
-                self._consecutive_errors = 0  # Reset on success
+                if result.success:
+                    self._consecutive_errors = 0
+                else:
+                    self._consecutive_errors += 1
 
                 # Emit tool call result
                 self._emit(
                     EventType.TOOL_CALL_RESULT,
-                    message=f"Tool {tc.tool_name} succeeded",
+                    message=(
+                        f"Tool {tc.tool_name} succeeded"
+                        if result.success
+                        else f"Tool {tc.tool_name} rejected: {result.error}"
+                    ),
                     turn=turn_num,
                     tool_name=tc.tool_name,
                     call_id=tc.call_id,
-                    success=True,
+                    success=result.success,
+                    error=result.error,
                 )
 
-                # Add tool result to messages
-                result_text = json.dumps(result.output, ensure_ascii=False) if isinstance(result.output, (dict, list)) else str(result.output)
-                self.messages.append(LLMMessage.user(
-                    f"[Tool Result: {tc.tool_name}]\n{result_text}"
-                ))
+                if result.success:
+                    result_text = json.dumps(result.output, ensure_ascii=False) if isinstance(result.output, (dict, list)) else str(result.output)
+                    self.messages.append(LLMMessage.user(
+                        f"[Tool Result: {tc.tool_name}]\n{result_text}"
+                    ))
+                else:
+                    self.messages.append(LLMMessage.user(
+                        f"[Tool Error: {tc.tool_name}]\n{result.error or 'Tool request was rejected.'}\n\n"
+                        "Choose a legal action based on the current workflow state."
+                    ))
             except Exception as e:
                 logger.warning("Agent %s tool %s failed: %s", self.agent_id, tc.tool_name, e)
                 self._consecutive_errors += 1
@@ -478,13 +499,28 @@ class AgentLoop(ABC):
         last_error = None
         for attempt in range(3):
             try:
-                result = self.llm_client.provider.generate(
-                    augmented_messages,
-                    temperature=0.3,
-                    max_tokens=4096,
+                from ppt_agent.llm.client import (
+                    LLMClient,
+                    is_non_retryable_llm_error,
                 )
+                if isinstance(self.llm_client, LLMClient):
+                    result = self.llm_client.generate(
+                        augmented_messages,
+                        temperature=0.3,
+                        max_tokens=4096,
+                    )
+                else:
+                    result = self.llm_client.provider.generate(
+                        augmented_messages,
+                        temperature=0.3,
+                        max_tokens=4096,
+                    )
             except Exception as exc:
                 last_error = exc
+                if is_non_retryable_llm_error(str(exc)):
+                    raise RuntimeError(
+                        f"LLM call failed with non-retryable error: {exc}"
+                    ) from exc
                 if attempt < 2:
                     wait_s = 2 ** attempt
                     logger.warning(
@@ -504,6 +540,11 @@ class AgentLoop(ABC):
                 return result
 
             last_error = result.error
+            if is_non_retryable_llm_error(result.error):
+                raise RuntimeError(
+                    "LLM returned a non-retryable provider error: "
+                    f"{result.error}"
+                )
             if attempt < 2:
                 wait_s = 2 ** attempt
                 logger.warning(

@@ -84,18 +84,29 @@ export default function Dashboard({ jobId }) {
   }, [jobId])
 
   // Start job run
+  const startRun = async (options = {}) => {
+    const res = await fetch(`/api/jobs/${jobId}/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ force: false, ...options }),
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    if (data.status === 'already_running') {
+      throw new Error('任务已在运行；如果后台进程已经退出，请刷新后重试')
+    }
+    return data
+  }
+
   const handleRun = async () => {
     setRunning(true)
     try {
-      await fetch(`/api/jobs/${jobId}/run`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ force: false }),
-      })
+      await startRun()
       // Job started, SSE will push updates
       setTimeout(fetchJob, 1000)
     } catch (e) {
       console.error('Failed to start job:', e)
+      alert('启动失败: ' + e.message)
     } finally {
       setRunning(false)
     }
@@ -108,6 +119,7 @@ export default function Dashboard({ jobId }) {
     try {
       const res = await fetch(`/api/jobs/${jobId}/approve`, { method: 'POST' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      await startRun({ start_from: 'visual-generation' })
       fetchArtifacts()
       fetchJob()
     } catch (e) {

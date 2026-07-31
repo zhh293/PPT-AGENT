@@ -388,6 +388,35 @@ class TestContextCompressionInLLMClient:
         assert "ppt-outline-generator" in system_text
         assert "Skill instructions here" in system_text
 
+    def test_micro_repair_omits_large_phase_skills(self):
+        from ppt_agent.llm.client import LLMClient
+        from ppt_agent.llm.providers.fake import FakeProvider
+        from ppt_agent.llm.config import ProviderConfig
+
+        cfg = ProviderConfig(name="fake", protocol="fake", text_model="fake")
+        client = LLMClient(FakeProvider(cfg))
+        client._skill_contexts = {
+            "outline_generation": {
+                "skill_name": "outline-skill",
+                "content": "Large outline instructions.",
+            },
+            "content_mapping": {
+                "skill_name": "mapping-skill",
+                "content": "Mapping instructions.",
+            },
+        }
+
+        messages = client._build_messages(
+            "repair one zone",
+            None,
+            "Base system",
+            phase="content_mapping_micro_3_1",
+        )
+        system_text = messages[0].content[0].text
+
+        assert "mapping-skill" not in system_text
+        assert "outline-skill" not in system_text
+
 
 class TestCoordinatorToolEnforcement:
     """Test that coordinator has exactly 4 tools and workers are restricted."""

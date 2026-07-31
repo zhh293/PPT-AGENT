@@ -168,15 +168,23 @@ def run_workflow(
     # Create LLM client if a model profile is specified
     llm_client = None
     agent_mode = False
+    coordinator_mode = False
     if model_profile:
         # "agent:<profile>" → full agent mode (Coordinator + Worker agent loops)
-        if model_profile.startswith("agent:"):
+        if model_profile.startswith("coordinator:"):
+            coordinator_mode = True
+            model_profile = model_profile[len("coordinator:"):]
+        elif model_profile.startswith("agent:"):
             agent_mode = True
             model_profile = model_profile[len("agent:"):]
         llm_client = _create_llm_client(model_profile, workspace.root)
 
     if llm_client is not None:
-        if agent_mode:
+        if coordinator_mode:
+            return _run_agent_workflow(
+                workspace, llm_client, bus, active_phases, force,
+            )
+        elif agent_mode:
             # ── AGENT MODE ──
             # Deterministic scheduler + WorkerAgent per phase.
             # For-loop iterates phases in order. Each phase gets a
@@ -389,22 +397,110 @@ def _run_agent_workflow(
             "pipeline and report that user review is required before proceeding."
         )
     )
-    result = coordinator.run(
-        task_prompt=(
-            f"Execute the PPT generation pipeline. Available capabilities: {phase_list}. "
-            f"Decide which capabilities to invoke and in what order. "
-            f"Respect dependency rules (e.g. outline_generation needs source_summary from document_analysis). "
-            f"Use spawn_agent for each capability. Independent phases may run in parallel. "
-            f"After all phases complete, use synthesize_output to produce the final result."
-            f"{force_note}"
-        ),
-    )
+    coordinator_error: str | None = None
+    try:
+        result = coordinator.run(
+            task_prompt=(
+                f"Execute the PPT generation pipeline. Available capabilities: {phase_list}. "
+                f"Choose only actions accepted by the host dependency and review gates. "
+                f"Use spawn_agent synchronously for each capability, inspect failures, and "
+                f"only signal done after every capability in scope has produced its declared output."
+                f"{force_note}"
+            ),
+        )
+    except Exception as exc:
+        coordinator_error = str(exc)
+        logger.exception("Coordinator agent loop failed; production recovery will take over")
+        result = None
+    finally:
+        # Never leak worker threads into later CLI/server runs. Any in-flight
+        # worker is allowed to finish before the recovery scheduler inspects
+        # artifacts.
+        coordinator.shutdown(wait=True)
 
     # Mark coordinator task as done
-    if result.stop_reason.value == "completed":
+    if result is not None and result.stop_reason.value == "completed":
         task_manager.transition(coord_task.task_id, TaskStatus.COMPLETED, result=result.final_output)
     else:
-        task_manager.transition(coord_task.task_id, TaskStatus.FAILED, error=result.error)
+        task_manager.transition(
+            coord_task.task_id,
+            TaskStatus.FAILED,
+            error=coordinator_error or (result.error if result is not None else "Coordinator failed"),
+        )
+
+    def phase_has_output(phase: str) -> bool:
+        expected = {
+            "document_analysis": [workspace.artifact_path("source_summary")],
+            "outline_generation": [workspace.artifact_path("outline")],
+            "template_matching": [
+                workspace.artifact_path("selected_template"),
+                workspace.artifact_path("template_meta"),
+                workspace.artifact_path("template_zones"),
+            ],
+            "design_planning": [workspace.artifact_path("slide_design_plan")],
+            "content_mapping": [workspace.artifact_path("slide_contents")],
+            "visual_generation": [workspace.artifact_path("image_generation_report")],
+            "ppt_assembly": [workspace.root / "final.pptx"],
+            "verification": [workspace.artifact_path("validation_report")],
+        }[phase]
+        return all(path.exists() and path.stat().st_size > 0 for path in expected)
+
+    missing_phases = [phase for phase in phases if not phase_has_output(phase)]
+    review_waiting = False
+    slide_contents_path = workspace.artifact_path("slide_contents")
+    if not force and slide_contents_path.exists():
+        try:
+            review_waiting = json.loads(
+                slide_contents_path.read_text(encoding="utf-8")
+            ).get("review_status") != "approved"
+        except Exception:
+            review_waiting = True
+
+    # The autonomous loop is a supervisor, not a single point of failure.
+    # If it exits early or the model/tool layer fails, resume from the first
+    # missing artifact with the proven linear production scheduler. Preserve
+    # the human review pause instead of silently bypassing it.
+    if missing_phases and not review_waiting:
+        first_missing = min(phases.index(phase) for phase in missing_phases)
+        recovery_phases = phases[first_missing:]
+        bus.emit(
+            EventType.WARNING,
+            phase=recovery_phases[0],
+            message=(
+                "Coordinator did not finish every declared output; "
+                "resuming with the production scheduler."
+            ),
+            metadata={
+                "missing_phases": missing_phases,
+                "coordinator_error": coordinator_error,
+            },
+        )
+        recovered = _run_llm_augmented_workflow(
+            workspace,
+            llm_client,
+            bus,
+            recovery_phases,
+            force,
+        )
+        completed_after_recovery = [phase for phase in phases if phase_has_output(phase)]
+        recovered_all = len(completed_after_recovery) == len(phases)
+        recovery_status = (
+            "completed_with_recovery"
+            if recovered_all
+            else "waiting_for_user"
+            if workspace.artifact_path("slide_contents").exists() and not force
+            else "incomplete"
+        )
+        _reconcile_coordinator_state(
+            workspace,
+            phases,
+            status=recovery_status,
+            metadata={
+                "recovery_mode": "llm_augmented_production_scheduler",
+                "missing_phases_before_recovery": missing_phases,
+            },
+        )
+        return recovered
 
     # Record session summaries for completed phases
     for phase in coordinator.completed_phases:
@@ -451,6 +547,58 @@ def _run_agent_workflow(
     return outputs
 
 
+def _reconcile_coordinator_state(
+    workspace: JobWorkspace,
+    phases: list[str],
+    *,
+    status: str,
+    metadata: dict | None = None,
+) -> None:
+    """Converge durable coordinator state onto artifacts actually on disk.
+
+    The recovery scheduler may finish work after the autonomous loop exits, so
+    the loop's last in-memory phase (for example ``ppt_assembly=running``) must
+    not remain as the persisted truth once the declared outputs exist.
+    """
+    expected_outputs = {
+        "document_analysis": [workspace.artifact_path("source_summary")],
+        "outline_generation": [workspace.artifact_path("outline")],
+        "template_matching": [
+            workspace.artifact_path("selected_template"),
+            workspace.artifact_path("template_meta"),
+            workspace.artifact_path("template_zones"),
+        ],
+        "design_planning": [workspace.artifact_path("slide_design_plan")],
+        "content_mapping": [workspace.artifact_path("slide_contents")],
+        "visual_generation": [workspace.artifact_path("image_generation_report")],
+        "ppt_assembly": [workspace.root / "final.pptx"],
+        "verification": [workspace.artifact_path("validation_report")],
+    }
+    completed = [
+        phase
+        for phase in phases
+        if all(path.exists() and path.stat().st_size > 0 for path in expected_outputs[phase])
+    ]
+    state_path = workspace.root / "workflow_state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    phase_states = state.get("phase_states", {})
+    for phase in phases:
+        phase_state = phase_states.setdefault(phase, {})
+        phase_state["status"] = "completed" if phase in completed else "pending"
+    state.update(
+        {
+            "status": status,
+            "completed_phases": completed,
+            "running_phases": [],
+            "phase_states": phase_states,
+        }
+    )
+    if metadata:
+        state.update(metadata)
+    from ppt_agent.models.artifacts import atomic_write_json
+    atomic_write_json(state_path, state)
+
+
 def _run_llm_augmented_workflow(
     workspace: JobWorkspace,
     llm_client,
@@ -483,7 +631,18 @@ def _run_llm_augmented_workflow(
         # Execute the worker (with or without LLM)
         extra = _PHASE_EXTRA_KWARGS.get(phase, {})
         if phase in _LLM_PHASES and llm_client is not None:
-            output = PHASE_TO_WORKER[phase](workspace, force=force, llm_client=llm_client, **extra)
+            if getattr(llm_client, "circuit_open", False):
+                llm_client.record_circuit_fallback(phase)
+                logger.warning(
+                    "LLM circuit is open; running %s deterministically", phase
+                )
+                output = PHASE_TO_WORKER[phase](
+                    workspace, force=force, llm_client=None, **extra
+                )
+            else:
+                output = PHASE_TO_WORKER[phase](
+                    workspace, force=force, llm_client=llm_client, **extra
+                )
         else:
             output = PHASE_TO_WORKER[phase](workspace, force=force, **extra)
 
@@ -512,7 +671,11 @@ def _run_llm_augmented_workflow(
                 return outputs
 
     # Run dream consolidation at end of full workflow
-    if "verification" in phases and llm_client is not None:
+    if (
+        "verification" in phases
+        and llm_client is not None
+        and not getattr(llm_client, "circuit_open", False)
+    ):
         try:
             insights = run_dream_task(workspace.root, llm_client)
             if insights:

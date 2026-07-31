@@ -22,6 +22,10 @@ from ppt_agent.llm.providers.fake import FakeProvider
 from ppt_agent.llm.providers.openai_compatible import OpenAICompatibleProvider
 from ppt_agent.llm.providers.base import BaseLLMProvider, ProviderCapabilities
 from ppt_agent.llm.client import LLMClient, _create_provider
+from ppt_agent.llm.schemas import (
+    build_content_mapping_schema,
+    normalize_content_mapping_response,
+)
 
 
 class TestConfig:
@@ -169,8 +173,33 @@ class TestResponseParser:
         result = LLMResult(text='{"a": 1}', provider="test", model="test")
         schema = {"required": ["a", "b"]}
         data, warnings = parse_json_response(result, schema)
-        assert data == {"a": 1}
+        assert data is None
         assert any("b" in w for w in warnings)
+
+    def test_schema_validation_rejects_invalid_nested_array_item(self):
+        result = LLMResult(
+            text='{"repairs": ["plain text"]}',
+            provider="test",
+            model="test",
+        )
+        schema = {
+            "type": "object",
+            "properties": {
+                "repairs": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["zone_id"],
+                    },
+                },
+            },
+            "required": ["repairs"],
+        }
+
+        data, warnings = parse_json_response(result, schema)
+
+        assert data is None
+        assert any("$.repairs[0]" in warning for warning in warnings)
 
 
 class TestFakeProvider:
@@ -250,6 +279,50 @@ class TestLLMClient:
         with pytest.raises(RuntimeError):
             client.generate_json(prompt="Do something")
 
+    def test_json_repair_reuses_callers_output_budget(self):
+        class RecordingProvider(BaseLLMProvider):
+            def __init__(self):
+                super().__init__(
+                    ProviderConfig(name="recording", protocol="fake", text_model="fake")
+                )
+                self.max_token_calls = []
+
+            def capabilities(self):
+                return ProviderCapabilities(supports_json_mode=True)
+
+            def generate(self, messages, **kwargs):
+                self.max_token_calls.append(kwargs.get("max_tokens"))
+                if len(self.max_token_calls) == 1:
+                    return LLMResult(
+                        text='{"value": ',
+                        provider="recording",
+                        model="fake",
+                        finish_reason="length",
+                    )
+                return LLMResult(
+                    text='{"value": "fixed"}',
+                    provider="recording",
+                    model="fake",
+                    finish_reason="stop",
+                )
+
+        provider = RecordingProvider()
+        client = LLMClient.from_provider(provider)
+
+        result = client.generate_json(
+            prompt="Return JSON",
+            schema={
+                "type": "object",
+                "properties": {"value": {"type": "string"}},
+                "required": ["value"],
+                "additionalProperties": False,
+            },
+            max_tokens=900,
+        )
+
+        assert result == {"value": "fixed"}
+        assert provider.max_token_calls == [900, 900]
+
     def test_from_config_fake(self):
         # Should work with the default config which has fake provider
         client = LLMClient.from_config(profile="fake", config_path="/nonexistent.yml")
@@ -279,7 +352,7 @@ class TestLLMClient:
         assert caps.supports_json_mode is True
         assert caps.supports_json_schema is False
         assert caps.supports_strict_tools is True
-        assert caps.supports_forced_tool_choice is False
+        assert caps.supports_forced_tool_choice is True
 
     def test_deepseek_json_mode_sends_no_tools_or_tool_choice(self):
         config = ProviderConfig(
@@ -304,6 +377,9 @@ class TestLLMClient:
         assert result.success
         kwargs = create.call_args.kwargs
         assert kwargs["response_format"] == {"type": "json_object"}
+        assert kwargs["extra_body"] == {
+            "thinking": {"type": "disabled"},
+        }
         assert "tools" not in kwargs
         assert "tool_choice" not in kwargs
 
@@ -383,6 +459,80 @@ def test_empty_json_mode_response_is_retried() -> None:
     assert provider.calls == 2
 
 
+class _InvalidSchemaThenValidProvider(BaseLLMProvider):
+    def __init__(self) -> None:
+        super().__init__(
+            ProviderConfig(
+                name="sequence",
+                protocol="fake",
+                text_model="sequence",
+            )
+        )
+        self.calls = 0
+        self.messages_by_call = []
+
+    def capabilities(self) -> ProviderCapabilities:
+        return ProviderCapabilities(supports_json_mode=True)
+
+    def generate(self, messages, **kwargs):
+        self.calls += 1
+        self.messages_by_call.append(messages)
+        text = (
+            '{"repairs": ["plain text"]}'
+            if self.calls == 1
+            else '{"repairs": [{"zone_id": "shape-1"}]}'
+        )
+        return LLMResult(text=text, provider=self.name, model="sequence")
+
+
+def test_nested_schema_mismatch_is_repaired_and_diagnosed(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("PPT_AGENT_DEBUG_LLM", "1")
+    provider = _InvalidSchemaThenValidProvider()
+    client = LLMClient.from_provider(provider, job_root=tmp_path)
+    schema = {
+        "type": "object",
+        "properties": {
+            "repairs": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {"zone_id": {"type": "string"}},
+                    "required": ["zone_id"],
+                },
+            },
+        },
+        "required": ["repairs"],
+    }
+
+    result = client.generate_json(
+        prompt="Return json",
+        schema=schema,
+        phase="content_mapping_micro_0_1",
+    )
+
+    assert result == {"repairs": [{"zone_id": "shape-1"}]}
+    assert provider.calls == 2
+    assert any(
+        "Return json" in message.text()
+        for message in provider.messages_by_call[1][:-1]
+    )
+    assert "Validation errors" in provider.messages_by_call[1][-1].text()
+    records = [
+        json.loads(line)
+        for line in (tmp_path / "llm_diagnostics.jsonl").read_text(
+            encoding="utf-8"
+        ).splitlines()
+    ]
+    assert records[0]["schema_valid"] is False
+    assert records[0]["repair_item_types"] == ["str"]
+    assert records[0]["invalid_repair_indexes"] == [0]
+    assert records[1]["schema_valid"] is True
+    assert records[1]["repair_item_types"] == ["dict"]
+
+
 class TestAudit:
     def test_log_model_call(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -440,3 +590,183 @@ class TestWorkflowWithFakeLLM:
             outputs = run_workflow(workspace, force=True)  # No model_profile
 
             assert (job_dir / "final.pptx").exists()
+
+
+def test_runtime_mapping_schema_binds_slide_template_and_zone_ids() -> None:
+    from jsonschema import Draft202012Validator
+
+    schema = build_content_mapping_schema(
+        "tech.template",
+        [{
+            "slide_index": 4,
+            "template_slide_index": 9,
+            "zones": [{
+                "zone_id": "slide-10/shape-7",
+                "type": "title",
+                "action": "replace_text",
+            }],
+        }],
+    )
+    wire_valid = {
+        "template_id": "tech.template",
+        "slides": {"slide_0": {
+            "slide_index": 4,
+            "template_slide_index": 9,
+            "zones": {"zone_0": {
+                "zone_id": "slide-10/shape-7",
+                "type": "title",
+                "content": "系统架构",
+                "action": "replace_text",
+                "placement_reason": "页面主标题",
+                "source_block_ids": ["slide-4-title"],
+                "transformation": "none",
+                "fit_status": "fits",
+            }},
+        }},
+    }
+    Draft202012Validator(schema).validate(wire_valid)
+    normalized = normalize_content_mapping_response(wire_valid)
+    assert normalized["slides"][0]["zones"][0]["zone_id"] == "slide-10/shape-7"
+
+    wrong_zone = json.loads(json.dumps(wire_valid, ensure_ascii=False))
+    wrong_zone["slides"]["slide_0"]["zones"]["zone_0"]["zone_id"] = "slide-11/shape-7"
+    with pytest.raises(Exception):
+        Draft202012Validator(schema).validate(wrong_zone)
+
+    wrong_template_page = json.loads(json.dumps(wire_valid, ensure_ascii=False))
+    wrong_template_page["slides"]["slide_0"]["template_slide_index"] = 10
+    with pytest.raises(Exception):
+        Draft202012Validator(schema).validate(wrong_template_page)
+
+
+def test_strict_tool_schema_is_sent_on_first_call_not_embedded_in_prompt() -> None:
+    class RecordingStrictProvider(BaseLLMProvider):
+        def __init__(self) -> None:
+            super().__init__(
+                ProviderConfig(name="strict", protocol="fake", text_model="fake")
+            )
+            self.calls: list[dict] = []
+
+        def capabilities(self) -> ProviderCapabilities:
+            return ProviderCapabilities(
+                supports_json_mode=True,
+                supports_strict_tools=True,
+            )
+
+        def generate(self, messages, **kwargs) -> LLMResult:
+            self.calls.append({"messages": messages, "kwargs": kwargs})
+            return LLMResult(
+                text='{"value":"ok"}',
+                provider="strict",
+                model="fake",
+            )
+
+    provider = RecordingStrictProvider()
+    client = LLMClient.from_provider(provider)
+    schema = {
+        "title": "strict_result",
+        "type": "object",
+        "properties": {"value": {"type": "string"}},
+        "required": ["value"],
+        "additionalProperties": False,
+    }
+
+    assert client.generate_json(
+        prompt="Generate the result.",
+        json_schema=schema,
+        schema_name="strict_result",
+    ) == {"value": "ok"}
+
+    assert len(provider.calls) == 1
+    first_call = provider.calls[0]
+    assert first_call["kwargs"]["json_schema"] is schema
+    assert first_call["kwargs"]["schema_name"] == "strict_result"
+    prompt_text = "\n".join(
+        message.text() for message in first_call["messages"]
+    )
+    assert "Expected JSON shape example" not in prompt_text
+    assert '"properties"' not in prompt_text
+
+
+def test_strict_schema_retries_same_api_constraint_before_fallback() -> None:
+    class SequenceStrictProvider(BaseLLMProvider):
+        def __init__(self) -> None:
+            super().__init__(
+                ProviderConfig(name="strict", protocol="fake", text_model="fake")
+            )
+            self.calls: list[dict] = []
+
+        def capabilities(self) -> ProviderCapabilities:
+            return ProviderCapabilities(supports_strict_tools=True)
+
+        def generate(self, messages, **kwargs) -> LLMResult:
+            self.calls.append(kwargs)
+            if len(self.calls) < 3:
+                return LLMResult(
+                    error="temporary connection error",
+                    provider="strict",
+                    model="fake",
+                )
+            return LLMResult(
+                text='{"value":"recovered"}',
+                provider="strict",
+                model="fake",
+            )
+
+    provider = SequenceStrictProvider()
+    client = LLMClient.from_provider(provider)
+    schema = {
+        "type": "object",
+        "properties": {"value": {"type": "string"}},
+        "required": ["value"],
+        "additionalProperties": False,
+    }
+
+    result = client.generate_json(
+        prompt="Generate.",
+        json_schema=schema,
+        schema_name="strict_result",
+        fallback={"value": "fallback"},
+    )
+
+    assert result == {"value": "recovered"}
+    assert len(provider.calls) == 3
+    assert all(call["json_schema"] is schema for call in provider.calls)
+
+
+def test_strict_schema_definition_error_is_not_hidden_by_fallback() -> None:
+    class RejectedSchemaProvider(BaseLLMProvider):
+        def __init__(self) -> None:
+            super().__init__(
+                ProviderConfig(name="strict", protocol="fake", text_model="fake")
+            )
+            self.calls = 0
+
+        def capabilities(self) -> ProviderCapabilities:
+            return ProviderCapabilities(supports_strict_tools=True)
+
+        def generate(self, messages, **kwargs) -> LLMResult:
+            self.calls += 1
+            return LLMResult(
+                error="Invalid JSON Schema: minItems is unsupported",
+                provider="strict",
+                model="fake",
+            )
+
+    provider = RejectedSchemaProvider()
+    client = LLMClient.from_provider(provider)
+    schema = {
+        "type": "object",
+        "properties": {"value": {"type": "string"}},
+        "required": ["value"],
+        "additionalProperties": False,
+    }
+
+    with pytest.raises(RuntimeError, match="fallback is intentionally disabled"):
+        client.generate_json(
+            prompt="Generate.",
+            json_schema=schema,
+            schema_name="strict_result",
+            fallback={"value": "fallback"},
+        )
+    assert provider.calls == 1

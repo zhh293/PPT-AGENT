@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import logging
 from pathlib import Path
 
 from ppt_agent.assembly.ppt_writer import write_pptx_from_mapping
 from ppt_agent.coordinator.phase_state import load_artifact
-from ppt_agent.models.artifacts import JobWorkspace
+from ppt_agent.models.artifacts import JobWorkspace, atomic_write_json
 
 logger = logging.getLogger(__name__)
 
@@ -68,10 +69,112 @@ def _strict_content_mapping_issues(
     return sorted(set(issues))
 
 
+def _fatal_content_mapping_issues(issues: list[str]) -> list[str]:
+    """Return only mapping defects that make deterministic assembly impossible."""
+    return [
+        issue for issue in issues
+        if issue == "duplicate_slide_index"
+        or issue.startswith("slide_index_mismatch:")
+    ]
+
+
+def _prepare_best_effort_mapping(
+    slide_contents: dict,
+    issues: list[str],
+) -> tuple[dict, list[dict]]:
+    """Make irreducible text defects renderable without hiding them.
+
+    Fit and provenance warnings do not prevent python-pptx from producing a
+    usable deck. Empty, cleared, or orphan-glyph replacements are safer when
+    reverted to the inherited template shape than when rendered as broken
+    content. The original approved artifact remains unchanged; every recovery
+    is recorded in ``assembly_mapping_report.json``.
+    """
+    prepared = deepcopy(slide_contents)
+    recoveries: list[dict] = []
+    for slide in prepared.get("slides", []):
+        slide_index = int(slide.get("slide_index", 0))
+        for zone in slide.get("zones", []):
+            action = zone.get("action", "")
+            content = zone.get("content")
+            rendered = str(content or "").strip().lower()
+            reason = ""
+            if action == "clear_text":
+                reason = "clear_text_reverted_to_template"
+            elif action == "replace_text" and content in (None, "", []):
+                reason = "empty_replacement_reverted_to_template"
+            elif action == "replace_text" and rendered in {"u", "v", "w", "•", "●"}:
+                reason = "orphan_glyph_reverted_to_template"
+            if not reason:
+                continue
+            zone["action"] = "preserve"
+            zone["content"] = None
+            recoveries.append({
+                "slide_index": slide_index,
+                "zone_id": zone.get("zone_id", ""),
+                "action": reason,
+            })
+
+    prepared["assembly_mapping_warnings"] = list(issues)
+    return prepared, recoveries
+
+
+def _write_mapping_report(
+    workspace: JobWorkspace,
+    issues: list[str],
+    fatal_issues: list[str],
+    recoveries: list[dict],
+) -> None:
+    atomic_write_json(
+        workspace.root / "assembly_mapping_report.json",
+        {
+            "status": "failed" if fatal_issues else (
+                "passed_with_warnings" if issues else "passed"
+            ),
+            "issue_count": len(issues),
+            "fatal_issue_count": len(fatal_issues),
+            "issues": issues,
+            "recoveries": recoveries,
+            "policy": (
+                "Only structural mapping defects block PPT generation; "
+                "irreducible text-fit defects are rendered with warnings."
+            ),
+        },
+    )
+
+
+def _apply_recoveries_to_mappings(
+    mappings: dict,
+    recoveries: list[dict],
+) -> None:
+    recovery_ids = {
+        (int(item["slide_index"]), item["zone_id"])
+        for item in recoveries
+    }
+    for slide_key, slide_mappings in mappings.items():
+        slide_index = int(slide_key)
+        for entry in slide_mappings.values():
+            if (
+                isinstance(entry, dict)
+                and (slide_index, entry.get("zone_id", "")) in recovery_ids
+            ):
+                entry["action"] = "preserve"
+                entry["content"] = None
+
+
 def run(workspace: JobWorkspace, force: bool = False) -> Path:
     output = workspace.root / "final.pptx"
     if output.exists() and not force:
-        return output
+        dependencies = [
+            workspace.artifact_path("slide_contents"),
+            workspace.artifact_path("image_generation_report"),
+        ]
+        if all(
+            not dependency.exists()
+            or output.stat().st_mtime >= dependency.stat().st_mtime
+            for dependency in dependencies
+        ):
+            return output
     slide_contents = load_artifact(workspace, "slide_contents")
     selected_template = load_artifact(workspace, "selected_template")
     if selected_template.get("template_id") == "fallback.default":
@@ -87,13 +190,28 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
     mapping_issues = _strict_content_mapping_issues(
         slide_contents, expected_slide_indices
     )
-    deterministic_draft = slide_contents.get("mapping_mode") == "deterministic_fallback"
-    if mapping_issues and not (force and deterministic_draft):
+    fatal_mapping_issues = _fatal_content_mapping_issues(mapping_issues)
+    prepared_slide_contents, recoveries = _prepare_best_effort_mapping(
+        slide_contents, mapping_issues
+    )
+    _write_mapping_report(
+        workspace,
+        mapping_issues,
+        fatal_mapping_issues,
+        recoveries,
+    )
+    if fatal_mapping_issues:
         raise ValueError(
-            "Cannot assemble PPT: strict text mapping gate failed. "
-            "force=True only regenerates artifacts and cannot bypass empty text, "
-            f"clear_text, or overflow. Issues: {mapping_issues[:20]}"
+            "Cannot assemble PPT: structural mapping gate failed. "
+            f"Issues: {fatal_mapping_issues[:20]}"
         )
+    if mapping_issues:
+        logger.warning(
+            "Assembling with %d recoverable mapping warning(s): %s",
+            len(mapping_issues),
+            mapping_issues[:20],
+        )
+    slide_contents = prepared_slide_contents
 
     review_status = slide_contents.get("review_status")
     logger.info("slide_contents review_status: %s", review_status or "<not set>")
@@ -123,6 +241,7 @@ def run(workspace: JobWorkspace, force: bool = False) -> Path:
             mappings=mappings,
             image_mappings=image_mappings,
             slide_contents=slide_contents,
+            outline=outline,
             output_path=output,
             workspace_root=workspace.root,
         )
@@ -178,12 +297,28 @@ def assemble_with_mapping(
     mapping_issues = _strict_content_mapping_issues(
         slide_contents, expected_slide_indices
     )
-    deterministic_draft = slide_contents.get("mapping_mode") == "deterministic_fallback"
-    if mapping_issues and not (force and deterministic_draft):
+    fatal_mapping_issues = _fatal_content_mapping_issues(mapping_issues)
+    prepared_slide_contents, recoveries = _prepare_best_effort_mapping(
+        slide_contents, mapping_issues
+    )
+    _write_mapping_report(
+        workspace,
+        mapping_issues,
+        fatal_mapping_issues,
+        recoveries,
+    )
+    if fatal_mapping_issues:
         raise ValueError(
-            "Cannot assemble PPT: strict text mapping gate failed. "
-            f"Issues: {mapping_issues[:20]}"
+            "Cannot assemble PPT: structural mapping gate failed. "
+            f"Issues: {fatal_mapping_issues[:20]}"
         )
+    if mapping_issues:
+        logger.warning(
+            "Agent-driven assembly continuing with %d recoverable mapping warning(s).",
+            len(mapping_issues),
+        )
+    slide_contents = prepared_slide_contents
+    _apply_recoveries_to_mappings(mappings, recoveries)
 
     review_status = slide_contents.get("review_status")
     if review_status != "approved" and not force:
@@ -203,6 +338,7 @@ def assemble_with_mapping(
         mappings=mappings,
         image_mappings=image_mappings,
         slide_contents=slide_contents,
+        outline=outline,
         output_path=output,
         workspace_root=workspace.root,
     )

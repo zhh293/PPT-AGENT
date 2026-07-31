@@ -85,7 +85,7 @@ def _evaluate_template_background(image_path: str | None) -> tuple[float, bool]:
 
 def slide_contents_to_batch_config(
     slide_contents: dict,
-    mode: str = "none",
+    mode: str = "all",
     template_root: str | None = None,
 ) -> dict:
     """Convert slide_contents into GPTImage2 batch-generate config.
@@ -111,6 +111,11 @@ def slide_contents_to_batch_config(
         - output_name: slide_XX.png
     """
     slides = slide_contents.get("slides", [])
+    assembly_mode = str(
+        slide_contents.get("assembly_policy", {}).get("mode")
+        or ""
+    )
+    preserve_template = assembly_mode == "text_replace_only"
 
     # Determine which slides to generate
     if mode == "none":
@@ -120,6 +125,8 @@ def slide_contents_to_batch_config(
     generated_count = 0
     to_generate: list[dict] = []
     for slide in slides:
+        if preserve_template:
+            continue
         idx = slide["slide_index"]
         layout = slide.get("layout", "")
 
@@ -165,6 +172,14 @@ def slide_contents_to_batch_config(
         idx = slide["slide_index"]
         for zi, zone in enumerate(slide.get("zones", [])):
             if zone.get("type") != "image":
+                continue
+            action = zone.get("action")
+            source = zone.get("source")
+            # Preserved template visuals are already present on the chosen PPT
+            # page. Generating them again creates duplicate jobs per slide.
+            if action == "preserve" or (
+                source == "template" and action != "replace_image"
+            ):
                 continue
             image_prompt = zone.get("image_prompt")
             image_ref = zone.get("image_ref")

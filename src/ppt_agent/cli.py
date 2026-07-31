@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 # Load .env before any other imports so API keys are available
@@ -17,19 +18,69 @@ from ppt_agent.models.schema_loader import load_schema, validate_required
 from ppt_agent.models.slide_contents import approve_slide_contents
 
 
+def _finalize_job_status(job_path: Path) -> None:
+    """Persist technical completion without hiding quality/fallback state."""
+    job_meta_path = job_path / "job.json"
+    if not job_meta_path.exists():
+        return
+
+    meta = read_json(job_meta_path)
+    validation_path = job_path / "validation_report.json"
+    validation = read_json(validation_path) if validation_path.exists() else {}
+    quality_status = str(validation.get("status") or "missing")
+
+    has_llm_fallback = False
+    model_log = job_path / "model_calls.jsonl"
+    if model_log.exists():
+        for line in model_log.read_text(encoding="utf-8").splitlines():
+            try:
+                if json.loads(line).get("status") == "fallback":
+                    has_llm_fallback = True
+                    break
+            except (ValueError, TypeError):
+                continue
+
+    meta["quality_status"] = quality_status
+    if validation.get("summary"):
+        meta["quality_summary"] = validation["summary"]
+    meta["status"] = (
+        "completed"
+        if quality_status == "passed" and not has_llm_fallback
+        else "completed_with_fallbacks"
+    )
+    meta.pop("error", None)
+    atomic_write_json(job_meta_path, meta)
+
+
 def cmd_create_job(args: argparse.Namespace) -> None:
     workspace = create_job(Path(args.input), Path(args.output) if args.output else None)
     print(str(workspace.root))
 
 
 def cmd_run(args: argparse.Namespace) -> None:
-    outputs = run_workflow(
-        Path(args.job),
-        until=args.until,
-        start_from=args.start_from,
-        force=args.force,
-        model_profile=args.model_profile,
-    )
+    job_path = Path(args.job)
+    try:
+        outputs = run_workflow(
+            job_path,
+            until=args.until,
+            start_from=args.start_from,
+            force=args.force,
+            model_profile=args.model_profile,
+        )
+    except Exception as exc:
+        job_meta_path = job_path / "job.json"
+        if job_meta_path.exists():
+            meta = read_json(job_meta_path)
+            meta["status"] = "failed"
+            meta["error"] = str(exc)
+            atomic_write_json(job_meta_path, meta)
+        raise
+
+    # The server wrapper already maintains job.json, but direct CLI resumes
+    # previously left a stale "failed" state even after final.pptx and a
+    # passing validation report had been regenerated successfully.
+    if (args.until or "final") in {"final", "verification"}:
+        _finalize_job_status(job_path)
     for path in outputs:
         print(path)
 
@@ -96,7 +147,9 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--from", dest="start_from")
     run.add_argument("--force", action="store_true")
     run.add_argument("--model-profile", dest="model_profile", default="deepseek",
-                     help="LLM provider profile from config/models.yml (default: deepseek. Use 'fake' for deterministic mode)")
+                     help=("LLM provider profile from config/models.yml (default: deepseek). "
+                           "Use 'agent:<profile>' for agentic workers or "
+                           "'coordinator:<profile>' for supervised orchestration."))
     run.set_defaults(func=cmd_run)
 
     approve = sub.add_parser("approve")

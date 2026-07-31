@@ -9,6 +9,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from jsonschema import Draft202012Validator
+from jsonschema.exceptions import SchemaError
+
 from ppt_agent.llm.json_repair import extract_json_object, repair_json
 from ppt_agent.llm.messages import LLMResult
 
@@ -40,10 +43,14 @@ def parse_json_response(
     if data is None:
         return None, warnings
 
-    # Schema validation (lightweight)
+    # DeepSeek JSON Mode guarantees JSON syntax, not the nested business
+    # contract. Enforce the complete schema locally before downstream code
+    # receives the payload.
     if schema:
-        schema_warnings = _validate_required_keys(data, schema)
-        warnings.extend(schema_warnings)
+        schema_errors = validate_json_schema(data, schema)
+        if schema_errors:
+            warnings.extend(schema_errors)
+            return None, warnings
 
     if result.repaired:
         warnings.append("Response required JSON repair")
@@ -51,14 +58,30 @@ def parse_json_response(
     return data, warnings
 
 
-def _validate_required_keys(data: dict, schema: dict) -> list[str]:
-    """Check that required keys from a JSON schema are present."""
-    warnings: list[str] = []
-    required = schema.get("required", [])
-    properties = schema.get("properties", {})
+def _format_json_path(path: Any) -> str:
+    rendered = "$"
+    for part in path:
+        if isinstance(part, int):
+            rendered += f"[{part}]"
+        else:
+            rendered += f".{part}"
+    return rendered
 
-    for key in required:
-        if key not in data:
-            warnings.append(f"Missing required field: {key}")
 
-    return warnings
+def validate_json_schema(data: Any, schema: dict) -> list[str]:
+    """Return deterministic, path-aware JSON Schema validation errors."""
+    try:
+        Draft202012Validator.check_schema(schema)
+        validator = Draft202012Validator(schema)
+    except SchemaError as exc:
+        return [f"Invalid JSON schema: {exc.message}"]
+
+    errors = sorted(
+        validator.iter_errors(data),
+        key=lambda error: tuple(str(part) for part in error.absolute_path),
+    )
+    return [
+        f"Schema validation failed at "
+        f"{_format_json_path(error.absolute_path)}: {error.message}"
+        for error in errors
+    ]

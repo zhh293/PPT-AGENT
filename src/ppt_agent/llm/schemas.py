@@ -8,11 +8,17 @@ Each schema is a standard JSON Schema (2020-12) dict.  Only the fields
 that the LLM MUST output are marked required; optional fields (e.g.
 image_inventory which is populated from file scanning) are omitted.
 
-For *content_mapping*, structured output is NOT used because zone_ids
-are dynamic (template-dependent) — it falls back to ``json_object`` mode.
+For *content_mapping*, ``build_content_mapping_schema`` creates a
+template-aware schema at runtime. Dynamic identifiers are encoded in the API
+schema instead of being described in the prompt.
 """
 
 # ── document_analysis → source_summary ──────────────────────────────
+
+from __future__ import annotations
+
+from copy import deepcopy
+
 
 SOURCE_SUMMARY_SCHEMA: dict = {
     "title": "source_summary",
@@ -330,3 +336,110 @@ SLIDE_CONTENTS_SCHEMA: dict = {
     "required": ["template_id", "slides"],
     "additionalProperties": False,
 }
+
+
+def build_content_mapping_schema(
+    template_id: str,
+    expected_slides: list[dict],
+) -> dict:
+    """Build a DeepSeek-strict-compatible schema for one mapping batch."""
+    zone_base = deepcopy(
+        SLIDE_CONTENTS_SCHEMA["properties"]["slides"]["items"]
+        ["properties"]["zones"]["items"]
+    )
+    zone_base["properties"]["content"] = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "array", "items": {"type": "string"}},
+        ]
+    }
+    slide_properties: dict[str, dict] = {}
+
+    for slide_ordinal, expected in enumerate(expected_slides):
+        text_zones = [
+            zone
+            for zone in expected.get("zones", [])
+            if str(zone.get("type", "")).lower() != "image"
+            and str(zone.get("action", "")).lower() != "replace_image"
+        ]
+        zone_properties: dict[str, dict] = {}
+        for zone_ordinal, zone in enumerate(text_zones):
+            variant = deepcopy(zone_base)
+            variant["properties"]["zone_id"] = {
+                "type": "string",
+                "enum": [str(zone.get("zone_id", ""))],
+            }
+            variant["properties"]["type"] = {
+                "type": "string",
+                "enum": [str(zone.get("type", "body"))],
+            }
+            variant["properties"]["action"] = {
+                "type": "string",
+                "enum": ["replace_text", "preserve"],
+            }
+            variant["properties"]["transformation"] = {
+                "type": "string",
+                "enum": ["none", "summarize", "split", "merge", "rewrite"],
+            }
+            zone_properties[f"zone_{zone_ordinal}"] = variant
+
+        slide_properties[f"slide_{slide_ordinal}"] = {
+            "type": "object",
+            "properties": {
+                "slide_index": {
+                    "type": "integer",
+                    "enum": [int(expected["slide_index"])],
+                },
+                "template_slide_index": {
+                    "type": "integer",
+                    "enum": [int(expected["template_slide_index"])],
+                },
+                "zones": {
+                    "type": "object",
+                    "properties": zone_properties,
+                    "required": list(zone_properties),
+                    "additionalProperties": False,
+                },
+            },
+            "required": ["slide_index", "template_slide_index", "zones"],
+            "additionalProperties": False,
+        }
+
+    return {
+        "type": "object",
+        "properties": {
+            "template_id": {
+                "type": "string",
+                "enum": [template_id],
+            },
+            "slides": {
+                "type": "object",
+                "properties": slide_properties,
+                "required": list(slide_properties),
+                "additionalProperties": False,
+            },
+        },
+        "required": ["template_id", "slides"],
+        "additionalProperties": False,
+    }
+
+
+def normalize_content_mapping_response(payload: dict) -> dict:
+    """Convert strict wire object maps to the artifact's array contract."""
+    slides = payload.get("slides")
+    if not isinstance(slides, dict):
+        return payload
+    normalized = dict(payload)
+    normalized_slides: list[dict] = []
+    for slide in slides.values():
+        if not isinstance(slide, dict):
+            continue
+        normalized_slide = dict(slide)
+        zones = normalized_slide.get("zones")
+        if isinstance(zones, dict):
+            normalized_slide["zones"] = [
+                zone for zone in zones.values() if isinstance(zone, dict)
+            ]
+        normalized_slides.append(normalized_slide)
+    normalized["slides"] = normalized_slides
+    return normalized

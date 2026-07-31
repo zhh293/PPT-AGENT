@@ -135,6 +135,21 @@ class TestTemplateIndex:
 # ── Batch config tests ──
 
 class TestBatchConfig:
+    def test_text_replace_only_does_not_generate_full_page_backgrounds(self) -> None:
+        slide_contents = {
+            "assembly_policy": {"mode": "text_replace_only"},
+            "slides": [
+                {
+                    "slide_index": 0,
+                    "zones": [{"type": "title", "content": "Keep template"}],
+                }
+            ],
+        }
+
+        config = slide_contents_to_batch_config(slide_contents, mode="all")
+
+        assert config["slides"] == []
+
     def test_full_page_mode(self) -> None:
         slide_contents = {
             "slides": [

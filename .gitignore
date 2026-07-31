@@ -9,6 +9,10 @@ build/
 .DS_Store
 *.pptx
 workspace/jobs/
+workspace/loop-assets/
+workspace/test-tmp-*/
+workspace/pytest-*/
+.test-tmp/
 
 # Python environments, caches, and quality-tool output
 .venv/
@@ -38,5 +42,10 @@ tmp_*
 # Local source presentation library (large, non-distributable files)
 /meta/
 
+# Rendered template previews produced by slide QA tools
+/templates/**/template/slide-*.png
+
 # Local image-generation credentials
 .catpaw/skills/gptimage2-generator/assets/accounts.json
+.gptimage2_accounts.json
+**/.gptimage2_accounts.json

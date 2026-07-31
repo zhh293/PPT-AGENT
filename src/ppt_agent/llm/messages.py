@@ -88,6 +88,8 @@ class LLMResult:
     prompt_tokens: int = 0
     completion_tokens: int = 0
     repaired: bool = False
+    finish_reason: str = ""
+    reasoning_text: str = ""
     error: str | None = None
 
     @property

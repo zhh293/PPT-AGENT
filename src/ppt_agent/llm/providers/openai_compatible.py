@@ -85,8 +85,9 @@ class OpenAICompatibleProvider(BaseLLMProvider):
             supports_json_schema=False,
             supports_tool_use=True,
             supports_strict_tools=bool(self.config.beta_endpoint),
-            # Thinking mode supports tools but rejects forced tool_choice.
-            supports_forced_tool_choice=False,
+            # Current DeepSeek Chat Completion API documents both ``required``
+            # and named-function tool_choice modes.
+            supports_forced_tool_choice=True,
             supports_streaming=True,
             max_context_tokens=128_000,
         )
@@ -181,11 +182,19 @@ class OpenAICompatibleProvider(BaseLLMProvider):
                     "parameters": json_schema,
                 },
             }]
-            # Do not force tool_choice: DeepSeek thinking mode supports tool
-            # calls but rejects forced selection. Structured artifact output
-            # uses JSON Mode and never enters this branch.
+            kwargs["tool_choice"] = "required"
+            kwargs["extra_body"] = {
+                "thinking": {"type": "disabled"},
+            }
         elif json_mode:
             kwargs["response_format"] = {"type": "json_object"}
+            # DeepSeek V4 enables thinking by default. For schema-bound JSON
+            # calls, reasoning tokens can consume the entire completion budget
+            # before any JSON is emitted, so explicitly use non-thinking mode.
+            if self.config.name.lower() == "deepseek":
+                kwargs["extra_body"] = {
+                    "thinking": {"type": "disabled"},
+                }
 
         start = time.monotonic()
         try:
@@ -238,4 +247,8 @@ class OpenAICompatibleProvider(BaseLLMProvider):
             latency_ms=elapsed,
             prompt_tokens=getattr(usage, "prompt_tokens", 0) if usage else 0,
             completion_tokens=getattr(usage, "completion_tokens", 0) if usage else 0,
+            finish_reason=str(getattr(choice, "finish_reason", "") or ""),
+            reasoning_text=str(
+                getattr(choice.message, "reasoning_content", "") or ""
+            ),
         )

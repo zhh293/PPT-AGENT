@@ -6,7 +6,10 @@
   "required": ["template_id", "selection_status", "score", "ranking"],
   "properties": {
     "template_id": {"type": "string", "minLength": 1},
-    "selection_status": {"type": "string", "enum": ["matched", "fallback"]},
+    "selection_status": {
+      "type": "string",
+      "enum": ["matched", "matched_low_confidence", "fallback"]
+    },
     "score": {"type": "number", "minimum": 0, "maximum": 1},
     "reason": {"type": "string"},
     "fallback_reason": {"type": "string"},

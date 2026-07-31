@@ -13,7 +13,7 @@ routes:
     skill: ppt-template-matcher
     knowledge_base: templates
     permission_profile: workspace-write
-    expected_outputs: [selected_template.json, template_meta.json]
+    expected_outputs: [selected_template.json, template_meta.json, template_zones.json]
   design_planning:
     worker: ppt_agent.workers.design_director:run
     skill: ppt-design-director
@@ -30,7 +30,7 @@ routes:
     expected_outputs: [slide_contents.json]
   visual_generation:
     worker: ppt_agent.workers.image_generator:run
-    skill: ppt-image-layer
+    skill: gptimage2-generator
     permission_profile: workspace-write
     retry_policy:
       max_attempts: 1

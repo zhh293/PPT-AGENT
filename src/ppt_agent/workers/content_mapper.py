@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -24,6 +25,21 @@ from ppt_agent.models.slide_contents import SlideContent, SlideZoneContent, aggr
 logger = logging.getLogger(__name__)
 
 _PROMPT_PATH = Path(__file__).resolve().parent.parent / "llm" / "prompts" / "content_mapping.md"
+
+
+def _env_enabled(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_optional_nonnegative_int(name: str) -> int | None:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return None
+    try:
+        return max(0, int(raw))
+    except ValueError:
+        logger.warning("Ignoring invalid integer environment value %s=%r", name, raw)
+        return None
 
 _ZONE_REPAIR_SCHEMA: dict = {
     "title": "zone_semantic_repairs",
@@ -158,12 +174,18 @@ def _zone_target_range(zone: dict) -> tuple[int, int]:
         upper = {"short_label": 6, "title": 14, "decorative": 6}.get(
             eligibility, 20
         )
+    unconstrained_upper = upper
     if hinted_max > 0:
         upper = min(upper, hinted_max)
-        lower = min(lower, upper)
     if geometric_max > 0:
         upper = min(upper, geometric_max)
-        lower = min(lower, upper)
+    # When the source template already overfills its box, a capacity cap can
+    # push ``upper`` below the original-derived ``lower``. Collapsing both to
+    # the same number makes the LLM hit an unnecessarily exact character
+    # count (for example exactly 24 characters). Retain the normal 55% fit
+    # tolerance within the final capacity instead.
+    if upper < unconstrained_upper and lower >= upper:
+        lower = max(1, int(upper * 0.55))
     return max(1, lower), max(1, upper)
 
 
@@ -268,6 +290,17 @@ def _zone_constraint(zone: dict) -> dict:
 
 def _synchronize_layered_text_zones(zones: list[dict], template_slide: dict) -> None:
     """Give overlapping duplicate text layers identical replacement copy."""
+    def substantially_overlaps(a: list, b: list) -> bool:
+        if len(a) < 4 or len(b) < 4:
+            return False
+        ax1, ay1, aw, ah = (float(value) for value in a[:4])
+        bx1, by1, bw, bh = (float(value) for value in b[:4])
+        intersection_w = max(0.0, min(ax1 + aw, bx1 + bw) - max(ax1, bx1))
+        intersection_h = max(0.0, min(ay1 + ah, by1 + bh) - max(ay1, by1))
+        intersection = intersection_w * intersection_h
+        smaller_area = min(max(aw * ah, 0.0), max(bw * bh, 0.0))
+        return bool(smaller_area and intersection / smaller_area >= 0.5)
+
     mapped_by_id = {zone.get("zone_id", ""): zone for zone in zones}
     groups: list[list[dict]] = []
     for template_zone in template_slide.get("text_zones", []):
@@ -283,10 +316,27 @@ def _synchronize_layered_text_zones(zones: list[dict], template_slide: dict) -> 
             anchor_original = _normalized_text(str(
                 anchor.get("original_text", anchor.get("text", ""))
             ))
-            if (
+            same_layer_copy = (
                 original == anchor_original
-                and len(anchor_position) >= 4
-                and max(abs(float(position[i]) - float(anchor_position[i])) for i in range(4)) <= 0.02
+                or SequenceMatcher(
+                    None, original, anchor_original
+                ).ratio() >= 0.9
+            )
+            close_geometry = (
+                len(anchor_position) >= 4
+                and max(
+                    abs(float(position[i]) - float(anchor_position[i]))
+                    for i in range(4)
+                )
+                <= 0.04
+            )
+            exact_source_copy = original == anchor_original
+            if same_layer_copy and (
+                close_geometry
+                or (
+                    exact_source_copy
+                    and substantially_overlaps(position, anchor_position)
+                )
             ):
                 group.append(template_zone)
                 break
@@ -344,6 +394,85 @@ def _assess_baked_text_risk(slide: dict) -> dict:
         "unmatched_ocr_ratio": None,
         "large_image_area": round(large_image_area, 3),
     }
+
+
+def _ensure_generated_content_image_zone(
+    slide: dict,
+    template_slide: dict,
+    design_decision: dict,
+    outline_slide: dict,
+    image_inventory: list[dict],
+) -> None:
+    """Request one unique content image when ``user_image`` has no source.
+
+    Template ingestion also sees full-slide raster decorations as image zones,
+    so candidates are limited to plausible content frames. Remaining template
+    pictures stay untouched; the selected frame gets its own semantic prompt
+    and therefore its own output file.
+    """
+    strategy = str(design_decision.get("visual_strategy") or "").lower()
+    if strategy not in {"user_image", "generated_region", "generated_image"}:
+        return
+    if image_inventory:
+        return
+    if any(
+        zone.get("type") == "image"
+        and zone.get("action") == "replace_image"
+        for zone in slide.get("zones", [])
+    ):
+        return
+
+    candidates: list[dict] = []
+    for zone in template_slide.get("image_zones", []):
+        position = zone.get("position", [])
+        if len(position) < 4:
+            continue
+        x, y, width, height = (float(value) for value in position[:4])
+        area = width * height
+        if (
+            0.015 <= area <= 0.20
+            and width <= 0.50
+            and height <= 0.70
+            and x >= 0
+            and y >= 0.12
+            and x + width <= 1.02
+            and y + height <= 1.02
+        ):
+            candidates.append(zone)
+    if not candidates:
+        return
+
+    target = max(
+        candidates,
+        key=lambda zone: zone["position"][2] * zone["position"][3],
+    )
+    purposes = [
+        str(block.get("purpose") or "").strip()
+        for block in design_decision.get("block_plan", [])
+        if block.get("block_type") == "image" and block.get("purpose")
+    ]
+    title = str(outline_slide.get("title") or "").strip()
+    bullets = [
+        str(item).strip()
+        for item in outline_slide.get("bullets", [])[:2]
+        if str(item).strip()
+    ]
+    prompt_parts = [title, *purposes, *bullets]
+    prompt = "；".join(part for part in prompt_parts if part)
+    slide.setdefault("zones", []).append({
+        **target,
+        "type": "image",
+        "editable": False,
+        "action": "replace_image",
+        "source": "generated",
+        "image_ref": None,
+        "image_prompt": prompt or f"科技主题内容图，页面 {slide.get('slide_index', 0) + 1}",
+        "fit_status": "unknown",
+        "placement_reason": (
+            "No user image was supplied; generate one unique semantic image "
+            "for the largest plausible template content frame."
+        ),
+    })
 
 
 def _template_slide_score(
@@ -404,8 +533,46 @@ def _template_slide_score(
     )
 
 
+_TEMPLATE_ROLE_KEYWORDS = {
+    "cover": ("封面", "项目名称", "大赛"),
+    "background": ("项目背景", "行业背景", "应用场景", "市场规模"),
+    "problem": ("行业痛点", "痛点", "问题", "挑战"),
+    "innovation": ("核心技术", "技术创新", "解决办法", "研发"),
+    "system_design": ("核心技术", "解决办法", "使用流程", "系统", "架构"),
+    "feature_demo": ("核心技术", "使用流程", "性能", "检测", "工程实例"),
+    "data": ("市场规模", "性能", "检测", "销售额", "数据"),
+    "value": ("社会价值", "带动就业", "价值", "教育维度"),
+    "roadmap": ("发展规划", "生产计划", "研发历程", "规划"),
+    "closing": ("致谢", "展望未来", "发展规划"),
+}
+
+
+def _template_role_bonus(outline_slide: dict, template_slide: dict) -> float:
+    """Reward source pages whose authored role matches the narrative role."""
+    role = str(outline_slide.get("type") or "").strip().lower()
+    keywords = _TEMPLATE_ROLE_KEYWORDS.get(role, ())
+    if not keywords:
+        return 0.0
+    corpus = " ".join(
+        _clean_mapping_text(
+            zone.get("original_text")
+            or zone.get("text")
+            or zone.get("content")
+            or ""
+        )
+        for zone in template_slide.get("text_zones", [])
+    )
+    matches = sum(1 for keyword in keywords if keyword in corpus)
+    return min(1.5, matches * 0.75)
+
+
 def _select_template_slides(outline: dict, template_zones: dict, design: dict) -> list[int]:
-    """Select unique, increasing template pages for deterministic safe assembly."""
+    """Select an ordered, unique set of semantically compatible source pages.
+
+    A global dynamic program avoids the old greedy failure where one early
+    slide jumped to a late, high-capacity page and forced every remaining
+    output onto the final consecutive block of the template.
+    """
     template_slides = sorted(template_zones.get("slides", []), key=lambda slide: slide["index"])
     outline_slides = outline.get("slides", [])
     if not template_slides:
@@ -414,23 +581,70 @@ def _select_template_slides(outline: dict, template_zones: dict, design: dict) -
         return [template_slides[index % len(template_slides)]["index"] for index in range(len(outline_slides))]
 
     design_by_index = {item.get("slide_index"): item for item in design.get("slides", [])}
-    positions = {slide["index"]: position for position, slide in enumerate(template_slides)}
-    selected: list[int] = []
-    next_position = 0
-    for outline_position, outline_slide in enumerate(outline_slides):
-        remaining_outline = len(outline_slides) - outline_position - 1
-        last_candidate_position = len(template_slides) - remaining_outline - 1
-        candidates = template_slides[next_position : last_candidate_position + 1]
+    output_count = len(outline_slides)
+    template_count = len(template_slides)
+    negative_infinity = float("-inf")
+    scores = [
+        [negative_infinity] * template_count
+        for _ in range(output_count)
+    ]
+    previous = [
+        [-1] * template_count
+        for _ in range(output_count)
+    ]
+
+    def page_score(outline_position: int, template_position: int) -> float:
+        outline_slide = outline_slides[outline_position]
+        template_slide = template_slides[template_position]
         decision = design_by_index.get(outline_slide.get("slide_index"), {})
-        best = max(
-            candidates,
-            key=lambda candidate: _template_slide_score(
-                outline_slide, candidate, decision, len(template_slides)
-            ),
+        expected_position = (
+            outline_position * (template_count - 1) / max(1, output_count - 1)
         )
-        selected.append(best["index"])
-        next_position = positions[best["index"]] + 1
-    return selected
+        progression_penalty = 0.28 * abs(
+            template_position - expected_position
+        )
+        return (
+            _template_slide_score(
+                outline_slide, template_slide, decision, template_count
+            )
+            + _template_role_bonus(outline_slide, template_slide)
+            - progression_penalty
+        )
+
+    for template_position in range(0, template_count - output_count + 1):
+        scores[0][template_position] = page_score(0, template_position)
+
+    for outline_position in range(1, output_count):
+        min_template_position = outline_position
+        max_template_position = template_count - (
+            output_count - outline_position
+        )
+        for template_position in range(
+            min_template_position, max_template_position + 1
+        ):
+            predecessor = max(
+                range(outline_position - 1, template_position),
+                key=lambda position: scores[outline_position - 1][position],
+            )
+            predecessor_score = scores[outline_position - 1][predecessor]
+            if predecessor_score == negative_infinity:
+                continue
+            scores[outline_position][template_position] = (
+                predecessor_score
+                + page_score(outline_position, template_position)
+            )
+            previous[outline_position][template_position] = predecessor
+
+    last_position = max(
+        range(output_count - 1, template_count),
+        key=lambda position: scores[output_count - 1][position],
+    )
+    selected_positions: list[int] = []
+    for outline_position in range(output_count - 1, -1, -1):
+        selected_positions.append(last_position)
+        last_position = previous[outline_position][last_position]
+    selected_positions.reverse()
+    return [template_slides[position]["index"] for position in selected_positions]
 
 
 def _fallback_mapping(
@@ -831,6 +1045,10 @@ def _reconcile_zone_repair_flags(slide: dict, template_slide: dict) -> None:
     prefixes = (
         "llm_constraint_unresolved:",
         "missing_zone_unresolved:",
+        "llm_micro_repair_unresolved:",
+        "length_mismatch:",
+        "untraceable_rewrite:",
+        "overflow:",
     )
     reconciled: list[str] = []
     for flag in slide.get("fallback_flags", []):
@@ -1015,29 +1233,15 @@ fact is used. Do not change layout, formatting, font, size, or zone_id. Do not
 return any unrequested zone or slide-level data.
 """.strip()
 
-    peer_copy = [
-        {
-            "zone_id": zone.get("zone_id", ""),
-            "type": zone.get("type", ""),
-            "content": _content_text(zone.get("content")),
-        }
-        for zone in slide.get("zones", [])
-        if zone.get("zone_id")
-    ]
+    # Keep micro-repair genuinely small. The target constraints and this
+    # slide's source blocks contain all evidence required for a grounded
+    # rewrite; project-wide and neighbouring-slide context made a one-zone
+    # repair almost as large as a full mapping call.
     common_context = {
         "slide_index": slide_index,
         "template_slide_index": template_index,
         "slide_title": outline_slide.get("title", ""),
         "source_blocks": source_blocks,
-        "neighboring_slides": neighboring_slides,
-        "design_decision": design_decision,
-        "neighboring_zone_copy": peer_copy,
-        "project_context": {
-            "project": source_summary.get("project", {}),
-            "core_topic": source_summary.get("core_topic", ""),
-            "value_proposition": source_summary.get("value_proposition", ""),
-            "key_facts": source_summary.get("key_facts", []),
-        },
     }
 
     repaired_count = 0
@@ -1058,9 +1262,26 @@ return any unrequested zone or slide-level data.
             fallback={"repairs": []},
             max_tokens=min(2400, max(900, len(call_targets) * 420)),
             temperature=0.0,
-            schema=_ZONE_REPAIR_SCHEMA,
+            json_schema=_ZONE_REPAIR_SCHEMA,
+            schema_name="content_mapping_zone_repairs",
         )
         if getattr(llm_client, "was_fallback", lambda _phase: False)(phase):
+            return set()
+
+        if not isinstance(result, dict):
+            logger.warning(
+                "Ignoring invalid mapping repair response for %s: expected object, got %s",
+                phase,
+                type(result).__name__,
+            )
+            return set()
+        repairs = result.get("repairs")
+        if not isinstance(repairs, list):
+            logger.warning(
+                "Ignoring invalid mapping repair response for %s: repairs is %s",
+                phase,
+                type(repairs).__name__,
+            )
             return set()
 
         target_by_id = {target["zone_id"]: target for target in call_targets}
@@ -1073,7 +1294,15 @@ return any unrequested zone or slide-level data.
         }
         candidates: list[dict] = []
         accepted: set[str] = set()
-        for repair in result.get("repairs", []):
+        for repair_index, repair in enumerate(repairs):
+            if not isinstance(repair, dict):
+                logger.warning(
+                    "Ignoring invalid repair item for %s at index %d: got %s",
+                    phase,
+                    repair_index,
+                    type(repair).__name__,
+                )
+                continue
             zone_id = repair.get("zone_id", "")
             if zone_id not in target_by_id or zone_id in accepted:
                 continue
@@ -1094,13 +1323,29 @@ return any unrequested zone or slide-level data.
             )
         return accepted
 
-    batch_size = 4
+    diagnostic_max_batches = _env_optional_nonnegative_int(
+        "PPT_AGENT_MAPPING_MAX_BATCHES"
+    )
+    diagnostic_max_retries = _env_optional_nonnegative_int(
+        "PPT_AGENT_MAPPING_MAX_RETRIES"
+    )
+    batch_size = 2
     for batch_number, start in enumerate(range(0, len(targets), batch_size), start=1):
+        if (
+            diagnostic_max_batches is not None
+            and batch_number > diagnostic_max_batches
+        ):
+            break
         batch = targets[start:start + batch_size]
         phase = f"content_mapping_micro_{slide_index}_{batch_number}"
         accepted = run_call(batch, phase)
         rejected_ids = {target["zone_id"] for target in batch} - accepted
         for retry_number, zone_id in enumerate(sorted(rejected_ids), start=1):
+            if (
+                diagnostic_max_retries is not None
+                and retry_number > diagnostic_max_retries
+            ):
+                break
             retry_target = collect_targets({zone_id})
             if not retry_target:
                 continue
@@ -1167,9 +1412,18 @@ def _repair_mapping_zones_with_llm(
         int(slide.get("slide_index", index)): slide
         for index, slide in enumerate(design.get("slides", []))
     }
+    diagnostic_slide = os.getenv("PPT_AGENT_MAPPING_SLIDE", "").strip()
+    diagnostic_slide_index = (
+        int(diagnostic_slide) if diagnostic_slide else None
+    )
 
     for slide in mapping.get("slides", []):
         slide_index = int(slide.get("slide_index", -1))
+        if (
+            diagnostic_slide_index is not None
+            and slide_index != diagnostic_slide_index
+        ):
+            continue
         template_index = int(slide.get("template_slide_index", -1))
         template_slide = template_by_index.get(template_index)
         outline_slide = outline_by_index.get(slide_index)
@@ -1345,9 +1599,11 @@ Fill EVERY editable text zone. Use `replace_text` for template sample copy and
 `clear_text` is forbidden. Generate source-grounded titles, summaries, metrics,
 captions, and short labels as needed; never invent facts.
 
-Copy exact zone_id, position, type, and formatting from the template. Do not
-add text boxes or change geometry, font, font size, paragraph formatting, or
-alignment. Long prose is allowed only where content_eligibility=body and
+Copy the exact zone_id and use the schema-allowed mapped type. Position and formatting are
+immutable input-only fields: do not return them because the runtime copies
+them from the template after generation. Do not add text boxes or change
+geometry, font, font size, paragraph formatting, or alignment. Long prose is
+allowed only where content_eligibility=body and
 supports_long_text=true. Rotated, vertical, narrow, decorative, and short_label
 zones must receive concise labels rather than prose.
 
@@ -1410,7 +1666,15 @@ Output JSON only.
         logger.info("Content mapping batch %d-%d / %d slides",
                     batch_start + 1, batch_end, len(outline_slides))
 
-        from ppt_agent.llm.schemas import SLIDE_CONTENTS_SCHEMA
+        from ppt_agent.llm.schemas import (
+            build_content_mapping_schema,
+            normalize_content_mapping_response,
+        )
+
+        batch_schema = build_content_mapping_schema(
+            batch_fallback["template_id"],
+            batch_fallback["slides"],
+        )
 
         batch_phase = f"content_mapping_{batch_start}"
         result = llm_client.generate_json(
@@ -1421,26 +1685,51 @@ Output JSON only.
             fallback=batch_fallback,
             max_tokens=16000,
             temperature=0.1,
-            schema=SLIDE_CONTENTS_SCHEMA,
+            json_schema=batch_schema,
+            schema_name="content_mapping_batch",
         )
+        result = normalize_content_mapping_response(result)
 
         batch_slides = result.get("slides", [])
         batch_was_fallback = getattr(
             llm_client, "was_fallback", lambda _phase: False
         )(batch_phase)
+        fallback_by_index = {
+            int(slide["slide_index"]): slide for slide in batch_fallback["slides"]
+        }
         accepted: dict[int, dict] = {}
         if not batch_was_fallback:
             for batch_slide in batch_slides:
                 slide_index = int(batch_slide.get("slide_index", -1))
-                if slide_index in expected_indices and slide_index not in accepted:
+                expected_template_index = int(
+                    fallback_by_index.get(slide_index, {}).get(
+                        "template_slide_index", -1
+                    )
+                )
+                returned_template_index = int(
+                    batch_slide.get("template_slide_index", -2)
+                )
+                if (
+                    slide_index in expected_indices
+                    and slide_index not in accepted
+                    and returned_template_index == expected_template_index
+                ):
                     accepted[slide_index] = batch_slide
+                elif (
+                    slide_index in expected_indices
+                    and returned_template_index != expected_template_index
+                ):
+                    logger.warning(
+                        "Rejecting LLM template page override for slide %d: "
+                        "returned=%d expected=%d",
+                        slide_index,
+                        returned_template_index,
+                        expected_template_index,
+                    )
 
         # JSON repair may return valid JSON containing fewer slides.  Retry
         # every missing slide independently instead of silently shrinking the
         # deck or substituting deterministic copy.
-        fallback_by_index = {
-            int(slide["slide_index"]): slide for slide in batch_fallback["slides"]
-        }
         missing = [index for index in expected_indices if index not in accepted]
         for missing_index in missing:
             outline_slide = next(
@@ -1474,6 +1763,10 @@ Output JSON only.
                 }
 
             recovered = None
+            retry_schema = build_content_mapping_schema(
+                batch_fallback["template_id"],
+                [fallback_slide],
+            )
             for attempt in range(2):
                 retry_phase = f"content_mapping_retry_{missing_index}_{attempt + 1}"
                 retry_result = llm_client.generate_json(
@@ -1491,8 +1784,10 @@ Output JSON only.
                     },
                     max_tokens=12000,
                     temperature=0.0,
-                    schema=SLIDE_CONTENTS_SCHEMA,
+                    json_schema=retry_schema,
+                    schema_name="content_mapping_slide",
                 )
+                retry_result = normalize_content_mapping_response(retry_result)
                 if getattr(llm_client, "was_fallback", lambda _phase: False)(retry_phase):
                     continue
                 recovered = next(
@@ -1544,6 +1839,12 @@ Output JSON only.
         "review_status": "draft",
         "slides": all_batch_slides,
     }
+    # Lock structural choices before asking for zone-level repairs. Otherwise
+    # an LLM-supplied (but valid) template index can make the repair pass edit
+    # zones from the wrong source page.
+    _ensure_valid_mapping(
+        result, outline, selected, design, source_summary, template_zones
+    )
     _repair_mapping_zones_with_llm(
         llm_client, result, outline, design, source_summary, template_zones
     )
@@ -1586,9 +1887,23 @@ def _ensure_valid_mapping(
     image_inventory = source_summary.get("image_inventory", [])
     tpl_slides = {}
     tpl_count = 0
+    selected_template_indices: list[int] = []
     if template_zones:
         tpl_slides = {s["index"]: s for s in template_zones.get("slides", [])}
         tpl_count = len(tpl_slides)
+        selected_template_indices = _select_template_slides(
+            outline, template_zones, design
+        )
+    deterministic_by_slide_index = {
+        int(item.get("slide_index", -1)): item
+        for item in (
+            _fallback_mapping(
+                outline, selected, design, source_summary, template_zones
+            ).get("slides", [])
+            if template_zones
+            else []
+        )
+    }
 
     mapping["slides"] = sorted(
         mapping["slides"], key=lambda item: int(item.get("slide_index", 10**9))
@@ -1598,9 +1913,22 @@ def _ensure_valid_mapping(
         position_index = outline_position.get(slide_index, 0)
         decision = design_by_index.get(slide_index, {})
         # Layout comes from the template page itself — OVERRIDE whatever the LLM said
-        template_slide_index = slide.get(
-            "template_slide_index", position_index % max(tpl_count, 1)
+        expected_template_index = (
+            selected_template_indices[position_index]
+            if position_index < len(selected_template_indices)
+            else position_index % max(tpl_count, 1)
         )
+        returned_template_index = slide.get("template_slide_index")
+        template_slide_index = expected_template_index
+        if (
+            tpl_slides
+            and returned_template_index is not None
+            and int(returned_template_index) != expected_template_index
+        ):
+            slide.setdefault("fallback_flags", []).append(
+                "llm_template_slide_override_rejected:"
+                f"{returned_template_index}->{expected_template_index}"
+            )
         if template_slide_index not in tpl_slides and tpl_slides:
             slide.setdefault("fallback_flags", []).append(
                 f"invalid_template_slide_index:{template_slide_index}"
@@ -1626,13 +1954,51 @@ def _ensure_valid_mapping(
         if tpl_slide:
             valid_zone_ids = {z.get("zone_id", "") for z in tpl_slide.get("all_zones", [])}
             if valid_zone_ids:
-                for zone in slide.get("zones", []):
-                    zid = zone.get("zone_id", "")
-                    ztype = zone.get("type", "text")
-                    if zid not in valid_zone_ids and ztype not in ("image", "chart", "shape"):
-                        zone["action"] = "preserve"
-                        zone.setdefault("_warning", f"zone_id {zid} not in template; mutation rejected")
-                        slide["fallback_flags"].append(f"invalid_zone_id:{zid}")
+                mapped_zone_ids = [
+                    zone.get("zone_id", "")
+                    for zone in slide.get("zones", [])
+                    if zone.get("zone_id")
+                ]
+                invalid_zone_ids = [
+                    zone_id for zone_id in mapped_zone_ids
+                    if zone_id not in valid_zone_ids
+                ]
+                # A majority-invalid zone set means the model filled another
+                # template page while still returning a valid page index.
+                # Individual bad IDs can be rejected in place, but a crossed
+                # page must be reset as one unit before micro repair.
+                if (
+                    len(invalid_zone_ids) >= 2
+                    and len(invalid_zone_ids) * 2 >= max(1, len(mapped_zone_ids))
+                ):
+                    prior_flags = list(slide.get("fallback_flags", []))
+                    fallback_slide = deterministic_by_slide_index.get(slide_index, {})
+                    slide["zones"] = [
+                        dict(zone) for zone in fallback_slide.get("zones", [])
+                    ]
+                    slide["fallback_flags"] = list(dict.fromkeys([
+                        *prior_flags,
+                        "cross_template_zone_set_rejected:"
+                        f"{len(invalid_zone_ids)}/{len(mapped_zone_ids)}",
+                        *fallback_slide.get("fallback_flags", []),
+                    ]))
+                rejected_ids = [
+                    zone.get("zone_id", "")
+                    for zone in slide.get("zones", [])
+                    if zone.get("zone_id", "") not in valid_zone_ids
+                ]
+                if rejected_ids:
+                    slide["zones"] = [
+                        zone for zone in slide.get("zones", [])
+                        if zone.get("zone_id", "") in valid_zone_ids
+                    ]
+                    slide["fallback_flags"] = [
+                        flag for flag in slide.get("fallback_flags", [])
+                        if not str(flag).startswith("invalid_zone_id:")
+                    ]
+                    slide["fallback_flags"].append(
+                        f"invalid_zones_discarded:{len(rejected_ids)}"
+                    )
 
         # ── Safety-net: copy real positions from template (AI chose zone_id, we double-check) ──
         if tpl_slide:
@@ -1752,6 +2118,13 @@ def _ensure_valid_mapping(
             _synchronize_layered_text_zones(slide.get("zones", []), tpl_slide)
             slide["zones"] = _truncate_overflow(slide.get("zones", []), tpl_slide)
             _reconcile_zone_repair_flags(slide, tpl_slide)
+            _ensure_generated_content_image_zone(
+                slide,
+                tpl_slide,
+                decision,
+                outline_slide,
+                image_inventory,
+            )
 
         hard_issue_prefixes = (
             "length_mismatch:", "clear_text_forbidden:",
@@ -1926,9 +2299,10 @@ def _truncate_overflow(zones: list[dict], tpl_slide: dict) -> list[dict]:
         zone_type = zone.get("type", "")
         target_min, target_max = _zone_target_range(tpl_zone)
         visible_length = _visible_char_count(content)
-        overflow = zone.get("action") == "replace_text" and not (
-            target_min <= visible_length <= target_max
-        )
+        # Target length is a copy-quality constraint, not proof of geometric
+        # overflow. A five-character phrase in a 24-character box is an
+        # underfill/length mismatch, but it still physically fits.
+        overflow = False
 
         if zone_type in ("title", "subtitle") and isinstance(content, str):
             overflow = overflow or visible_length > chars_per_line
@@ -2094,6 +2468,21 @@ def _build_mapping_diagnostics(payload: dict, template_zones: dict | None) -> di
     }
 
 
+def _archive_resolved_fallback_flags(payload: dict, diagnostics: dict) -> None:
+    """Move historical recovery markers out of the active failure channel."""
+    if diagnostics.get("issue_count") != 0:
+        return
+    for slide in payload.get("slides", []):
+        flags = list(slide.get("fallback_flags", []))
+        if not flags:
+            continue
+        slide["mapping_history_flags"] = list(dict.fromkeys([
+            *slide.get("mapping_history_flags", []),
+            *flags,
+        ]))
+        slide["fallback_flags"] = []
+
+
 def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
     output = workspace.artifact_path("slide_contents")
     outline = load_artifact(workspace, "outline")
@@ -2110,10 +2499,12 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
 
     cached_payload: dict | None = None
     cached_target_count = 0
+    cached_was_approved = False
     if output.exists() and not force:
         if llm_client is None or template_zones is None:
             return output
         cached_payload = load_artifact(workspace, "slide_contents")
+        cached_was_approved = cached_payload.get("review_status") == "approved"
         cached_flags_changed = False
         cached_template_by_index = {
             int(slide.get("index", index)): slide
@@ -2144,6 +2535,12 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
                     _build_mapping_diagnostics(cached_payload, template_zones),
                 )
             return output
+        if cached_was_approved:
+            logger.warning(
+                "Approved slide_contents still has %d invalid text zone(s); "
+                "running targeted repair before assembly.",
+                cached_target_count,
+            )
 
     if cached_payload is not None:
         logger.info(
@@ -2151,6 +2548,9 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
             cached_target_count,
         )
         payload = cached_payload
+        _ensure_valid_mapping(
+            payload, outline, selected, design, source_summary, template_zones
+        )
         _repair_mapping_zones_with_llm(
             llm_client, payload, outline, design, source_summary, template_zones
         )
@@ -2166,9 +2566,13 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
             "initial_target_zones": cached_target_count,
             "remaining_target_zones": remaining_targets,
         }
-        # Cached approved copy changed and must cross the review boundary again.
+        # An approved artifact may still contain machine-detectable fit issues.
+        # Repair those automatically, but preserve the user's approval so an
+        # irreducible micro-copy constraint cannot dead-end the whole job.
         payload["review_status"] = (
-            "draft" if remaining_targets == 0 else "needs_review"
+            "approved"
+            if cached_was_approved
+            else ("draft" if remaining_targets == 0 else "needs_review")
         )
     elif llm_client is not None:
         logger.info("Using LLM for content mapping")
@@ -2184,13 +2588,15 @@ def run(workspace: JobWorkspace, force: bool = False, llm_client=None) -> Path:
 
     generation_stats = _mapping_generation_stats(payload)
     payload["generation_stats"] = generation_stats
-    if payload["mapping_mode"] == "llm_first" and not generation_stats["passed"]:
+    if (
+        payload["mapping_mode"] == "llm_first"
+        and not generation_stats["passed"]
+        and not cached_was_approved
+    ):
         payload["review_status"] = "needs_review"
 
+    diagnostics = _build_mapping_diagnostics(payload, template_zones)
+    _archive_resolved_fallback_flags(payload, diagnostics)
     output_path = write_artifact(workspace, "slide_contents", payload)
-    write_artifact(
-        workspace,
-        "mapping_diagnostics",
-        _build_mapping_diagnostics(payload, template_zones),
-    )
+    write_artifact(workspace, "mapping_diagnostics", diagnostics)
     return output_path

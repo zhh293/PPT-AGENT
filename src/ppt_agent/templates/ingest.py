@@ -710,6 +710,9 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
         width_n = max(0.0, min(1.0 - x, width / slide_w if width else 0.0))
         height_n = max(0.0, min(1.0 - y, height / slide_h if height else 0.0))
         has_text = bool(getattr(shape, "has_text_frame", False))
+        has_picture_fill = bool(
+            shape._element.xpath('.//*[local-name()="blip"]')
+        )
         if width_n > 0.95 and height_n > 0.95 and not has_text:
             continue
         if width_n < 0.01 and height_n < 0.01 and not has_text:
@@ -723,29 +726,32 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
                 paragraph.text for paragraph in shape.text_frame.paragraphs
                 if paragraph.text.strip()
             )
-            try:
-                placeholder = shape.placeholder_format
-            except ValueError:
-                placeholder = None
-            if placeholder is not None:
-                is_placeholder = True
-                placeholder_type = placeholder.type
-                if placeholder_type in (1, 3, 15):
-                    zone_type = "title"
-                elif placeholder_type in (2, 4):
-                    zone_type = "subtitle"
-                else:
-                    zone_type = "body"
+            if has_picture_fill and not text_content:
+                zone_type = "image"
             else:
-                area = width_n * height_n
-                if area < 0.002:
-                    zone_type = "decorative"
-                elif y < 0.35 and area > 0.003:
-                    zone_type = "title"
-                elif y > 0.80 and width_n < 0.95:
-                    zone_type = "footer"
+                try:
+                    placeholder = shape.placeholder_format
+                except ValueError:
+                    placeholder = None
+                if placeholder is not None:
+                    is_placeholder = True
+                    placeholder_type = placeholder.type
+                    if placeholder_type in (1, 3, 15):
+                        zone_type = "title"
+                    elif placeholder_type in (2, 4):
+                        zone_type = "subtitle"
+                    else:
+                        zone_type = "body"
                 else:
-                    zone_type = "body"
+                    area = width_n * height_n
+                    if area < 0.002:
+                        zone_type = "decorative"
+                    elif y < 0.35 and area > 0.003:
+                        zone_type = "title"
+                    elif y > 0.80 and width_n < 0.95:
+                        zone_type = "footer"
+                    else:
+                        zone_type = "body"
         elif hasattr(shape, "image"):
             try:
                 _ = shape.image
@@ -754,7 +760,11 @@ def _zones_from_pptx_shapes(slide, slide_index: int,
                 pass
 
         is_text_box = getattr(shape, "shape_type", None) == MSO_SHAPE_TYPE.TEXT_BOX
-        editable = has_text and bool(text_content or is_placeholder or is_text_box)
+        editable = (
+            has_text
+            and zone_type != "image"
+            and bool(text_content or is_placeholder or is_text_box)
+        )
         if not editable and zone_type not in ("image", "chart"):
             continue
 

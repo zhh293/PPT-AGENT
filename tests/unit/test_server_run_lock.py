@@ -1,7 +1,9 @@
 from pathlib import Path
 
 import json
+import os
 
+import ppt_agent.server.app as server_app
 from ppt_agent.server.app import (
     PHASES,
     _acquire_job_run_lock,
@@ -17,6 +19,23 @@ def test_job_run_lock_is_atomic_and_reusable(tmp_path: Path) -> None:
     assert first is True
     assert second is False
 
+    _release_job_run_lock(tmp_path)
+
+
+def test_job_run_lock_recovers_dead_legacy_pid(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    lock_path = tmp_path / ".run.lock"
+    lock_path.write_text("999999", encoding="utf-8")
+    monkeypatch.setattr(server_app, "_pid_is_running", lambda _pid: False)
+
+    assert _acquire_job_run_lock(tmp_path) is True
+
+    payload = json.loads(lock_path.read_text(encoding="utf-8"))
+    assert payload["pid"] == os.getpid()
+    assert payload["job_id"] == tmp_path.name
+    assert payload["run_id"]
     _release_job_run_lock(tmp_path)
 
     assert _acquire_job_run_lock(tmp_path) is True

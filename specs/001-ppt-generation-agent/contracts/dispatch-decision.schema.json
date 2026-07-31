@@ -8,7 +8,7 @@
     "job_id": {"type": "string", "minLength": 1},
     "phase": {
       "type": "string",
-      "enum": ["document_analysis", "outline_generation", "template_matching", "content_mapping", "visual_generation", "ppt_assembly", "verification"]
+      "enum": ["document_analysis", "outline_generation", "template_matching", "design_planning", "content_mapping", "visual_generation", "ppt_assembly", "verification"]
     },
     "worker": {"type": "string", "minLength": 1},
     "skill": {"type": "string"},

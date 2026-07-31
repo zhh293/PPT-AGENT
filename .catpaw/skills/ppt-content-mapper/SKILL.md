@@ -9,6 +9,11 @@ to the real editable zones of the selected PowerPoint template.
 
 ## Non-negotiable output contract
 
+The runtime passes a strict, template-aware JSON Schema directly through the
+model API. The schema fixes the allowed root fields, slide IDs, selected
+template page IDs, zone IDs, field types, enum values, and item counts for the
+current batch. Do not restate or reinterpret that schema.
+
 1. Return exactly the requested `expected_slide_indices`. Never renumber a
    batch locally and never omit, duplicate, merge, or reorder a slide.
 2. Copy `template_slide_index` and every `zone_id` exactly. A zone ID is an
@@ -21,6 +26,44 @@ to the real editable zones of the selected PowerPoint template.
    sample business claims, metrics, names, categories, or financial data.
 5. Use as many editable zones as the template page contains. There is no
    three-zone limit.
+
+## Field ownership and filling procedure
+
+| Field | Correct value |
+|---|---|
+| `template_id` | Copy the one schema-allowed value. |
+| `slide_index` | Copy the outline slide ID; this is the new deck page. |
+| `template_slide_index` | Copy the selected source-template page ID. Never derive it from `slide_index`. |
+| `zone_id` | Copy an ID belonging to that exact template page. Never borrow one from another page. |
+| `type` | Copy the one schema-allowed mapped role for this zone. Never invent another role. |
+| `action` | Use `replace_text` for business/sample copy; `preserve` only for fixed chrome. |
+| `content` | Write only final audience-visible copy. |
+| `placement_reason` | Explain the semantic placement; never put slide copy here. |
+| `source_block_ids` | Use only supplied IDs supporting `content`; never put prose here. |
+| `transformation` | Choose `none`, `summarize`, `split`, `merge`, or `rewrite`. |
+| `fit_status` | Set only after checking the final visible copy. |
+
+`position`, `formatting`, geometry, font, and shape metadata are input-only.
+Never emit them. The runtime copies those immutable values from the template.
+
+Fill every zone in this order:
+
+1. Locate the outline slide by `slide_index`.
+2. Locate its chosen source page by `template_slide_index`.
+3. Select one still-unused `zone_id` from that page only.
+4. Read its original text, physical type, semantic role, neighbors, and capacity.
+5. Choose supported source blocks and write the final visible `content`.
+6. Record those exact source IDs, then set action, transformation, and fit status.
+7. Mark the zone used. At the end, compare used IDs with required IDs and
+   ensure each appears exactly once.
+
+Common mistakes:
+
+- Putting the template page number in `slide_index`. These two index fields
+  describe different things.
+- Returning a syntactically valid `zone_id` from a neighboring page.
+- Putting “summarized to fit” in `content` instead of `placement_reason`.
+- Claiming `fits` before counting the final copy.
 
 ## Think semantically before assigning zones
 

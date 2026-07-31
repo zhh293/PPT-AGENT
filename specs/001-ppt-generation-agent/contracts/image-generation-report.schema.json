@@ -11,6 +11,10 @@
     "finished_at": {"type": "string"},
     "summary": {"type": "string"},
     "provider": {"type": "string"},
+    "total_slides": {"type": "integer", "minimum": 0},
+    "generated": {"type": "integer", "minimum": 0},
+    "fallback": {"type": "integer", "minimum": 0},
+    "execution": {"type": "object", "additionalProperties": true},
     "slide_results": {
       "type": "array",
       "items": {
